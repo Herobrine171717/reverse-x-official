@@ -1,72 +1,71 @@
-// WAIT UNTIL PAGE LOADS
-window.onload = function () {
+window.addEventListener("load", () => {
 
-    // MATRIX SETUP
-    const canvas = document.getElementById("matrix");
-    const ctx = canvas.getContext("2d");
+const canvas = document.getElementById("matrix");
+const ctx = canvas.getContext("2d");
 
-    function resize() {
-        canvas.width = window.innerWidth;
-        canvas.height = window.innerHeight;
-    }
+function resize(){
+canvas.width = window.innerWidth;
+canvas.height = window.innerHeight;
+}
+resize();
+window.addEventListener("resize", resize);
 
-    resize();
-    window.addEventListener("resize", resize);
+const chars = "01ABCDEFGHIJKLMNOPQRSTUVWXYZ@#$%^&*";
+const fontSize = 14;
+const columns = Math.floor(canvas.width / fontSize);
+const drops = Array(columns).fill(1);
 
-    const chars = "01ABCDEFGHIJKLMNOPQRSTUVWXYZ@#$%^&*";
-    const fontSize = 14;
-    const columns = Math.floor(canvas.width / fontSize);
+// MATRIX (smoother + darker)
+function draw(){
+ctx.fillStyle = "rgba(0,0,0,0.05)";
+ctx.fillRect(0,0,canvas.width,canvas.height);
 
-    const drops = new Array(columns).fill(1);
+ctx.fillStyle = "#ff0033";
+ctx.font = fontSize + "px monospace";
 
-    function draw() {
-        ctx.fillStyle = "rgba(0,0,0,0.08)";
-        ctx.fillRect(0, 0, canvas.width, canvas.height);
+for(let i=0;i<drops.length;i++){
+const text = chars[Math.floor(Math.random()*chars.length)];
+ctx.fillText(text,i*fontSize,drops[i]*fontSize);
 
-        ctx.fillStyle = "#ff0000";
-        ctx.font = fontSize + "px monospace";
+if(drops[i]*fontSize > canvas.height && Math.random() > 0.975){
+drops[i] = 0;
+}
+drops[i]++;
+}
+}
 
-        for (let i = 0; i < drops.length; i++) {
-            const text = chars[Math.floor(Math.random() * chars.length)];
-            ctx.fillText(text, i * fontSize, drops[i] * fontSize);
+setInterval(draw, 33);
 
-            if (drops[i] * fontSize > canvas.height && Math.random() > 0.975) {
-                drops[i] = 0;
-            }
-            drops[i]++;
-        }
-    }
+// TERMINAL (more realistic hacker effect)
+const typing = document.getElementById("typing");
 
-    setInterval(draw, 35);
+const lines = [
+"> Initializing REVERSE X SYSTEM...",
+"> Loading encrypted modules...",
+"> Injecting UI protocol...",
+"> Connecting secure server...",
+"> ACCESS GRANTED ✔",
+"> Welcome back, Operator."
+];
 
-    // TERMINAL FIX
-    const terminal = document.getElementById("typing");
+let line = 0;
+let char = 0;
 
-    const lines = [
-        "> Initializing REVERSE X SYSTEM...",
-        "> Loading modules...",
-        "> Connecting secure server...",
-        "> Access granted.",
-        "> Welcome Operator."
-    ];
+function type(){
+if(line < lines.length){
+if(char < lines[line].length){
+typing.innerHTML += lines[line].charAt(char);
+char++;
+setTimeout(type, 20);
+}else{
+typing.innerHTML += "<br>";
+line++;
+char = 0;
+setTimeout(type, 400);
+}
+}
+}
 
-    let line = 0;
-    let char = 0;
+type();
 
-    function type() {
-        if (line < lines.length) {
-            if (char < lines[line].length) {
-                terminal.innerHTML += lines[line].charAt(char);
-                char++;
-                setTimeout(type, 25);
-            } else {
-                terminal.innerHTML += "<br>";
-                line++;
-                char = 0;
-                setTimeout(type, 500);
-            }
-        }
-    }
-
-    type();
-};
+});
