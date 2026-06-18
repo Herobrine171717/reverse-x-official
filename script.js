@@ -15,7 +15,7 @@ const fontSize = 14;
 const columns = Math.floor(canvas.width / fontSize);
 const drops = Array(columns).fill(1);
 
-// MATRIX (smoother + darker)
+/* MATRIX */
 function draw(){
 ctx.fillStyle = "rgba(0,0,0,0.05)";
 ctx.fillRect(0,0,canvas.width,canvas.height);
@@ -34,18 +34,17 @@ drops[i]++;
 }
 }
 
-setInterval(draw, 33);
+setInterval(draw, 30);
 
-// TERMINAL (more realistic hacker effect)
+/* TERMINAL */
 const typing = document.getElementById("typing");
 
 const lines = [
-"> Initializing REVERSE X SYSTEM...",
-"> Loading encrypted modules...",
-"> Injecting UI protocol...",
+"> Initializing REVERSE X...",
+"> Loading system...",
 "> Connecting secure server...",
-"> ACCESS GRANTED ✔",
-"> Welcome back, Operator."
+"> Access granted.",
+"> Welcome Operator."
 ];
 
 let line = 0;
@@ -56,12 +55,12 @@ if(line < lines.length){
 if(char < lines[line].length){
 typing.innerHTML += lines[line].charAt(char);
 char++;
-setTimeout(type, 20);
+setTimeout(type, 25);
 }else{
 typing.innerHTML += "<br>";
 line++;
 char = 0;
-setTimeout(type, 400);
+setTimeout(type, 500);
 }
 }
 }
