@@ -20,7 +20,7 @@ function draw(){
 ctx.fillStyle = "rgba(0,0,0,0.05)";
 ctx.fillRect(0,0,canvas.width,canvas.height);
 
-ctx.fillStyle = "#ff0033";
+ctx.fillStyle = "rgba(255,0,60,0.8)";
 ctx.font = fontSize + "px monospace";
 
 for(let i=0;i<drops.length;i++){
