@@ -108,3 +108,40 @@ transform:scale(1.05);
 .glitch{font-size:40px;}
 .terminal{height:140px;}
 }
+
+.skills{
+margin-top:25px;
+width:90%;
+max-width:600px;
+}
+
+.skill{
+text-align:left;
+margin:10px 0;
+color:#fff;
+}
+
+.bar{
+height:6px;
+background:#111;
+border:1px solid #ff0000;
+margin-top:5px;
+position:relative;
+overflow:hidden;
+}
+
+.bar::after{
+content:"";
+position:absolute;
+height:100%;
+width:70%;
+background:#ff0000;
+box-shadow:0 0 10px red;
+animation:load 2s ease-in-out infinite;
+}
+
+@keyframes load{
+0%{width:20%;}
+50%{width:90%;}
+100%{width:60%;}
+}
