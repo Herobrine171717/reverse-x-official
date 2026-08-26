@@ -14,7 +14,7 @@
 }
 
 body {
-    background: #000000;
+    background: #0a0a0a;
     color: #00ff41;
     overflow-x: hidden;
     cursor: none;
@@ -35,7 +35,7 @@ body {
     left: 0;
     width: 100%;
     height: 100%;
-    background: rgba(0, 0, 0, 0.92);
+    background: rgba(10, 10, 10, 0.85);
     z-index: 0;
 }
 
@@ -50,8 +50,8 @@ body {
     background: repeating-linear-gradient(0deg,
         rgba(0, 255, 65, 0) 0px,
         rgba(0, 255, 65, 0) 2px,
-        rgba(0, 255, 65, 0.015) 2px,
-        rgba(0, 255, 65, 0.015) 4px);
+        rgba(0, 255, 65, 0.02) 2px,
+        rgba(0, 255, 65, 0.02) 4px);
 }
 
 .cursor {
@@ -440,7 +440,7 @@ body {
     bottom: 0;
     left: 0;
     width: 100%;
-    background: rgba(0, 0, 0, 0.98);
+    background: rgba(0, 0, 0, 0.95);
     border-top: 1px solid rgba(0, 255, 65, 0.15);
     padding: 8px 20px;
     display: flex;
@@ -683,7 +683,7 @@ footer {
 
 <script>
     // ==============================================
-    // MATRIX RAIN - CLEAR & BRIGHT HACKER WORDS
+    // MATRIX RAIN - BRIGHT GREEN WORDS
     // ==============================================
     const canvas = document.getElementById('matrix');
     const ctx = canvas.getContext('2d');
@@ -708,29 +708,30 @@ footer {
         'HONEYPOT', 'KEYLOGGER', 'PHISHING', 'SPOOF', 'ZOMBIE'
     ];
 
-    const fontSize = 14;
+    const fontSize = 16;
     const columns = Math.floor(canvas.width / fontSize);
     const drops = [];
 
     for (let x = 0; x < columns; x++) {
         drops[x] = {
             y: Math.random() * -100,
-            speed: 1.2 + Math.random() * 2.2,
+            speed: 0.8 + Math.random() * 1.5,
             word: hackerWords[Math.floor(Math.random() * hackerWords.length)],
-            charIndex: 0
+            charIndex: 0,
+            glow: 15 + Math.random() * 20
         };
     }
 
     function drawMatrix() {
-        // Clear trail - pure black background
-        ctx.fillStyle = 'rgba(0, 0, 0, 0.05)';
+        // Dark trail for smooth animation
+        ctx.fillStyle = 'rgba(10, 10, 10, 0.08)';
         ctx.fillRect(0, 0, canvas.width, canvas.height);
 
         for (let i = 0; i < drops.length; i++) {
-            // Clear and bright - high opacity
-            ctx.fillStyle = '#00ff41';
-            ctx.shadowBlur = 15;
+            // Bright green with glow
+            ctx.shadowBlur = drops[i].glow;
             ctx.shadowColor = '#00ff41';
+            ctx.fillStyle = '#00ff41';
             ctx.font = fontSize + 'px monospace';
 
             const word = drops[i].word;
@@ -740,11 +741,12 @@ footer {
             drops[i].y += drops[i].speed;
             drops[i].charIndex++;
 
-            if (drops[i].y * fontSize > canvas.height) {
+            if (drops[i].y * fontSize > canvas.height + 50) {
                 drops[i].y = -10;
-                drops[i].speed = 1.2 + Math.random() * 2.2;
+                drops[i].speed = 0.8 + Math.random() * 1.5;
                 drops[i].word = hackerWords[Math.floor(Math.random() * hackerWords.length)];
                 drops[i].charIndex = 0;
+                drops[i].glow = 15 + Math.random() * 20;
             }
         }
     }
