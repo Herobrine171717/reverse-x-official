@@ -176,7 +176,9 @@ padding:20px;
 font-family:monospace;
 line-height:2.2;
 border-left:4px solid #00ff41;
-min-height:200px;
+min-height:300px;
+max-height:400px;
+overflow-y:auto;
 }
 
 .terminal-line{
@@ -261,28 +263,43 @@ width:160px;
 <h2>SKILL MATRIX</h2>
 
 <div class="skill">
-<p>Video Editing</p>
-<div class="bar"><div class="fill" style="width:90%"></div></div>
-</div>
-
-<div class="skill">
-<p>Design & Branding</p>
-<div class="bar"><div class="fill" style="width:85%"></div></div>
-</div>
-
-<div class="skill">
-<p>Web Development</p>
+<p>Reverse Engineering</p>
 <div class="bar"><div class="fill" style="width:95%"></div></div>
 </div>
 
 <div class="skill">
-<p>Firebase</p>
-<div class="bar"><div class="fill" style="width:88%"></div></div>
+<p>Web Development</p>
+<div class="bar"><div class="fill" style="width:90%"></div></div>
+</div>
+
+<div class="skill">
+<p>Python & Automation</p>
+<div class="bar"><div class="fill" style="width:92%"></div></div>
+</div>
+
+<div class="skill">
+<p>Firebase & Cloud</p>
+<div class="bar"><div class="fill" style="width:85%"></div></div>
 </div>
 
 <div class="skill">
 <p>Telegram Bots</p>
-<div class="bar"><div class="fill" style="width:92%"></div></div>
+<div class="bar"><div class="fill" style="width:94%"></div></div>
+</div>
+
+<div class="skill">
+<p>APK Modding</p>
+<div class="bar"><div class="fill" style="width:88%"></div></div>
+</div>
+
+<div class="skill">
+<p>UI/UX Design</p>
+<div class="bar"><div class="fill" style="width:80%"></div></div>
+</div>
+
+<div class="skill">
+<p>Cyber Security</p>
+<div class="bar"><div class="fill" style="width:89%"></div></div>
 </div>
 </section>
 
@@ -310,41 +327,56 @@ const ctx=canvas.getContext("2d");
 canvas.height=window.innerHeight;
 canvas.width=window.innerWidth;
 
-const letters="01ABCDEFGHIJKLMNOPQRSTUVWXYZ";
-const fontSize=14;
-const columns=canvas.width/fontSize;
+// Expanded character set with symbols
+const chars = "01ABCDEFGHIJKLMNOPQRSTUVWXYZ!@#$%^&*()_+-=[]{}|;:,.<>?/~`";
+const fontSize = 14;
+const columns = Math.floor(canvas.width / fontSize);
 
-const drops=[];
+const drops = [];
 
-for(let x=0;x<columns;x++){
-drops[x]=1;
+// Random starting positions
+for(let x = 0; x < columns; x++){
+drops[x] = {
+y: Math.floor(Math.random() * canvas.height / fontSize),
+speed: 0.5 + Math.random() * 1.5,
+char: chars[Math.floor(Math.random() * chars.length)]
+};
 }
+
+// Color variations
+const colors = ["#00ff41", "#00ff41", "#00ff41", "#33ff66", "#66ff99"];
 
 function draw(){
-ctx.fillStyle="rgba(0,0,0,0.05)";
-ctx.fillRect(0,0,canvas.width,canvas.height);
+ctx.fillStyle = "rgba(0,0,0,0.05)";
+ctx.fillRect(0, 0, canvas.width, canvas.height);
 
-ctx.fillStyle="#00ff41";
-ctx.font=fontSize+"px monospace";
+for(let i = 0; i < drops.length; i++){
+const color = colors[Math.floor(Math.random() * colors.length)];
+ctx.fillStyle = color;
+ctx.font = fontSize + "px monospace";
 
-for(let i=0;i<drops.length;i++){
-const text=letters[Math.floor(Math.random()*letters.length)];
-ctx.fillText(text,i*fontSize,drops[i]*fontSize);
+const char = chars[Math.floor(Math.random() * chars.length)];
+ctx.fillText(char, i * fontSize, drops[i].y * fontSize);
 
-if(drops[i]*fontSize>canvas.height && Math.random()>0.975){
-drops[i]=0;
+drops[i].y += drops[i].speed;
+
+if(drops[i].y * fontSize > canvas.height && Math.random() > 0.975){
+drops[i].y = 0;
+drops[i].speed = 0.5 + Math.random() * 1.5;
 }
-drops[i]++;
 }
 }
 
-setInterval(draw,35);
+setInterval(draw, 35);
 
-const cursor=document.querySelector('.cursor');
+// ==============================================
+// 🔥 CURSOR FOLLOW
+// ==============================================
+const cursor = document.querySelector('.cursor');
 
-document.addEventListener('mousemove',(e)=>{
-cursor.style.left=e.clientX+'px';
-cursor.style.top=e.clientY+'px';
+document.addEventListener('mousemove', (e) => {
+cursor.style.left = e.clientX + 'px';
+cursor.style.top = e.clientY + 'px';
 });
 
 // ==============================================
@@ -353,21 +385,18 @@ cursor.style.top=e.clientY+'px';
 const typingText = document.getElementById('typingText');
 const textToType = "Accessing encrypted profile... Identity Verified ✓";
 let charIndex = 0;
-let isDeleting = false;
 
 function typeCharacter() {
-if (!isDeleting) {
 typingText.textContent = textToType.substring(0, charIndex + 1);
 charIndex++;
 
 if (charIndex < textToType.length) {
-setTimeout(typeCharacter, 30 + Math.random() * 50);
+const delay = 20 + Math.random() * 50;
+setTimeout(typeCharacter, delay);
 } else {
-// Pause before starting terminal
 setTimeout(() => {
 startTerminal();
 }, 500);
-}
 }
 }
 
@@ -380,7 +409,13 @@ const terminalLines = [
 "> Access Granted ✓",
 "> Loading Portfolio...",
 "> Loading Skills...",
-"> Connected Successfully ✓"
+"> Connected Successfully ✓",
+"> Decrypting Data...",
+"> Analyzing Network Traffic...",
+"> Bypassing Firewall...",
+"> Accessing Secure Server...",
+"> Loading Encrypted Modules...",
+"> System Ready ✓"
 ];
 
 let currentLine = 0;
@@ -416,7 +451,7 @@ lineElement.style.borderRight = '2px solid #00ff41';
 setTimeout(() => {
 lineElement.style.borderRight = 'none';
 }, 400);
-setTimeout(typeTerminalCharacter, 250);
+setTimeout(typeTerminalCharacter, 200 + Math.random() * 300);
 }
 }
 
@@ -428,9 +463,9 @@ isTerminalTyping = false;
 setTimeout(typeTerminalCharacter, 300);
 }
 
-// Start the typing effect
+// Start everything
 setTimeout(typeCharacter, 300);
 </script>
 
 </body>
-</html>
+                   </html>
