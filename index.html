@@ -20,9 +20,6 @@ body {
     cursor: none;
 }
 
-/* ==============================================
-   MATRIX BACKGROUND - CLEAN DARK
-   ============================================== */
 #matrix {
     position: fixed;
     top: 0;
@@ -43,9 +40,6 @@ body {
     z-index: -1;
 }
 
-/* ==============================================
-   SCANLINES EFFECT
-   ============================================== */
 .scanlines {
     position: fixed;
     top: 0;
@@ -61,9 +55,6 @@ body {
         rgba(0, 255, 65, 0.02) 4px);
 }
 
-/* ==============================================
-   CUSTOM CURSOR
-   ============================================== */
 .cursor {
     position: fixed;
     width: 20px;
@@ -89,9 +80,6 @@ body {
     z-index: 1000;
 }
 
-/* ==============================================
-   HERO SECTION
-   ============================================== */
 .hero {
     min-height: 100vh;
     display: flex;
@@ -174,9 +162,6 @@ body {
     50% { border-color: transparent; }
 }
 
-/* ==============================================
-   BUTTONS
-   ============================================== */
 .btns {
     margin-top: 30px;
     display: flex;
@@ -223,9 +208,6 @@ body {
     transform: translateY(-3px);
 }
 
-/* ==============================================
-   TERMINAL CARDS
-   ============================================== */
 .terminal-card {
     width: 90%;
     max-width: 900px;
@@ -270,9 +252,6 @@ body {
     font-family: 'Courier New', monospace;
 }
 
-/* ==============================================
-   PROFILE DATA
-   ============================================== */
 .profile-grid {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
@@ -304,9 +283,6 @@ body {
     margin-top: 5px;
 }
 
-/* ==============================================
-   SKILL MATRIX
-   ============================================== */
 .skill {
     margin-bottom: 18px;
 }
@@ -338,9 +314,6 @@ body {
     transition: width 1.5s cubic-bezier(0.25, 0.46, 0.45, 0.94);
 }
 
-/* ==============================================
-   TERMINAL LOGS
-   ============================================== */
 .terminal-logs {
     background: rgba(0, 10, 0, 0.5);
     padding: 15px;
@@ -400,9 +373,6 @@ body {
     }
 }
 
-/* ==============================================
-   FILE EXPLORER
-   ============================================== */
 .file-explorer {
     background: rgba(0, 10, 0, 0.5);
     padding: 15px;
@@ -462,9 +432,6 @@ body {
     50% { opacity: 0; }
 }
 
-/* ==============================================
-   STATUS BAR
-   ============================================== */
 .status-bar {
     position: fixed;
     bottom: 0;
@@ -501,9 +468,6 @@ body {
     animation: none;
 }
 
-/* ==============================================
-   FOOTER
-   ============================================== */
 footer {
     text-align: center;
     padding: 30px;
@@ -512,9 +476,6 @@ footer {
     letter-spacing: 2px;
 }
 
-/* ==============================================
-   RESPONSIVE
-   ============================================== */
 @media (max-width: 768px) {
     .hero h1 {
         font-size: 2.5rem;
@@ -543,22 +504,13 @@ footer {
 
 <body>
 
-<!-- ==============================================
-     MATRIX BACKGROUND - CLEAN
-     ============================================== -->
 <canvas id="matrix"></canvas>
 <div class="overlay"></div>
 <div class="scanlines"></div>
 
-<!-- ==============================================
-     CUSTOM CURSOR
-     ============================================== -->
 <div class="cursor" id="cursor"></div>
 <div class="cursor-dot" id="cursorDot"></div>
 
-<!-- ==============================================
-     STATUS BAR
-     ============================================== -->
 <div class="status-bar">
     <div class="status-item">
         <span class="status-dot"></span>
@@ -578,9 +530,6 @@ footer {
     </div>
 </div>
 
-<!-- ==============================================
-     HERO SECTION
-     ============================================== -->
 <section class="hero">
     <div class="logo">
         <img src="https://i.imgur.com/8Km9tLL.png" alt="REVERSE CHEATS">
@@ -598,9 +547,6 @@ footer {
     </div>
 </section>
 
-<!-- ==============================================
-     PROFILE DATA
-     ============================================== -->
 <div class="terminal-card">
     <div class="terminal-header">
         <span class="terminal-dot dot-red"></span>
@@ -638,9 +584,6 @@ footer {
     </div>
 </div>
 
-<!-- ==============================================
-     SKILL MATRIX
-     ============================================== -->
 <div class="terminal-card" id="skillsSection">
     <div class="terminal-header">
         <span class="terminal-dot dot-red"></span>
@@ -692,9 +635,6 @@ footer {
     </div>
 </div>
 
-<!-- ==============================================
-     TERMINAL LOGS
-     ============================================== -->
 <div class="terminal-card">
     <div class="terminal-header">
         <span class="terminal-dot dot-red"></span>
@@ -707,9 +647,6 @@ footer {
     </div>
 </div>
 
-<!-- ==============================================
-     FILE EXPLORER
-     ============================================== -->
 <div class="terminal-card">
     <div class="terminal-header">
         <span class="terminal-dot dot-red"></span>
@@ -741,7 +678,7 @@ footer {
 
 <script>
     // ==============================================
-    // MATRIX RAIN - CLEAN HACKER WORDS
+    // MATRIX RAIN - HACKER WORDS DROPPING
     // ==============================================
     const canvas = document.getElementById('matrix');
     const ctx = canvas.getContext('2d');
@@ -754,13 +691,16 @@ footer {
         'SYSTEM', 'NETWORK', 'FIREWALL', 'BYFASS', 'EXPLOIT',
         'INJECT', 'PAYLOAD', 'SHELL', 'CRACK', 'DECRYPT',
         'ENCRYPT', 'KEY', 'TOKEN', 'SESSION', 'ADMIN',
-        'ROOT', 'SUDO', 'KERNEL', 'MODULE', 'DRIVER',
+        'SUDO', 'KERNEL', 'MODULE', 'DRIVER',
         'PROCESS', 'THREAD', 'MEMORY', 'STACK', 'HEAP',
         'BUFFER', 'OVERFLOW', 'SCAN', 'PORT', 'PING',
         'PROXY', 'VPN', 'TOR', 'DARK', 'WEB', 'SQL',
         'XSS', 'CSRF', 'RCE', 'LFI', 'RFI',
         'MALWARE', 'VIRUS', 'TROJAN', 'RAT', 'SPY',
-        'REVERSE', 'ENGINEER', 'DEBUG', 'TRACE', 'LOG'
+        'REVERSE', 'ENGINEER', 'DEBUG', 'TRACE', 'LOG',
+        'BREACH', 'SECURE', 'ENCRYPTED', 'DECODED', 'SHELLCODE',
+        'BACKDOOR', 'BOTNET', 'CRYPTO', 'DARKWEB', 'EXFIL',
+        'HONEYPOT', 'KEYLOGGER', 'PHISHING', 'SPOOF', 'ZOMBIE'
     ];
 
     const fontSize = 14;
@@ -770,7 +710,7 @@ footer {
     for (let x = 0; x < columns; x++) {
         drops[x] = {
             y: Math.floor(Math.random() * canvas.height / fontSize),
-            speed: 1.0 + Math.random() * 2.5,
+            speed: 0.8 + Math.random() * 2.5,
             word: hackerWords[Math.floor(Math.random() * hackerWords.length)],
             charIndex: 0,
             brightness: 0.6 + Math.random() * 0.4
@@ -797,7 +737,7 @@ footer {
 
             if (drops[i].y * fontSize > canvas.height + 50 && Math.random() > 0.95) {
                 drops[i].y = -10;
-                drops[i].speed = 1.0 + Math.random() * 2.5;
+                drops[i].speed = 0.8 + Math.random() * 2.5;
                 drops[i].word = hackerWords[Math.floor(Math.random() * hackerWords.length)];
                 drops[i].charIndex = 0;
             }
