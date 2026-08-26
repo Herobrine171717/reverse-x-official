@@ -724,14 +724,7 @@ footer {
         <span class="terminal-title">TERMINAL — LOGS</span>
     </div>
     <div class="terminal-body">
-        <div class="terminal-logs" id="terminal">
-            <div class="terminal-line"><span class="prompt">$</span> <span class="command">Initializing System...</span></div>
-            <div class="terminal-line"><span class="prompt">$</span> <span class="command">Checking Security Layer...</span></div>
-            <div class="terminal-line"><span class="prompt">$</span> <span class="success">Access Granted ✓</span></div>
-            <div class="terminal-line"><span class="prompt">$</span> <span class="command">Loading Portfolio...</span></div>
-            <div class="terminal-line"><span class="prompt">$</span> <span class="command">Loading Skills...</span></div>
-            <div class="terminal-line"><span class="prompt">$</span> <span class="success">Connected Successfully ✓</span></div>
-        </div>
+        <div class="terminal-logs" id="terminal"></div>
     </div>
 </div>
 
@@ -767,4 +760,282 @@ footer {
     ⚡ REVERSE X OFFICIAL ⚡ — SYSTEM READY
 </footer>
 
-<
+<script>
+    // ==============================================
+    // MATRIX RAIN - HACKER WORDS DROPPING
+    // ==============================================
+    const canvas = document.getElementById('matrix');
+    const ctx = canvas.getContext('2d');
+
+    canvas.height = window.innerHeight;
+    canvas.width = window.innerWidth;
+
+    // 🔥 50+ HACKER WORDS TO DROP
+    const hackerWords = [
+        'HACK', 'ROOT', 'ACCESS', 'GRANTED', 'DENIED', 'ERROR',
+        'SYSTEM', 'NETWORK', 'FIREWALL', 'BYFASS', 'EXPLOIT',
+        'INJECT', 'PAYLOAD', 'SHELL', 'CRACK', 'DECRYPT',
+        'ENCRYPT', 'KEY', 'TOKEN', 'SESSION', 'ADMIN',
+        'ROOT', 'SUDO', 'KERNEL', 'MODULE', 'DRIVER',
+        'PROCESS', 'THREAD', 'MEMORY', 'STACK', 'HEAP',
+        'BUFFER', 'OVERFLOW', 'SCAN', 'PORT', 'PING',
+        'PROXY', 'VPN', 'TOR', 'DARK', 'WEB', 'SQL',
+        'XSS', 'CSRF', 'RCE', 'LFI', 'RFI',
+        'MALWARE', 'VIRUS', 'TROJAN', 'RAT', 'SPY',
+        'REVERSE', 'ENGINEER', 'DEBUG', 'TRACE', 'LOG'
+    ];
+
+    const fontSize = 14;
+    const columns = Math.floor(canvas.width / fontSize);
+    const drops = [];
+
+    for (let x = 0; x < columns; x++) {
+        drops[x] = {
+            y: Math.floor(Math.random() * canvas.height / fontSize),
+            speed: 0.5 + Math.random() * 2.0,
+            word: hackerWords[Math.floor(Math.random() * hackerWords.length)],
+            length: 3 + Math.floor(Math.random() * 4),
+            charIndex: 0
+        };
+    }
+
+    const colors = ['#00ff41', '#00ff41', '#00ff41', '#33ff66', '#66ff99', '#ffaa00'];
+
+    function drawMatrix() {
+        ctx.fillStyle = 'rgba(0,0,0,0.05)';
+        ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+        for (let i = 0; i < drops.length; i++) {
+            const color = colors[Math.floor(Math.random() * colors.length)];
+            ctx.fillStyle = color;
+            ctx.font = fontSize + 'px monospace';
+
+            // Show the word character by character
+            const word = drops[i].word;
+            const char = word[drops[i].charIndex % word.length] || word[0];
+            ctx.fillText(char, i * fontSize, drops[i].y * fontSize);
+
+            drops[i].y += drops[i].speed;
+            drops[i].charIndex++;
+
+            if (drops[i].y * fontSize > canvas.height && Math.random() > 0.97) {
+                drops[i].y = 0;
+                drops[i].speed = 0.5 + Math.random() * 2.0;
+                drops[i].word = hackerWords[Math.floor(Math.random() * hackerWords.length)];
+                drops[i].charIndex = 0;
+            }
+        }
+    }
+
+    setInterval(drawMatrix, 35);
+
+    // ==============================================
+    // CURSOR FOLLOW
+    // ==============================================
+    const cursor = document.getElementById('cursor');
+    const cursorDot = document.getElementById('cursorDot');
+
+    document.addEventListener('mousemove', (e) => {
+        cursor.style.left = e.clientX + 'px';
+        cursor.style.top = e.clientY + 'px';
+        cursorDot.style.left = e.clientX + 'px';
+        cursorDot.style.top = e.clientY + 'px';
+    });
+
+    document.addEventListener('mousedown', () => {
+        cursor.style.width = '14px';
+        cursor.style.height = '14px';
+    });
+
+    document.addEventListener('mouseup', () => {
+        cursor.style.width = '20px';
+        cursor.style.height = '20px';
+    });
+
+    // ==============================================
+    // CLOCK
+    // ==============================================
+    function updateClock() {
+        const now = new Date();
+        const time = now.toTimeString().split(' ')[0];
+        document.getElementById('clockDisplay').innerHTML = '⏰ ' + time;
+    }
+    setInterval(updateClock, 1000);
+    updateClock();
+
+    // ==============================================
+    // TYPING EFFECT - CHARACTER BY CHARACTER
+    // ==============================================
+    const typingText = document.getElementById('typingText');
+    const textToType = 'Accessing encrypted profile... Identity Verified ✓';
+    let charIndex = 0;
+
+    function typeCharacter() {
+        typingText.textContent = textToType.substring(0, charIndex + 1);
+        charIndex++;
+
+        if (charIndex < textToType.length) {
+            setTimeout(typeCharacter, 20 + Math.random() * 50);
+        } else {
+            setTimeout(() => {
+                startTerminal();
+            }, 500);
+        }
+    }
+
+    // ==============================================
+    // TERMINAL LOGS - LETTER BY LETTER
+    // ==============================================
+    const terminalLines = [
+        { text: 'Initializing System...', type: 'command' },
+        { text: 'Checking Security Layer...', type: 'command' },
+        { text: 'Access Granted ✓', type: 'success' },
+        { text: 'Loading Portfolio...', type: 'command' },
+        { text: 'Loading Skills...', type: 'command' },
+        { text: 'Connected Successfully ✓', type: 'success' },
+        { text: 'Decrypting Data...', type: 'command' },
+        { text: 'Analyzing Network Traffic...', type: 'command' },
+        { text: 'Bypassing Firewall...', type: 'command' },
+        { text: 'Accessing Secure Server...', type: 'command' },
+        { text: 'Loading Encrypted Modules...', type: 'command' },
+        { text: 'System Ready ✓', type: 'success' }
+    ];
+
+    let currentLine = 0;
+    let currentCharTerm = 0;
+    let isTerminalTyping = false;
+    const terminalElement = document.getElementById('terminal');
+
+    function typeTerminalCharacter() {
+        if (currentLine >= terminalLines.length) {
+            setTimeout(() => {
+                startExplorer();
+            }, 500);
+            return;
+        }
+
+        const line = terminalLines[currentLine];
+        const char = line.text[currentCharTerm];
+
+        if (!isTerminalTyping) {
+            isTerminalTyping = true;
+            const newLine = document.createElement('div');
+            newLine.className = 'terminal-line';
+            newLine.innerHTML = '<span class="prompt">$</span> <span class="' + line.type + '"></span>';
+            terminalElement.appendChild(newLine);
+        }
+
+        const lineElement = terminalElement.lastElementChild;
+        const span = lineElement.querySelector('span.' + line.type);
+
+        if (currentCharTerm < line.text.length) {
+            span.textContent += line.text[currentCharTerm];
+            currentCharTerm++;
+            setTimeout(typeTerminalCharacter, 15 + Math.random() * 30);
+        } else {
+            currentCharTerm = 0;
+            currentLine++;
+            isTerminalTyping = false;
+            setTimeout(typeTerminalCharacter, 200 + Math.random() * 300);
+        }
+    }
+
+    function startTerminal() {
+        terminalElement.innerHTML = '';
+        currentLine = 0;
+        currentCharTerm = 0;
+        isTerminalTyping = false;
+        setTimeout(typeTerminalCharacter, 300);
+    }
+
+    // ==============================================
+    // FILE EXPLORER - LINE BY LINE
+    // ==============================================
+    const explorerLines = [
+        '📂 C:\\Users\\REVERSE\\',
+        '📁 Documents',
+        '📁 Projects',
+        '📁 Cheats',
+        '📁 Tools',
+        '📄 reverse_engine.py',
+        '📄 apk_modder.exe',
+        '📄 payload.bin',
+        '📄 config.json',
+        '📄 encrypted_key.txt',
+        '📄 logs.log'
+    ];
+
+    let explorerIndex = 0;
+
+    function typeExplorerLine() {
+        if (explorerIndex >= explorerLines.length) {
+            document.getElementById('explorerCursor').innerHTML = '<span class="explorer-cursor"></span>';
+            return;
+        }
+
+        const lineId = explorerIndex === 0 ? 'explorerRoot' : 'explorerLine' + explorerIndex;
+        const lineElement = document.getElementById(lineId);
+
+        if (lineElement) {
+            lineElement.classList.remove('file-hide');
+            lineElement.style.opacity = '0';
+            setTimeout(() => {
+                lineElement.style.opacity = '1';
+            }, 50);
+        }
+
+        explorerIndex++;
+        setTimeout(typeExplorerLine, 300 + Math.random() * 400);
+    }
+
+    function startExplorer() {
+        const explorerElements = document.querySelectorAll('.explorer-line');
+        explorerElements.forEach(el => {
+            if (el.id !== 'explorerRoot' && el.id !== 'explorerCursor') {
+                el.classList.add('file-hide');
+                el.style.opacity = '0';
+            }
+        });
+        explorerIndex = 1;
+        setTimeout(typeExplorerLine, 500);
+    }
+
+    // ==============================================
+    // SKILL BAR ANIMATION - 0% TO TARGET
+    // ==============================================
+    function animateSkillBars() {
+        const fills = document.querySelectorAll('.fill');
+        fills.forEach((fill, index) => {
+            const targetWidth = parseInt(fill.getAttribute('data-width'));
+            fill.style.width = '0%';
+            setTimeout(() => {
+                fill.style.width = targetWidth + '%';
+            }, 200 + index * 80);
+        });
+    }
+
+    // ==============================================
+    // INTERSECTION OBSERVER - TRIGGER ON SCROLL
+    // ==============================================
+    const skillsSection = document.getElementById('skillsSection');
+    let skillsAnimated = false;
+
+    const observer = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+            if (entry.isIntersecting && !skillsAnimated) {
+                skillsAnimated = true;
+                animateSkillBars();
+            }
+        });
+    }, { threshold: 0.3 });
+
+    observer.observe(skillsSection);
+
+    // ==============================================
+    // START EVERYTHING
+    // ==============================================
+    setTimeout(typeCharacter, 300);
+</script>
+
+</body>
+</html>
