@@ -33,7 +33,7 @@ body {
     width: 100%;
     height: 100%;
     z-index: -2;
-    opacity: 0.6;
+    opacity: 0.7;
 }
 
 .overlay {
@@ -42,7 +42,7 @@ body {
     left: 0;
     width: 100%;
     height: 100%;
-    background: rgba(0, 0, 0, 0.7);
+    background: rgba(0, 0, 0, 0.6);
     z-index: -1;
 }
 
@@ -60,8 +60,8 @@ body {
     background: repeating-linear-gradient(0deg,
         rgba(0, 255, 65, 0) 0px,
         rgba(0, 255, 65, 0) 2px,
-        rgba(0, 255, 65, 0.03) 2px,
-        rgba(0, 255, 65, 0.03) 4px);
+        rgba(0, 255, 65, 0.05) 2px,
+        rgba(0, 255, 65, 0.05) 4px);
 }
 
 /* ==============================================
@@ -107,7 +107,6 @@ body {
     position: relative;
 }
 
-/* Glitch border */
 .hero::before {
     content: '';
     position: absolute;
@@ -115,23 +114,23 @@ body {
     left: 10px;
     right: 10px;
     bottom: 10px;
-    border: 1px solid rgba(0, 255, 65, 0.1);
+    border: 1px solid rgba(0, 255, 65, 0.15);
     pointer-events: none;
     animation: borderGlitch 3s infinite;
 }
 
 @keyframes borderGlitch {
-    0%, 90%, 100% { opacity: 0.1; }
-    92% { opacity: 0.5; }
-    94% { opacity: 0.1; }
-    96% { opacity: 0.5; }
+    0%, 90%, 100% { opacity: 0.15; }
+    92% { opacity: 0.6; }
+    94% { opacity: 0.15; }
+    96% { opacity: 0.6; }
 }
 
 .logo {
     width: 200px;
     height: auto;
     margin-bottom: 10px;
-    filter: drop-shadow(0 0 30px #00ff41);
+    filter: drop-shadow(0 0 40px #00ff41);
     animation: glow 2s infinite alternate;
 }
 
@@ -143,22 +142,22 @@ body {
 
 @keyframes glow {
     from { filter: drop-shadow(0 0 20px #00ff41); }
-    to { filter: drop-shadow(0 0 60px #00ff41); }
+    to { filter: drop-shadow(0 0 70px #00ff41); }
 }
 
 .hero h1 {
     font-size: 4rem;
     margin-top: 20px;
-    text-shadow: 0 0 20px #00ff41;
+    text-shadow: 0 0 30px #00ff41;
     letter-spacing: 8px;
     animation: glitchText 3s infinite;
 }
 
 @keyframes glitchText {
-    0%, 90%, 100% { text-shadow: 0 0 20px #00ff41; }
-    92% { text-shadow: -3px 0 red, 3px 0 blue, 0 0 30px #00ff41; }
-    94% { text-shadow: 3px 0 red, -3px 0 blue, 0 0 30px #00ff41; }
-    96% { text-shadow: -2px 0 red, 2px 0 blue, 0 0 30px #00ff41; }
+    0%, 90%, 100% { text-shadow: 0 0 30px #00ff41; }
+    92% { text-shadow: -3px 0 red, 3px 0 blue, 0 0 40px #00ff41; }
+    94% { text-shadow: 3px 0 red, -3px 0 blue, 0 0 40px #00ff41; }
+    96% { text-shadow: -2px 0 red, 2px 0 blue, 0 0 40px #00ff41; }
 }
 
 .typing-container {
@@ -224,7 +223,7 @@ body {
 
 .btn:hover {
     color: #000;
-    box-shadow: 0 0 30px #00ff41;
+    box-shadow: 0 0 40px #00ff41;
     transform: translateY(-3px);
 }
 
@@ -237,16 +236,16 @@ body {
     margin: 30px auto;
     padding: 0;
     background: rgba(0, 10, 0, 0.85);
-    border: 1px solid rgba(0, 255, 65, 0.2);
+    border: 1px solid rgba(0, 255, 65, 0.25);
     border-radius: 8px;
-    box-shadow: 0 0 40px rgba(0, 255, 65, 0.05);
+    box-shadow: 0 0 40px rgba(0, 255, 65, 0.08);
     overflow: hidden;
 }
 
 .terminal-header {
-    background: rgba(0, 255, 65, 0.05);
+    background: rgba(0, 255, 65, 0.08);
     padding: 10px 20px;
-    border-bottom: 1px solid rgba(0, 255, 65, 0.1);
+    border-bottom: 1px solid rgba(0, 255, 65, 0.15);
     display: flex;
     align-items: center;
     gap: 10px;
@@ -492,7 +491,7 @@ body {
     left: 0;
     width: 100%;
     background: rgba(0, 10, 0, 0.9);
-    border-top: 1px solid rgba(0, 255, 65, 0.1);
+    border-top: 1px solid rgba(0, 255, 65, 0.15);
     padding: 8px 20px;
     display: flex;
     justify-content: space-between;
@@ -789,17 +788,17 @@ footer {
     const columns = Math.floor(canvas.width / fontSize);
     const drops = [];
 
+    // BRIGHTER COLORS
+    const colors = ['#00ff41', '#00ff41', '#00ff41', '#33ff66', '#66ff99', '#00ff41', '#55ff88', '#00ff55'];
+
     for (let x = 0; x < columns; x++) {
         drops[x] = {
             y: Math.floor(Math.random() * canvas.height / fontSize),
-            speed: 0.5 + Math.random() * 2.0,
+            speed: 1.0 + Math.random() * 2.5,
             word: hackerWords[Math.floor(Math.random() * hackerWords.length)],
-            length: 3 + Math.floor(Math.random() * 4),
             charIndex: 0
         };
     }
-
-    const colors = ['#00ff41', '#00ff41', '#00ff41', '#33ff66', '#66ff99', '#ffaa00'];
 
     function drawMatrix() {
         ctx.fillStyle = 'rgba(0,0,0,0.05)';
@@ -808,9 +807,10 @@ footer {
         for (let i = 0; i < drops.length; i++) {
             const color = colors[Math.floor(Math.random() * colors.length)];
             ctx.fillStyle = color;
+            ctx.shadowBlur = 12;
+            ctx.shadowColor = '#00ff41';
             ctx.font = fontSize + 'px monospace';
 
-            // Show the word character by character
             const word = drops[i].word;
             const char = word[drops[i].charIndex % word.length] || word[0];
             ctx.fillText(char, i * fontSize, drops[i].y * fontSize);
@@ -818,16 +818,16 @@ footer {
             drops[i].y += drops[i].speed;
             drops[i].charIndex++;
 
-            if (drops[i].y * fontSize > canvas.height && Math.random() > 0.97) {
-                drops[i].y = 0;
-                drops[i].speed = 0.5 + Math.random() * 2.0;
+            if (drops[i].y * fontSize > canvas.height && Math.random() > 0.95) {
+                drops[i].y = -5;
+                drops[i].speed = 1.0 + Math.random() * 2.5;
                 drops[i].word = hackerWords[Math.floor(Math.random() * hackerWords.length)];
                 drops[i].charIndex = 0;
             }
         }
     }
 
-    setInterval(drawMatrix, 35);
+    setInterval(drawMatrix, 30);
 
     // ==============================================
     // CURSOR FOLLOW
