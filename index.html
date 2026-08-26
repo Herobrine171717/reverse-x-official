@@ -3,648 +3,768 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>REVERSE X OFFICIAL | Cyber Portfolio</title>
+<title>REVERSE X OFFICIAL | HACKER TERMINAL</title>
 
 <style>
-*{
-margin:0;
-padding:0;
-box-sizing:border-box;
-font-family:'Segoe UI',sans-serif;
+/* ==============================================
+   RESET & BASE
+   ============================================== */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Courier New', monospace;
 }
 
-body{
-background:#000;
-color:#00ff41;
-overflow-x:hidden;
+body {
+    background: #0a0a0a;
+    color: #00ff41;
+    overflow-x: hidden;
+    cursor: none;
 }
 
-#matrix{
-position:fixed;
-top:0;
-left:0;
-width:100%;
-height:100%;
-z-index:-2;
+/* ==============================================
+   MATRIX BACKGROUND
+   ============================================== */
+#matrix {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: -2;
+    opacity: 0.6;
 }
 
-.overlay{
-position:fixed;
-top:0;
-left:0;
-width:100%;
-height:100%;
-background:rgba(0,0,0,.55);
-z-index:-1;
+.overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.7);
+    z-index: -1;
 }
 
-.hero{
-min-height:100vh;
-display:flex;
-flex-direction:column;
-justify-content:center;
-align-items:center;
-text-align:center;
-padding:20px;
+/* ==============================================
+   SCANLINES EFFECT
+   ============================================== */
+.scanlines {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+    z-index: 9999;
+    background: repeating-linear-gradient(0deg,
+        rgba(0, 255, 65, 0) 0px,
+        rgba(0, 255, 65, 0) 2px,
+        rgba(0, 255, 65, 0.03) 2px,
+        rgba(0, 255, 65, 0.03) 4px);
 }
 
-.logo{
-width:220px;
-height:auto;
-margin-bottom:10px;
-filter:drop-shadow(0 0 30px #00ff41);
-animation:glow 2s infinite alternate;
+/* ==============================================
+   CUSTOM CURSOR
+   ============================================== */
+.cursor {
+    position: fixed;
+    width: 20px;
+    height: 20px;
+    border: 2px solid #00ff41;
+    border-radius: 50%;
+    pointer-events: none;
+    transform: translate(-50%, -50%);
+    box-shadow: 0 0 20px #00ff41, inset 0 0 10px #00ff41;
+    z-index: 999;
+    transition: width 0.1s, height 0.1s;
 }
 
-.logo img{
-width:100%;
-height:auto;
-display:block;
+.cursor-dot {
+    position: fixed;
+    width: 4px;
+    height: 4px;
+    background: #00ff41;
+    border-radius: 50%;
+    pointer-events: none;
+    transform: translate(-50%, -50%);
+    box-shadow: 0 0 10px #00ff41;
+    z-index: 1000;
+    transition: none;
 }
 
-@keyframes glow{
-from{
-filter:drop-shadow(0 0 20px #00ff41);
-}
-to{
-filter:drop-shadow(0 0 60px #00ff41);
-}
-}
-
-.hero h1{
-font-size:4rem;
-margin-top:20px;
-text-shadow:0 0 20px #00ff41;
-}
-
-.typing-container{
-font-size:1.2rem;
-margin-top:10px;
-min-height:2em;
+/* ==============================================
+   HERO SECTION
+   ============================================== */
+.hero {
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    padding: 20px;
+    position: relative;
 }
 
-.typing-text{
-display:inline-block;
-border-right:2px solid #00ff41;
-padding-right:5px;
-animation:blink-cursor 0.8s step-end infinite;
+/* Glitch border */
+.hero::before {
+    content: '';
+    position: absolute;
+    top: 10px;
+    left: 10px;
+    right: 10px;
+    bottom: 10px;
+    border: 1px solid rgba(0, 255, 65, 0.1);
+    pointer-events: none;
+    animation: borderGlitch 3s infinite;
 }
 
-@keyframes blink-cursor{
-50%{
-border-color:transparent;
-}
-}
-
-.card{
-width:90%;
-max-width:850px;
-margin:40px auto;
-padding:25px;
-background:rgba(255,255,255,.05);
-backdrop-filter:blur(15px);
-border:1px solid rgba(0,255,65,.3);
-border-radius:20px;
-box-shadow:0 0 25px rgba(0,255,65,.2);
+@keyframes borderGlitch {
+    0%, 90%, 100% { opacity: 0.1; }
+    92% { opacity: 0.5; }
+    94% { opacity: 0.1; }
+    96% { opacity: 0.5; }
 }
 
-.card h2{
-margin-bottom:20px;
+.logo {
+    width: 200px;
+    height: auto;
+    margin-bottom: 10px;
+    filter: drop-shadow(0 0 30px #00ff41);
+    animation: glow 2s infinite alternate;
 }
 
-.info{
-display:grid;
-grid-template-columns:repeat(auto-fit,minmax(250px,1fr));
-gap:15px;
+.logo img {
+    width: 100%;
+    height: auto;
+    display: block;
 }
 
-.info div{
-padding:15px;
-border:1px solid rgba(0,255,65,.3);
-border-radius:12px;
+@keyframes glow {
+    from { filter: drop-shadow(0 0 20px #00ff41); }
+    to { filter: drop-shadow(0 0 60px #00ff41); }
 }
 
-.skill{
-margin-bottom:20px;
+.hero h1 {
+    font-size: 4rem;
+    margin-top: 20px;
+    text-shadow: 0 0 20px #00ff41;
+    letter-spacing: 8px;
+    animation: glitchText 3s infinite;
 }
 
-.skill p{
-margin-bottom:8px;
+@keyframes glitchText {
+    0%, 90%, 100% { text-shadow: 0 0 20px #00ff41; }
+    92% { text-shadow: -3px 0 red, 3px 0 blue, 0 0 30px #00ff41; }
+    94% { text-shadow: 3px 0 red, -3px 0 blue, 0 0 30px #00ff41; }
+    96% { text-shadow: -2px 0 red, 2px 0 blue, 0 0 30px #00ff41; }
 }
 
-.bar{
-width:100%;
-height:12px;
-background:#111;
-border-radius:50px;
-overflow:hidden;
-position:relative;
+.typing-container {
+    font-size: 1.2rem;
+    margin-top: 10px;
+    min-height: 2em;
+    color: #66ff99;
 }
 
-.fill{
-height:100%;
-background:#00ff41;
-box-shadow:0 0 15px #00ff41;
-width:0%;
-transition:width 1.5s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+.typing-text {
+    display: inline-block;
+    border-right: 2px solid #00ff41;
+    padding-right: 5px;
+    animation: blink-cursor 0.8s step-end infinite;
 }
 
-.btns{
-margin-top:25px;
-display:flex;
-gap:15px;
-flex-wrap:wrap;
-justify-content:center;
+@keyframes blink-cursor {
+    50% { border-color: transparent; }
 }
 
-.btn{
-padding:14px 30px;
-border:none;
-border-radius:30px;
-background:#00ff41;
-color:#000;
-font-weight:bold;
-cursor:pointer;
-transition:.3s;
+/* ==============================================
+   BUTTONS
+   ============================================== */
+.btns {
+    margin-top: 30px;
+    display: flex;
+    gap: 20px;
+    flex-wrap: wrap;
+    justify-content: center;
 }
 
-.btn:hover{
-transform:translateY(-5px);
-box-shadow:0 0 25px #00ff41;
+.btn {
+    padding: 14px 35px;
+    border: 2px solid #00ff41;
+    border-radius: 0;
+    background: transparent;
+    color: #00ff41;
+    font-weight: bold;
+    cursor: pointer;
+    transition: 0.3s;
+    font-family: 'Courier New', monospace;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    position: relative;
+    overflow: hidden;
 }
 
-.terminal{
-background:#050505;
-padding:20px;
-font-family:monospace;
-line-height:2.2;
-border-left:4px solid #00ff41;
-min-height:300px;
-max-height:400px;
-overflow-y:auto;
+.btn::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: #00ff41;
+    transition: 0.4s;
+    z-index: -1;
 }
 
-.terminal-line{
-opacity:0;
-animation:terminalFade 0.5s forwards;
+.btn:hover::before {
+    left: 0;
 }
 
-@keyframes terminalFade{
-from{
-opacity:0;
-transform:translateX(-10px);
-}
-to{
-opacity:1;
-transform:translateX(0);
-}
+.btn:hover {
+    color: #000;
+    box-shadow: 0 0 30px #00ff41;
+    transform: translateY(-3px);
 }
 
-.folder-explorer{
-background:#050505;
-padding:20px;
-font-family:monospace;
-line-height:2;
-border-left:4px solid #00ff41;
-min-height:250px;
-max-height:400px;
-overflow-y:auto;
-margin-top:20px;
+/* ==============================================
+   TERMINAL CARDS
+   ============================================== */
+.terminal-card {
+    width: 90%;
+    max-width: 900px;
+    margin: 30px auto;
+    padding: 0;
+    background: rgba(0, 10, 0, 0.85);
+    border: 1px solid rgba(0, 255, 65, 0.2);
+    border-radius: 8px;
+    box-shadow: 0 0 40px rgba(0, 255, 65, 0.05);
+    overflow: hidden;
 }
 
-.folder{
-color:#00ff41;
-font-weight:bold;
-cursor:pointer;
+.terminal-header {
+    background: rgba(0, 255, 65, 0.05);
+    padding: 10px 20px;
+    border-bottom: 1px solid rgba(0, 255, 65, 0.1);
+    display: flex;
+    align-items: center;
+    gap: 10px;
 }
 
-.folder:hover{
-text-shadow:0 0 10px #00ff41;
+.terminal-dot {
+    width: 12px;
+    height: 12px;
+    border-radius: 50%;
+    display: inline-block;
 }
 
-.file{
-color:#66ff99;
-padding-left:20px;
+.dot-red { background: #ff4444; }
+.dot-yellow { background: #ffaa00; }
+.dot-green { background: #00ff41; }
+
+.terminal-title {
+    color: #66ff99;
+    font-size: 0.8rem;
+    letter-spacing: 1px;
+    margin-left: 10px;
 }
 
-.file-hide{
-display:none;
+.terminal-body {
+    padding: 25px;
+    font-family: 'Courier New', monospace;
 }
 
-.folder-icon{
-color:#ffcc00;
+/* ==============================================
+   PROFILE DATA
+   ============================================== */
+.profile-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 15px;
 }
 
-.file-icon{
-color:#66ff99;
+.profile-item {
+    padding: 15px;
+    border: 1px solid rgba(0, 255, 65, 0.15);
+    border-radius: 4px;
+    background: rgba(0, 255, 65, 0.03);
+    transition: 0.3s;
 }
 
-.explorer-line{
-opacity:0;
-animation:terminalFade 0.5s forwards;
+.profile-item:hover {
+    border-color: #00ff41;
+    box-shadow: 0 0 20px rgba(0, 255, 65, 0.1);
 }
 
-.explorer-cursor{
-display:inline-block;
-width:8px;
-height:16px;
-background:#00ff41;
-animation:blink 0.8s step-end infinite;
-margin-left:2px;
+.profile-item .label {
+    color: #66ff99;
+    font-size: 0.7rem;
+    letter-spacing: 1px;
 }
 
-@keyframes blink{
-50%{
-opacity:0;
-}
-}
-
-footer{
-text-align:center;
-padding:30px;
+.profile-item .value {
+    color: #00ff41;
+    font-size: 1rem;
+    margin-top: 5px;
 }
 
-.cursor{
-position:fixed;
-width:20px;
-height:20px;
-border:2px solid #00ff41;
-border-radius:50%;
-pointer-events:none;
-transform:translate(-50%,-50%);
-box-shadow:0 0 20px #00ff41;
-z-index:999;
+/* ==============================================
+   SKILL MATRIX
+   ============================================== */
+.skill {
+    margin-bottom: 18px;
 }
 
-@media(max-width:768px){
-.hero h1{
-font-size:2.5rem;
+.skill p {
+    margin-bottom: 6px;
+    display: flex;
+    justify-content: space-between;
+    font-size: 0.9rem;
 }
-.logo{
-width:160px;
+
+.skill p .skill-percent {
+    color: #66ff99;
 }
+
+.bar {
+    width: 100%;
+    height: 6px;
+    background: rgba(0, 255, 65, 0.1);
+    border-radius: 0;
+    overflow: hidden;
+    position: relative;
+}
+
+.bar::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: repeating-linear-gradient(90deg,
+        transparent,
+        transparent 4px,
+        rgba(0, 0, 0, 0.3) 4px,
+        rgba(0, 0, 0, 0.3) 5px);
+}
+
+.fill {
+    height: 100%;
+    background: #00ff41;
+    box-shadow: 0 0 20px #00ff41;
+    width: 0%;
+    transition: width 1.5s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+    position: relative;
+}
+
+/* ==============================================
+   TERMINAL LOGS
+   ============================================== */
+.terminal-logs {
+    background: rgba(0, 10, 0, 0.5);
+    padding: 15px;
+    font-family: 'Courier New', monospace;
+    line-height: 2;
+    min-height: 250px;
+    max-height: 350px;
+    overflow-y: auto;
+    border-left: 2px solid #00ff41;
+}
+
+.terminal-logs::-webkit-scrollbar {
+    width: 4px;
+}
+
+.terminal-logs::-webkit-scrollbar-track {
+    background: rgba(0, 255, 65, 0.05);
+}
+
+.terminal-logs::-webkit-scrollbar-thumb {
+    background: #00ff41;
+}
+
+.terminal-line {
+    opacity: 0;
+    animation: terminalFade 0.5s forwards;
+}
+
+.terminal-line .prompt {
+    color: #66ff99;
+}
+
+.terminal-line .command {
+    color: #00ff41;
+}
+
+.terminal-line .success {
+    color: #00ff41;
+}
+
+.terminal-line .warning {
+    color: #ffaa00;
+}
+
+.terminal-line .error {
+    color: #ff4444;
+}
+
+@keyframes terminalFade {
+    from {
+        opacity: 0;
+        transform: translateX(-10px);
+    }
+    to {
+        opacity: 1;
+        transform: translateX(0);
+    }
+}
+
+/* ==============================================
+   FILE EXPLORER
+   ============================================== */
+.file-explorer {
+    background: rgba(0, 10, 0, 0.5);
+    padding: 15px;
+    font-family: 'Courier New', monospace;
+    line-height: 2;
+    min-height: 200px;
+    max-height: 350px;
+    overflow-y: auto;
+    border-left: 2px solid #00ff41;
+}
+
+.file-explorer::-webkit-scrollbar {
+    width: 4px;
+}
+
+.file-explorer::-webkit-scrollbar-track {
+    background: rgba(0, 255, 65, 0.05);
+}
+
+.file-explorer::-webkit-scrollbar-thumb {
+    background: #00ff41;
+}
+
+.explorer-line {
+    opacity: 0;
+    animation: terminalFade 0.5s forwards;
+}
+
+.folder {
+    color: #ffaa00;
+    font-weight: bold;
+    cursor: pointer;
+}
+
+.folder:hover {
+    text-shadow: 0 0 10px #ffaa00;
+}
+
+.file {
+    color: #66ff99;
+}
+
+.file-hide {
+    display: none;
+}
+
+.explorer-cursor {
+    display: inline-block;
+    width: 8px;
+    height: 16px;
+    background: #00ff41;
+    animation: blink 0.8s step-end infinite;
+    margin-left: 2px;
+}
+
+@keyframes blink {
+    50% { opacity: 0; }
+}
+
+/* ==============================================
+   STATUS BAR
+   ============================================== */
+.status-bar {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    background: rgba(0, 10, 0, 0.9);
+    border-top: 1px solid rgba(0, 255, 65, 0.1);
+    padding: 8px 20px;
+    display: flex;
+    justify-content: space-between;
+    font-size: 0.7rem;
+    color: #66ff99;
+    z-index: 100;
+    font-family: 'Courier New', monospace;
+    letter-spacing: 1px;
+}
+
+.status-item {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.status-dot {
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: #00ff41;
+    animation: blink 1s step-end infinite;
+}
+
+.status-dot.off {
+    background: #ff4444;
+    animation: none;
+}
+
+/* ==============================================
+   FOOTER
+   ============================================== */
+footer {
+    text-align: center;
+    padding: 30px;
+    font-size: 0.8rem;
+    color: rgba(0, 255, 65, 0.3);
+    letter-spacing: 2px;
+}
+
+/* ==============================================
+   RESPONSIVE
+   ============================================== */
+@media (max-width: 768px) {
+    .hero h1 {
+        font-size: 2.5rem;
+        letter-spacing: 4px;
+    }
+    .logo {
+        width: 150px;
+    }
+    .terminal-body {
+        padding: 15px;
+    }
+    .profile-grid {
+        grid-template-columns: 1fr 1fr;
+    }
+    .status-bar {
+        font-size: 0.5rem;
+        padding: 5px 10px;
+        flex-wrap: wrap;
+    }
+    .cursor, .cursor-dot {
+        display: none;
+    }
 }
 </style>
 </head>
 
 <body>
 
+<!-- ==============================================
+     MATRIX BACKGROUND
+     ============================================== -->
 <canvas id="matrix"></canvas>
 <div class="overlay"></div>
-<div class="cursor"></div>
+<div class="scanlines"></div>
 
+<!-- ==============================================
+     CUSTOM CURSOR
+     ============================================== -->
+<div class="cursor" id="cursor"></div>
+<div class="cursor-dot" id="cursorDot"></div>
+
+<!-- ==============================================
+     STATUS BAR
+     ============================================== -->
+<div class="status-bar">
+    <div class="status-item">
+        <span class="status-dot"></span>
+        <span>SYSTEM ONLINE</span>
+    </div>
+    <div class="status-item">
+        <span>⚡ ROOT ACCESS</span>
+    </div>
+    <div class="status-item">
+        <span>🔒 ENCRYPTED</span>
+    </div>
+    <div class="status-item">
+        <span>🛡️ FIREWALL ACTIVE</span>
+    </div>
+    <div class="status-item" id="clockDisplay">
+        <span>⏰ 00:00:00</span>
+    </div>
+</div>
+
+<!-- ==============================================
+     HERO SECTION
+     ============================================== -->
 <section class="hero">
-<div class="logo">
-<img src="https://i.imgur.com/8Km9tLL.png" alt="REVERSE CHEATS">
-</div>
+    <div class="logo">
+        <img src="https://i.imgur.com/8Km9tLL.png" alt="REVERSE CHEATS">
+    </div>
 
-<h1>REVERSE X OFFICIAL</h1>
+    <h1>REVERSE X OFFICIAL</h1>
 
-<div class="typing-container">
-<span class="typing-text" id="typingText"></span>
-</div>
+    <div class="typing-container">
+        <span class="typing-text" id="typingText"></span>
+    </div>
 
-<div class="btns">
-<button class="btn" onclick="window.open('https://t.me/ReverseXCheats')">JOIN CHANNEL</button>
-<button class="btn" onclick="window.open('https://t.me/REVERSE_X_OFFICIAL')">CONTACT ME</button>
-</div>
+    <div class="btns">
+        <button class="btn" onclick="window.open('https://t.me/ReverseXCheats')">▶ JOIN CHANNEL</button>
+        <button class="btn" onclick="window.open('https://t.me/REVERSE_X_OFFICIAL')">▶ CONTACT ME</button>
+    </div>
 </section>
 
-<section class="card">
-<h2>PROFILE DATA</h2>
-
-<div class="info">
-<div>👤 Name : REVERSE</div>
-<div>🎂 Birthday : JANUARY 20</div>
-<div>💻 Passion : REVERSE ENGINEERING</div>
-<div>🚀 Goal : Dangerous Hacker</div>
-</div>
-</section>
-
-<section class="card" id="skillsSection">
-<h2>SKILL MATRIX</h2>
-
-<div class="skill">
-<p>Reverse Engineering</p>
-<div class="bar"><div class="fill" data-width="98"></div></div>
-</div>
-
-<div class="skill">
-<p>APK Modding</p>
-<div class="bar"><div class="fill" data-width="96"></div></div>
-</div>
-
-<div class="skill">
-<p>Python & Automation</p>
-<div class="bar"><div class="fill" data-width="95"></div></div>
-</div>
-
-<div class="skill">
-<p>Telegram Bots</p>
-<div class="bar"><div class="fill" data-width="97"></div></div>
-</div>
-
-<div class="skill">
-<p>Web Development</p>
-<div class="bar"><div class="fill" data-width="92"></div></div>
-</div>
-
-<div class="skill">
-<p>Firebase & Cloud</p>
-<div class="bar"><div class="fill" data-width="90"></div></div>
+<!-- ==============================================
+     PROFILE DATA
+     ============================================== -->
+<div class="terminal-card">
+    <div class="terminal-header">
+        <span class="terminal-dot dot-red"></span>
+        <span class="terminal-dot dot-yellow"></span>
+        <span class="terminal-dot dot-green"></span>
+        <span class="terminal-title">PROFILE — DATA</span>
+    </div>
+    <div class="terminal-body">
+        <div class="profile-grid">
+            <div class="profile-item">
+                <div class="label">👤 NAME</div>
+                <div class="value">REVERSE</div>
+            </div>
+            <div class="profile-item">
+                <div class="label">🎂 BIRTHDAY</div>
+                <div class="value">JANUARY 20</div>
+            </div>
+            <div class="profile-item">
+                <div class="label">💻 PASSION</div>
+                <div class="value">REVERSE ENGINEERING</div>
+            </div>
+            <div class="profile-item">
+                <div class="label">🚀 GOAL</div>
+                <div class="value">DANGEROUS HACKER</div>
+            </div>
+            <div class="profile-item">
+                <div class="label">🌐 STATUS</div>
+                <div class="value">🟢 ACTIVE</div>
+            </div>
+            <div class="profile-item">
+                <div class="label">🔑 ACCESS</div>
+                <div class="value">LEVEL 5 GRANTED</div>
+            </div>
+        </div>
+    </div>
 </div>
 
-<div class="skill">
-<p>Cyber Security</p>
-<div class="bar"><div class="fill" data-width="93"></div></div>
+<!-- ==============================================
+     SKILL MATRIX
+     ============================================== -->
+<div class="terminal-card" id="skillsSection">
+    <div class="terminal-header">
+        <span class="terminal-dot dot-red"></span>
+        <span class="terminal-dot dot-yellow"></span>
+        <span class="terminal-dot dot-green"></span>
+        <span class="terminal-title">SKILL MATRIX — LOADING</span>
+    </div>
+    <div class="terminal-body">
+        <div class="skill">
+            <p>Reverse Engineering <span class="skill-percent">98%</span></p>
+            <div class="bar"><div class="fill" data-width="98"></div></div>
+        </div>
+        <div class="skill">
+            <p>APK Modding <span class="skill-percent">96%</span></p>
+            <div class="bar"><div class="fill" data-width="96"></div></div>
+        </div>
+        <div class="skill">
+            <p>Python & Automation <span class="skill-percent">95%</span></p>
+            <div class="bar"><div class="fill" data-width="95"></div></div>
+        </div>
+        <div class="skill">
+            <p>Telegram Bots <span class="skill-percent">97%</span></p>
+            <div class="bar"><div class="fill" data-width="97"></div></div>
+        </div>
+        <div class="skill">
+            <p>Web Development <span class="skill-percent">92%</span></p>
+            <div class="bar"><div class="fill" data-width="92"></div></div>
+        </div>
+        <div class="skill">
+            <p>Firebase & Cloud <span class="skill-percent">90%</span></p>
+            <div class="bar"><div class="fill" data-width="90"></div></div>
+        </div>
+        <div class="skill">
+            <p>Cyber Security <span class="skill-percent">93%</span></p>
+            <div class="bar"><div class="fill" data-width="93"></div></div>
+        </div>
+        <div class="skill">
+            <p>UI/UX Design <span class="skill-percent">87%</span></p>
+            <div class="bar"><div class="fill" data-width="87"></div></div>
+        </div>
+        <div class="skill">
+            <p>Game Modding <span class="skill-percent">94%</span></p>
+            <div class="bar"><div class="fill" data-width="94"></div></div>
+        </div>
+        <div class="skill">
+            <p>Malware Analysis <span class="skill-percent">91%</span></p>
+            <div class="bar"><div class="fill" data-width="91"></div></div>
+        </div>
+    </div>
 </div>
 
-<div class="skill">
-<p>UI/UX Design</p>
-<div class="bar"><div class="fill" data-width="87"></div></div>
+<!-- ==============================================
+     TERMINAL LOGS
+     ============================================== -->
+<div class="terminal-card">
+    <div class="terminal-header">
+        <span class="terminal-dot dot-red"></span>
+        <span class="terminal-dot dot-yellow"></span>
+        <span class="terminal-dot dot-green"></span>
+        <span class="terminal-title">TERMINAL — LOGS</span>
+    </div>
+    <div class="terminal-body">
+        <div class="terminal-logs" id="terminal">
+            <div class="terminal-line"><span class="prompt">$</span> <span class="command">Initializing System...</span></div>
+            <div class="terminal-line"><span class="prompt">$</span> <span class="command">Checking Security Layer...</span></div>
+            <div class="terminal-line"><span class="prompt">$</span> <span class="success">Access Granted ✓</span></div>
+            <div class="terminal-line"><span class="prompt">$</span> <span class="command">Loading Portfolio...</span></div>
+            <div class="terminal-line"><span class="prompt">$</span> <span class="command">Loading Skills...</span></div>
+            <div class="terminal-line"><span class="prompt">$</span> <span class="success">Connected Successfully ✓</span></div>
+        </div>
+    </div>
 </div>
 
-<div class="skill">
-<p>Game Modding</p>
-<div class="bar"><div class="fill" data-width="94"></div></div>
+<!-- ==============================================
+     FILE EXPLORER
+     ============================================== -->
+<div class="terminal-card">
+    <div class="terminal-header">
+        <span class="terminal-dot dot-red"></span>
+        <span class="terminal-dot dot-yellow"></span>
+        <span class="terminal-dot dot-green"></span>
+        <span class="terminal-title">FILE EXPLORER — SYSTEM</span>
+    </div>
+    <div class="terminal-body">
+        <div class="file-explorer" id="folderExplorer">
+            <div class="explorer-line" id="explorerRoot">📂 <span class="folder">C:\Users\REVERSE\</span></div>
+            <div class="explorer-line file-hide" id="explorerLine1">📁 <span class="folder">Documents</span></div>
+            <div class="explorer-line file-hide" id="explorerLine2">📁 <span class="folder">Projects</span></div>
+            <div class="explorer-line file-hide" id="explorerLine3">📁 <span class="folder">Cheats</span></div>
+            <div class="explorer-line file-hide" id="explorerLine4">📁 <span class="folder">Tools</span></div>
+            <div class="explorer-line file-hide" id="explorerLine5">📄 <span class="file">reverse_engine.py</span></div>
+            <div class="explorer-line file-hide" id="explorerLine6">📄 <span class="file">apk_modder.exe</span></div>
+            <div class="explorer-line file-hide" id="explorerLine7">📄 <span class="file">payload.bin</span></div>
+            <div class="explorer-line file-hide" id="explorerLine8">📄 <span class="file">config.json</span></div>
+            <div class="explorer-line file-hide" id="explorerLine9">📄 <span class="file">encrypted_key.txt</span></div>
+            <div class="explorer-line file-hide" id="explorerLine10">📄 <span class="file">logs.log</span></div>
+            <div class="explorer-line" id="explorerCursor"></div>
+        </div>
+    </div>
 </div>
-
-<div class="skill">
-<p>Malware Analysis</p>
-<div class="bar"><div class="fill" data-width="91"></div></div>
-</div>
-</section>
-
-<section class="card">
-<h2>TERMINAL LOGS</h2>
-
-<div class="terminal" id="terminal">
-<div class="terminal-line">> Initializing System...</div>
-<div class="terminal-line">> Checking Security Layer...</div>
-<div class="terminal-line">> Access Granted ✓</div>
-<div class="terminal-line">> Loading Portfolio...</div>
-<div class="terminal-line">> Loading Skills...</div>
-<div class="terminal-line">> Connected Successfully ✓</div>
-</div>
-</section>
-
-<section class="card">
-<h2>📁 FILE EXPLORER</h2>
-
-<div class="folder-explorer" id="folderExplorer">
-<div class="explorer-line" id="explorerRoot">📂 <span class="folder">C:\Users\REVERSE\</span></div>
-<div class="explorer-line file-hide" id="explorerLine1">📁 <span class="folder">Documents</span></div>
-<div class="explorer-line file-hide" id="explorerLine2">📁 <span class="folder">Projects</span></div>
-<div class="explorer-line file-hide" id="explorerLine3">📁 <span class="folder">Cheats</span></div>
-<div class="explorer-line file-hide" id="explorerLine4">📁 <span class="folder">Tools</span></div>
-<div class="explorer-line file-hide" id="explorerLine5">📄 <span class="file">reverse_engine.py</span></div>
-<div class="explorer-line file-hide" id="explorerLine6">📄 <span class="file">apk_modder.exe</span></div>
-<div class="explorer-line file-hide" id="explorerLine7">📄 <span class="file">payload.bin</span></div>
-<div class="explorer-line file-hide" id="explorerLine8">📄 <span class="file">config.json</span></div>
-<div class="explorer-line file-hide" id="explorerLine9">📄 <span class="file">encrypted_key.txt</span></div>
-<div class="explorer-line file-hide" id="explorerLine10">📄 <span class="file">logs.log</span></div>
-<div class="explorer-line" id="explorerCursor"></div>
-</div>
-</section>
 
 <footer>
-© 2026 REVERSE X OFFICIAL | Cyber Security Portfolio
+    ⚡ REVERSE X OFFICIAL ⚡ — SYSTEM READY
 </footer>
 
-<script>
-const canvas=document.getElementById("matrix");
-const ctx=canvas.getContext("2d");
-
-canvas.height=window.innerHeight;
-canvas.width=window.innerWidth;
-
-const chars = "01ABCDEFGHIJKLMNOPQRSTUVWXYZ!@#$%^&*()_+-=[]{}|;:,.<>?/~`";
-const fontSize = 14;
-const columns = Math.floor(canvas.width / fontSize);
-
-const drops = [];
-
-for(let x = 0; x < columns; x++){
-drops[x] = {
-y: Math.floor(Math.random() * canvas.height / fontSize),
-speed: 0.5 + Math.random() * 1.5,
-char: chars[Math.floor(Math.random() * chars.length)]
-};
-}
-
-const colors = ["#00ff41", "#00ff41", "#00ff41", "#33ff66", "#66ff99"];
-
-function draw(){
-ctx.fillStyle = "rgba(0,0,0,0.05)";
-ctx.fillRect(0, 0, canvas.width, canvas.height);
-
-for(let i = 0; i < drops.length; i++){
-const color = colors[Math.floor(Math.random() * colors.length)];
-ctx.fillStyle = color;
-ctx.font = fontSize + "px monospace";
-
-const char = chars[Math.floor(Math.random() * chars.length)];
-ctx.fillText(char, i * fontSize, drops[i].y * fontSize);
-
-drops[i].y += drops[i].speed;
-
-if(drops[i].y * fontSize > canvas.height && Math.random() > 0.975){
-drops[i].y = 0;
-drops[i].speed = 0.5 + Math.random() * 1.5;
-}
-}
-}
-
-setInterval(draw, 35);
-
-// ==============================================
-// 🔥 CURSOR FOLLOW
-// ==============================================
-const cursor = document.querySelector('.cursor');
-
-document.addEventListener('mousemove', (e) => {
-cursor.style.left = e.clientX + 'px';
-cursor.style.top = e.clientY + 'px';
-});
-
-// ==============================================
-// 🔥 TYPING EFFECT - CHARACTER BY CHARACTER
-// ==============================================
-const typingText = document.getElementById('typingText');
-const textToType = "Accessing encrypted profile... Identity Verified ✓";
-let charIndex = 0;
-
-function typeCharacter() {
-typingText.textContent = textToType.substring(0, charIndex + 1);
-charIndex++;
-
-if (charIndex < textToType.length) {
-const delay = 20 + Math.random() * 50;
-setTimeout(typeCharacter, delay);
-} else {
-setTimeout(() => {
-startTerminal();
-}, 500);
-}
-}
-
-// ==============================================
-// 🔥 TERMINAL TYPING EFFECT - LINE BY LINE
-// ==============================================
-const terminalLines = [
-"> Initializing System...",
-"> Checking Security Layer...",
-"> Access Granted ✓",
-"> Loading Portfolio...",
-"> Loading Skills...",
-"> Connected Successfully ✓",
-"> Decrypting Data...",
-"> Analyzing Network Traffic...",
-"> Bypassing Firewall...",
-"> Accessing Secure Server...",
-"> Loading Encrypted Modules...",
-"> System Ready ✓"
-];
-
-let currentLine = 0;
-let currentCharTerm = 0;
-let isTerminalTyping = false;
-const terminalElement = document.getElementById('terminal');
-
-function typeTerminalCharacter() {
-if (currentLine >= terminalLines.length) {
-setTimeout(() => {
-startExplorer();
-}, 500);
-return;
-}
-
-const line = terminalLines[currentLine];
-const char = line[currentCharTerm];
-
-if (!isTerminalTyping) {
-isTerminalTyping = true;
-const newLine = document.createElement('div');
-newLine.className = 'terminal-line';
-newLine.textContent = '';
-terminalElement.appendChild(newLine);
-}
-
-const lineElement = terminalElement.lastElementChild;
-
-if (currentCharTerm < line.length) {
-lineElement.textContent += line[currentCharTerm];
-currentCharTerm++;
-setTimeout(typeTerminalCharacter, 15 + Math.random() * 30);
-} else {
-currentCharTerm = 0;
-currentLine++;
-isTerminalTyping = false;
-lineElement.style.borderRight = '2px solid #00ff41';
-setTimeout(() => {
-lineElement.style.borderRight = 'none';
-}, 400);
-setTimeout(typeTerminalCharacter, 200 + Math.random() * 300);
-}
-}
-
-function startTerminal() {
-terminalElement.innerHTML = '';
-currentLine = 0;
-currentCharTerm = 0;
-isTerminalTyping = false;
-setTimeout(typeTerminalCharacter, 300);
-}
-
-// ==============================================
-// 🔥 EXPLORER TYPING EFFECT - LINE BY LINE
-// ==============================================
-const explorerLines = [
-"📂 C:\\Users\\REVERSE\\",
-"📁 Documents",
-"📁 Projects",
-"📁 Cheats",
-"📁 Tools",
-"📄 reverse_engine.py",
-"📄 apk_modder.exe",
-"📄 payload.bin",
-"📄 config.json",
-"📄 encrypted_key.txt",
-"📄 logs.log"
-];
-
-let explorerIndex = 0;
-const explorerElement = document.getElementById('folderExplorer');
-
-function typeExplorerLine() {
-if (explorerIndex >= explorerLines.length) {
-document.getElementById('explorerCursor').innerHTML = '<span class="explorer-cursor"></span>';
-return;
-}
-
-const lineId = explorerIndex === 0 ? 'explorerRoot' : 'explorerLine' + explorerIndex;
-const lineElement = document.getElementById(lineId);
-
-if (lineElement) {
-lineElement.classList.remove('file-hide');
-lineElement.style.opacity = '0';
-setTimeout(() => {
-lineElement.style.opacity = '1';
-}, 50);
-}
-
-explorerIndex++;
-setTimeout(typeExplorerLine, 300 + Math.random() * 400);
-}
-
-function startExplorer() {
-const explorerLines = document.querySelectorAll('.explorer-line');
-explorerLines.forEach(el => {
-if (el.id !== 'explorerRoot' && el.id !== 'explorerCursor') {
-el.classList.add('file-hide');
-el.style.opacity = '0';
-}
-});
-explorerIndex = 1;
-setTimeout(typeExplorerLine, 500);
-}
-
-// ==============================================
-// 🔥 SKILL BAR ANIMATION - 0% TO TARGET
-// ==============================================
-function animateSkillBars() {
-const fills = document.querySelectorAll('.fill');
-fills.forEach((fill, index) => {
-const targetWidth = parseInt(fill.getAttribute('data-width'));
-fill.style.width = '0%';
-setTimeout(() => {
-fill.style.width = targetWidth + '%';
-}, 200 + index * 80);
-});
-}
-
-// ==============================================
-// 🔥 INTERSECTION OBSERVER - TRIGGER ON SCROLL
-// ==============================================
-const skillsSection = document.getElementById('skillsSection');
-let skillsAnimated = false;
-
-const observer = new IntersectionObserver((entries) => {
-entries.forEach(entry => {
-if (entry.isIntersecting && !skillsAnimated) {
-skillsAnimated = true;
-animateSkillBars();
-}
-});
-}, { threshold: 0.3 });
-
-observer.observe(skillsSection);
-
-// ==============================================
-// 🔥 START EVERYTHING
-// ==============================================
-setTimeout(typeCharacter, 300);
-</script>
-
-</body>
-   </html>
+<
