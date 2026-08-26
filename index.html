@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>REVERSE X OFFICIAL | HACKER TERMINAL</title>
+<title>REVERSE X OFFICIAL | Cyber Portfolio</title>
 
 <style>
 * {
@@ -26,7 +26,8 @@ body {
     left: 0;
     width: 100%;
     height: 100%;
-    z-index: -1;
+    z-index: -2;
+    opacity: 0.9;
 }
 
 .overlay {
@@ -35,8 +36,8 @@ body {
     left: 0;
     width: 100%;
     height: 100%;
-    background: rgba(10, 10, 10, 0.85);
-    z-index: 0;
+    background: rgba(0, 0, 0, 0.92);
+    z-index: -1;
 }
 
 .scanlines {
@@ -50,8 +51,8 @@ body {
     background: repeating-linear-gradient(0deg,
         rgba(0, 255, 65, 0) 0px,
         rgba(0, 255, 65, 0) 2px,
-        rgba(0, 255, 65, 0.02) 2px,
-        rgba(0, 255, 65, 0.02) 4px);
+        rgba(0, 255, 65, 0.015) 2px,
+        rgba(0, 255, 65, 0.015) 4px);
 }
 
 .cursor {
@@ -440,7 +441,7 @@ body {
     bottom: 0;
     left: 0;
     width: 100%;
-    background: rgba(0, 0, 0, 0.95);
+    background: rgba(0, 0, 0, 0.98);
     border-top: 1px solid rgba(0, 255, 65, 0.15);
     padding: 8px 20px;
     display: flex;
@@ -683,7 +684,7 @@ footer {
 
 <script>
     // ==============================================
-    // MATRIX RAIN - BRIGHT GREEN WORDS
+    // MATRIX RAIN - HACKER WORDS
     // ==============================================
     const canvas = document.getElementById('matrix');
     const ctx = canvas.getContext('2d');
@@ -708,7 +709,7 @@ footer {
         'HONEYPOT', 'KEYLOGGER', 'PHISHING', 'SPOOF', 'ZOMBIE'
     ];
 
-    const fontSize = 16;
+    const fontSize = 18;
     const columns = Math.floor(canvas.width / fontSize);
     const drops = [];
 
@@ -717,19 +718,16 @@ footer {
             y: Math.random() * -100,
             speed: 0.8 + Math.random() * 1.5,
             word: hackerWords[Math.floor(Math.random() * hackerWords.length)],
-            charIndex: 0,
-            glow: 15 + Math.random() * 20
+            charIndex: 0
         };
     }
 
     function drawMatrix() {
-        // Dark trail for smooth animation
-        ctx.fillStyle = 'rgba(10, 10, 10, 0.08)';
+        ctx.fillStyle = 'rgba(0, 0, 0, 0.05)';
         ctx.fillRect(0, 0, canvas.width, canvas.height);
 
         for (let i = 0; i < drops.length; i++) {
-            // Bright green with glow
-            ctx.shadowBlur = drops[i].glow;
+            ctx.shadowBlur = 20;
             ctx.shadowColor = '#00ff41';
             ctx.fillStyle = '#00ff41';
             ctx.font = fontSize + 'px monospace';
@@ -746,12 +744,22 @@ footer {
                 drops[i].speed = 0.8 + Math.random() * 1.5;
                 drops[i].word = hackerWords[Math.floor(Math.random() * hackerWords.length)];
                 drops[i].charIndex = 0;
-                drops[i].glow = 15 + Math.random() * 20;
             }
         }
     }
 
-    setInterval(drawMatrix, 35);
+    setInterval(drawMatrix, 30);
+
+    // ==============================================
+    // CLOCK
+    // ==============================================
+    function updateClock() {
+        const now = new Date();
+        const time = now.toTimeString().split(' ')[0];
+        document.getElementById('clockDisplay').innerHTML = '⏰ ' + time;
+    }
+    setInterval(updateClock, 1000);
+    updateClock();
 
     // ==============================================
     // CURSOR FOLLOW
@@ -775,17 +783,6 @@ footer {
         cursor.style.width = '20px';
         cursor.style.height = '20px';
     });
-
-    // ==============================================
-    // CLOCK
-    // ==============================================
-    function updateClock() {
-        const now = new Date();
-        const time = now.toTimeString().split(' ')[0];
-        document.getElementById('clockDisplay').innerHTML = '⏰ ' + time;
-    }
-    setInterval(updateClock, 1000);
-    updateClock();
 
     // ==============================================
     // TYPING EFFECT
@@ -956,7 +953,7 @@ footer {
     observer.observe(skillsSection);
 
     // ==============================================
-    // START
+    // START EVERYTHING
     // ==============================================
     setTimeout(typeCharacter, 300);
 </script>
