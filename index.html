@@ -3,46 +3,325 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>REVERSE X OFFICIAL</title>
+<title>CHINTU MODS | Cyber Portfolio</title>
 
-<link rel="stylesheet" href="style.css">
-<link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&display=swap" rel="stylesheet">
+<style>
+*{
+margin:0;
+padding:0;
+box-sizing:border-box;
+font-family:'Segoe UI',sans-serif;
+}
+
+body{
+background:#000;
+color:#00ff41;
+overflow-x:hidden;
+}
+
+#matrix{
+position:fixed;
+top:0;
+left:0;
+width:100%;
+height:100%;
+z-index:-2;
+}
+
+.overlay{
+position:fixed;
+top:0;
+left:0;
+width:100%;
+height:100%;
+background:rgba(0,0,0,.55);
+z-index:-1;
+}
+
+.hero{
+min-height:100vh;
+display:flex;
+flex-direction:column;
+justify-content:center;
+align-items:center;
+text-align:center;
+padding:20px;
+}
+
+.profile{
+width:180px;
+height:180px;
+border-radius:50%;
+border:4px solid #00ff41;
+box-shadow:0 0 40px #00ff41;
+animation:glow 2s infinite alternate;
+object-fit:cover;
+}
+
+@keyframes glow{
+from{
+box-shadow:0 0 20px #00ff41;
+}
+to{
+box-shadow:0 0 60px #00ff41;
+}
+}
+
+.hero h1{
+font-size:4rem;
+margin-top:20px;
+text-shadow:0 0 20px #00ff41;
+}
+
+.typing{
+font-size:1.2rem;
+margin-top:10px;
+border-right:2px solid #00ff41;
+white-space:nowrap;
+overflow:hidden;
+width:0;
+animation:typing 4s steps(40,end) forwards;
+}
+
+@keyframes typing{
+to{
+width:100%;
+}
+}
+
+.card{
+width:90%;
+max-width:850px;
+margin:40px auto;
+padding:25px;
+background:rgba(255,255,255,.05);
+backdrop-filter:blur(15px);
+border:1px solid rgba(0,255,65,.3);
+border-radius:20px;
+box-shadow:0 0 25px rgba(0,255,65,.2);
+}
+
+.card h2{
+margin-bottom:20px;
+}
+
+.info{
+display:grid;
+grid-template-columns:repeat(auto-fit,minmax(250px,1fr));
+gap:15px;
+}
+
+.info div{
+padding:15px;
+border:1px solid rgba(0,255,65,.3);
+border-radius:12px;
+}
+
+.skill{
+margin-bottom:20px;
+}
+
+.skill p{
+margin-bottom:8px;
+}
+
+.bar{
+width:100%;
+height:12px;
+background:#111;
+border-radius:50px;
+overflow:hidden;
+}
+
+.fill{
+height:100%;
+background:#00ff41;
+box-shadow:0 0 15px #00ff41;
+}
+
+.btns{
+margin-top:25px;
+display:flex;
+gap:15px;
+flex-wrap:wrap;
+justify-content:center;
+}
+
+.btn{
+padding:14px 30px;
+border:none;
+border-radius:30px;
+background:#00ff41;
+color:#000;
+font-weight:bold;
+cursor:pointer;
+transition:.3s;
+}
+
+.btn:hover{
+transform:translateY(-5px);
+box-shadow:0 0 25px #00ff41;
+}
+
+.terminal{
+background:#050505;
+padding:20px;
+font-family:monospace;
+line-height:2;
+border-left:4px solid #00ff41;
+}
+
+footer{
+text-align:center;
+padding:30px;
+}
+
+.cursor{
+position:fixed;
+width:20px;
+height:20px;
+border:2px solid #00ff41;
+border-radius:50%;
+pointer-events:none;
+transform:translate(-50%,-50%);
+box-shadow:0 0 20px #00ff41;
+z-index:999;
+}
+
+@media(max-width:768px){
+.hero h1{
+font-size:2.5rem;
+}
+.profile{
+width:140px;
+height:140px;
+}
+}
+</style>
 </head>
 
 <body>
 
 <canvas id="matrix"></canvas>
 <div class="overlay"></div>
+<div class="cursor"></div>
 
-<div class="container">
+<section class="hero">
+<img src="https://i.imgur.com/8Km9tLL.png" class="profile">
 
-    <h1 class="glitch" data-text="REVERSE X OFFICIAL">
-        REVERSE X OFFICIAL
-    </h1>
+<h1>CHINTU MODS</h1>
 
-    <p class="subtitle">
-        Cyberpunk • Gaming • Development
-    </p>
-
-    <div class="terminal">
-        <div id="typing"></div>
-    </div>
-
-    <div class="skills">
-        <div class="skill">Video Editing<div class="bar"></div></div>
-        <div class="skill">UI Design<div class="bar"></div></div>
-        <div class="skill">Android Tools<div class="bar"></div></div>
-        <div class="skill">Cyber Systems<div class="bar"></div></div>
-    </div>
-
-    <div class="buttons">
-        <a class="btn" href="#">Telegram</a>
-        <a class="btn" href="#">YouTube</a>
-        <a class="btn" href="#">GitHub</a>
-    </div>
-
+<div class="typing">
+Accessing encrypted profile... Identity Verified ✓
 </div>
 
-<script src="script.js"></script>
+<div class="btns">
+<button class="btn">JOIN CHANNEL</button>
+<button class="btn">CONTACT ME</button>
+</div>
+</section>
+
+<section class="card">
+<h2>PROFILE DATA</h2>
+
+<div class="info">
+<div>👤 Name : CHINTU</div>
+<div>🎂 Birthday : JULY 27</div>
+<div>💻 Passion : Development</div>
+<div>🚀 Goal : Build Powerful Products</div>
+</div>
+</section>
+
+<section class="card">
+<h2>SKILL MATRIX</h2>
+
+<div class="skill">
+<p>Video Editing</p>
+<div class="bar"><div class="fill" style="width:90%"></div></div>
+</div>
+
+<div class="skill">
+<p>Design & Branding</p>
+<div class="bar"><div class="fill" style="width:85%"></div></div>
+</div>
+
+<div class="skill">
+<p>Web Development</p>
+<div class="bar"><div class="fill" style="width:95%"></div></div>
+</div>
+
+<div class="skill">
+<p>Firebase</p>
+<div class="bar"><div class="fill" style="width:88%"></div></div>
+</div>
+
+<div class="skill">
+<p>Telegram Bots</p>
+<div class="bar"><div class="fill" style="width:92%"></div></div>
+</div>
+</section>
+
+<section class="card">
+<h2>TERMINAL LOGS</h2>
+
+<div class="terminal">
+> Initializing System...<br>
+> Checking Security Layer...<br>
+> Access Granted ✓<br>
+> Loading Portfolio...<br>
+> Loading Skills...<br>
+> Connected Successfully ✓<br>
+</div>
+</section>
+
+<footer>
+© 2026 CHINTU MODS | Cyber Security Portfolio
+</footer>
+
+<script>
+const canvas=document.getElementById("matrix");
+const ctx=canvas.getContext("2d");
+
+canvas.height=window.innerHeight;
+canvas.width=window.innerWidth;
+
+const letters="01ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+const fontSize=14;
+const columns=canvas.width/fontSize;
+
+const drops=[];
+
+for(let x=0;x<columns;x++){
+drops[x]=1;
+}
+
+function draw(){
+ctx.fillStyle="rgba(0,0,0,0.05)";
+ctx.fillRect(0,0,canvas.width,canvas.height);
+
+ctx.fillStyle="#00ff41";
+ctx.font=fontSize+"px monospace";
+
+for(let i=0;i<drops.length;i++){
+const text=letters[Math.floor(Math.random()*letters.length)];
+ctx.fillText(text,i*fontSize,drops[i]*fontSize);
+
+if(drops[i]*fontSize>canvas.height && Math.random()>0.975){
+drops[i]=0;
+}
+drops[i]++;
+}
+}
+
+setInterval(draw,35);
+
+const cursor=document.querySelector('.cursor');
+
+document.addEventListener('mousemove',(e)=>{
+cursor.style.left=e.clientX+'px';
+cursor.style.top=e.clientY+'px';
+});
+</script>
+
 </body>
-</html>
+    </html>
