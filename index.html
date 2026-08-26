@@ -14,7 +14,7 @@
 }
 
 body {
-    background: #0a0a0a;
+    background: #000000;
     color: #00ff41;
     overflow-x: hidden;
     cursor: none;
@@ -26,7 +26,7 @@ body {
     left: 0;
     width: 100%;
     height: 100%;
-    z-index: -2;
+    z-index: -1;
 }
 
 .overlay {
@@ -35,8 +35,8 @@ body {
     left: 0;
     width: 100%;
     height: 100%;
-    background: rgba(0, 0, 0, 0.75);
-    z-index: -1;
+    background: rgba(0, 0, 0, 0.92);
+    z-index: 0;
 }
 
 .scanlines {
@@ -50,8 +50,8 @@ body {
     background: repeating-linear-gradient(0deg,
         rgba(0, 255, 65, 0) 0px,
         rgba(0, 255, 65, 0) 2px,
-        rgba(0, 255, 65, 0.02) 2px,
-        rgba(0, 255, 65, 0.02) 4px);
+        rgba(0, 255, 65, 0.015) 2px,
+        rgba(0, 255, 65, 0.015) 4px);
 }
 
 .cursor {
@@ -62,20 +62,20 @@ body {
     border-radius: 50%;
     pointer-events: none;
     transform: translate(-50%, -50%);
-    box-shadow: 0 0 20px #00ff41, inset 0 0 10px #00ff41;
+    box-shadow: 0 0 30px #00ff41, inset 0 0 15px #00ff41;
     z-index: 999;
     transition: width 0.1s, height 0.1s;
 }
 
 .cursor-dot {
     position: fixed;
-    width: 4px;
-    height: 4px;
+    width: 5px;
+    height: 5px;
     background: #00ff41;
     border-radius: 50%;
     pointer-events: none;
     transform: translate(-50%, -50%);
-    box-shadow: 0 0 10px #00ff41;
+    box-shadow: 0 0 20px #00ff41;
     z-index: 1000;
 }
 
@@ -88,6 +88,7 @@ body {
     text-align: center;
     padding: 20px;
     position: relative;
+    z-index: 1;
 }
 
 .hero::before {
@@ -97,23 +98,23 @@ body {
     left: 10px;
     right: 10px;
     bottom: 10px;
-    border: 1px solid rgba(0, 255, 65, 0.08);
+    border: 1px solid rgba(0, 255, 65, 0.1);
     pointer-events: none;
     animation: borderGlitch 3s infinite;
 }
 
 @keyframes borderGlitch {
-    0%, 90%, 100% { opacity: 0.08; }
-    92% { opacity: 0.3; }
-    94% { opacity: 0.08; }
-    96% { opacity: 0.3; }
+    0%, 90%, 100% { opacity: 0.1; }
+    92% { opacity: 0.4; }
+    94% { opacity: 0.1; }
+    96% { opacity: 0.4; }
 }
 
 .logo {
     width: 200px;
     height: auto;
     margin-bottom: 10px;
-    filter: drop-shadow(0 0 40px #00ff41);
+    filter: drop-shadow(0 0 50px #00ff41);
     animation: glow 2s infinite alternate;
 }
 
@@ -125,22 +126,22 @@ body {
 
 @keyframes glow {
     from { filter: drop-shadow(0 0 20px #00ff41); }
-    to { filter: drop-shadow(0 0 70px #00ff41); }
+    to { filter: drop-shadow(0 0 80px #00ff41); }
 }
 
 .hero h1 {
     font-size: 4rem;
     margin-top: 20px;
-    text-shadow: 0 0 30px #00ff41;
+    text-shadow: 0 0 40px #00ff41;
     letter-spacing: 8px;
     animation: glitchText 3s infinite;
 }
 
 @keyframes glitchText {
-    0%, 90%, 100% { text-shadow: 0 0 30px #00ff41; }
-    92% { text-shadow: -3px 0 red, 3px 0 blue, 0 0 40px #00ff41; }
-    94% { text-shadow: 3px 0 red, -3px 0 blue, 0 0 40px #00ff41; }
-    96% { text-shadow: -2px 0 red, 2px 0 blue, 0 0 40px #00ff41; }
+    0%, 90%, 100% { text-shadow: 0 0 40px #00ff41; }
+    92% { text-shadow: -3px 0 red, 3px 0 blue, 0 0 50px #00ff41; }
+    94% { text-shadow: 3px 0 red, -3px 0 blue, 0 0 50px #00ff41; }
+    96% { text-shadow: -2px 0 red, 2px 0 blue, 0 0 50px #00ff41; }
 }
 
 .typing-container {
@@ -183,6 +184,7 @@ body {
     text-transform: uppercase;
     position: relative;
     overflow: hidden;
+    z-index: 2;
 }
 
 .btn::before {
@@ -203,7 +205,7 @@ body {
 
 .btn:hover {
     color: #000;
-    box-shadow: 0 0 40px #00ff41;
+    box-shadow: 0 0 50px #00ff41;
     transform: translateY(-3px);
 }
 
@@ -217,6 +219,8 @@ body {
     border-radius: 8px;
     box-shadow: 0 0 40px rgba(0, 255, 65, 0.05);
     overflow: hidden;
+    position: relative;
+    z-index: 1;
 }
 
 .terminal-header {
@@ -436,8 +440,8 @@ body {
     bottom: 0;
     left: 0;
     width: 100%;
-    background: rgba(0, 10, 0, 0.95);
-    border-top: 1px solid rgba(0, 255, 65, 0.1);
+    background: rgba(0, 0, 0, 0.98);
+    border-top: 1px solid rgba(0, 255, 65, 0.15);
     padding: 8px 20px;
     display: flex;
     justify-content: space-between;
@@ -471,8 +475,10 @@ footer {
     text-align: center;
     padding: 30px;
     font-size: 0.8rem;
-    color: rgba(0, 255, 65, 0.25);
+    color: rgba(0, 255, 65, 0.3);
     letter-spacing: 2px;
+    position: relative;
+    z-index: 1;
 }
 
 @media (max-width: 768px) {
@@ -677,7 +683,7 @@ footer {
 
 <script>
     // ==============================================
-    // MATRIX RAIN - HACKER WORDS DROPPING
+    // MATRIX RAIN - CLEAR & BRIGHT HACKER WORDS
     // ==============================================
     const canvas = document.getElementById('matrix');
     const ctx = canvas.getContext('2d');
@@ -706,26 +712,24 @@ footer {
     const columns = Math.floor(canvas.width / fontSize);
     const drops = [];
 
-    // Initialize drops with random positions
     for (let x = 0; x < columns; x++) {
         drops[x] = {
             y: Math.random() * -100,
-            speed: 1 + Math.random() * 2,
+            speed: 1.2 + Math.random() * 2.2,
             word: hackerWords[Math.floor(Math.random() * hackerWords.length)],
             charIndex: 0
         };
     }
 
     function drawMatrix() {
-        // Clear with trail effect
-        ctx.fillStyle = 'rgba(10, 10, 10, 0.05)';
+        // Clear trail - pure black background
+        ctx.fillStyle = 'rgba(0, 0, 0, 0.05)';
         ctx.fillRect(0, 0, canvas.width, canvas.height);
 
         for (let i = 0; i < drops.length; i++) {
-            // Random brightness
-            const alpha = 0.4 + Math.random() * 0.6;
-            ctx.fillStyle = `rgba(0, 255, 65, ${alpha})`;
-            ctx.shadowBlur = 10;
+            // Clear and bright - high opacity
+            ctx.fillStyle = '#00ff41';
+            ctx.shadowBlur = 15;
             ctx.shadowColor = '#00ff41';
             ctx.font = fontSize + 'px monospace';
 
@@ -733,22 +737,19 @@ footer {
             const char = word[drops[i].charIndex % word.length];
             ctx.fillText(char, i * fontSize, drops[i].y * fontSize);
 
-            // Move down
             drops[i].y += drops[i].speed;
             drops[i].charIndex++;
 
-            // Reset when off screen
             if (drops[i].y * fontSize > canvas.height) {
                 drops[i].y = -10;
-                drops[i].speed = 1 + Math.random() * 2;
+                drops[i].speed = 1.2 + Math.random() * 2.2;
                 drops[i].word = hackerWords[Math.floor(Math.random() * hackerWords.length)];
                 drops[i].charIndex = 0;
             }
         }
     }
 
-    // Run the animation
-    setInterval(drawMatrix, 50);
+    setInterval(drawMatrix, 35);
 
     // ==============================================
     // CURSOR FOLLOW
@@ -960,4 +961,3 @@ footer {
 
 </body>
 </html>
-   
