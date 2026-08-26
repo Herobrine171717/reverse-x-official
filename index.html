@@ -27,7 +27,6 @@ body {
     width: 100%;
     height: 100%;
     z-index: -2;
-    opacity: 0.9;
 }
 
 .overlay {
@@ -36,7 +35,7 @@ body {
     left: 0;
     width: 100%;
     height: 100%;
-    background: rgba(0, 0, 0, 0.85);
+    background: rgba(0, 0, 0, 0.75);
     z-index: -1;
 }
 
@@ -707,44 +706,49 @@ footer {
     const columns = Math.floor(canvas.width / fontSize);
     const drops = [];
 
+    // Initialize drops with random positions
     for (let x = 0; x < columns; x++) {
         drops[x] = {
-            y: Math.floor(Math.random() * canvas.height / fontSize),
-            speed: 0.8 + Math.random() * 2.5,
+            y: Math.random() * -100,
+            speed: 1 + Math.random() * 2,
             word: hackerWords[Math.floor(Math.random() * hackerWords.length)],
-            charIndex: 0,
-            brightness: 0.6 + Math.random() * 0.4
+            charIndex: 0
         };
     }
 
     function drawMatrix() {
+        // Clear with trail effect
         ctx.fillStyle = 'rgba(10, 10, 10, 0.05)';
         ctx.fillRect(0, 0, canvas.width, canvas.height);
 
         for (let i = 0; i < drops.length; i++) {
-            const alpha = 0.5 + Math.random() * 0.5;
+            // Random brightness
+            const alpha = 0.4 + Math.random() * 0.6;
             ctx.fillStyle = `rgba(0, 255, 65, ${alpha})`;
-            ctx.shadowBlur = 8;
-            ctx.shadowColor = `rgba(0, 255, 65, 0.3)`;
+            ctx.shadowBlur = 10;
+            ctx.shadowColor = '#00ff41';
             ctx.font = fontSize + 'px monospace';
 
             const word = drops[i].word;
-            const char = word[drops[i].charIndex % word.length] || word[0];
+            const char = word[drops[i].charIndex % word.length];
             ctx.fillText(char, i * fontSize, drops[i].y * fontSize);
 
+            // Move down
             drops[i].y += drops[i].speed;
             drops[i].charIndex++;
 
-            if (drops[i].y * fontSize > canvas.height + 50 && Math.random() > 0.95) {
+            // Reset when off screen
+            if (drops[i].y * fontSize > canvas.height) {
                 drops[i].y = -10;
-                drops[i].speed = 0.8 + Math.random() * 2.5;
+                drops[i].speed = 1 + Math.random() * 2;
                 drops[i].word = hackerWords[Math.floor(Math.random() * hackerWords.length)];
                 drops[i].charIndex = 0;
             }
         }
     }
 
-    setInterval(drawMatrix, 30);
+    // Run the animation
+    setInterval(drawMatrix, 50);
 
     // ==============================================
     // CURSOR FOLLOW
@@ -956,3 +960,4 @@ footer {
 
 </body>
 </html>
+   
