@@ -6,9 +6,6 @@
 <title>REVERSE X OFFICIAL | HACKER TERMINAL</title>
 
 <style>
-/* ==============================================
-   RESET & BASE
-   ============================================== */
 * {
     margin: 0;
     padding: 0;
@@ -24,7 +21,7 @@ body {
 }
 
 /* ==============================================
-   MATRIX BACKGROUND
+   MATRIX BACKGROUND - CLEAN DARK
    ============================================== */
 #matrix {
     position: fixed;
@@ -33,7 +30,7 @@ body {
     width: 100%;
     height: 100%;
     z-index: -2;
-    opacity: 0.7;
+    opacity: 0.9;
 }
 
 .overlay {
@@ -42,7 +39,7 @@ body {
     left: 0;
     width: 100%;
     height: 100%;
-    background: rgba(0, 0, 0, 0.6);
+    background: rgba(0, 0, 0, 0.85);
     z-index: -1;
 }
 
@@ -60,8 +57,8 @@ body {
     background: repeating-linear-gradient(0deg,
         rgba(0, 255, 65, 0) 0px,
         rgba(0, 255, 65, 0) 2px,
-        rgba(0, 255, 65, 0.05) 2px,
-        rgba(0, 255, 65, 0.05) 4px);
+        rgba(0, 255, 65, 0.02) 2px,
+        rgba(0, 255, 65, 0.02) 4px);
 }
 
 /* ==============================================
@@ -90,7 +87,6 @@ body {
     transform: translate(-50%, -50%);
     box-shadow: 0 0 10px #00ff41;
     z-index: 1000;
-    transition: none;
 }
 
 /* ==============================================
@@ -114,16 +110,16 @@ body {
     left: 10px;
     right: 10px;
     bottom: 10px;
-    border: 1px solid rgba(0, 255, 65, 0.15);
+    border: 1px solid rgba(0, 255, 65, 0.08);
     pointer-events: none;
     animation: borderGlitch 3s infinite;
 }
 
 @keyframes borderGlitch {
-    0%, 90%, 100% { opacity: 0.15; }
-    92% { opacity: 0.6; }
-    94% { opacity: 0.15; }
-    96% { opacity: 0.6; }
+    0%, 90%, 100% { opacity: 0.08; }
+    92% { opacity: 0.3; }
+    94% { opacity: 0.08; }
+    96% { opacity: 0.3; }
 }
 
 .logo {
@@ -235,17 +231,17 @@ body {
     max-width: 900px;
     margin: 30px auto;
     padding: 0;
-    background: rgba(0, 10, 0, 0.85);
-    border: 1px solid rgba(0, 255, 65, 0.25);
+    background: rgba(0, 10, 0, 0.9);
+    border: 1px solid rgba(0, 255, 65, 0.15);
     border-radius: 8px;
-    box-shadow: 0 0 40px rgba(0, 255, 65, 0.08);
+    box-shadow: 0 0 40px rgba(0, 255, 65, 0.05);
     overflow: hidden;
 }
 
 .terminal-header {
-    background: rgba(0, 255, 65, 0.08);
+    background: rgba(0, 255, 65, 0.05);
     padding: 10px 20px;
-    border-bottom: 1px solid rgba(0, 255, 65, 0.15);
+    border-bottom: 1px solid rgba(0, 255, 65, 0.1);
     display: flex;
     align-items: center;
     gap: 10px;
@@ -285,15 +281,15 @@ body {
 
 .profile-item {
     padding: 15px;
-    border: 1px solid rgba(0, 255, 65, 0.15);
+    border: 1px solid rgba(0, 255, 65, 0.1);
     border-radius: 4px;
-    background: rgba(0, 255, 65, 0.03);
+    background: rgba(0, 255, 65, 0.02);
     transition: 0.3s;
 }
 
 .profile-item:hover {
     border-color: #00ff41;
-    box-shadow: 0 0 20px rgba(0, 255, 65, 0.1);
+    box-shadow: 0 0 20px rgba(0, 255, 65, 0.08);
 }
 
 .profile-item .label {
@@ -329,24 +325,9 @@ body {
 .bar {
     width: 100%;
     height: 6px;
-    background: rgba(0, 255, 65, 0.1);
+    background: rgba(0, 255, 65, 0.08);
     border-radius: 0;
     overflow: hidden;
-    position: relative;
-}
-
-.bar::after {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background: repeating-linear-gradient(90deg,
-        transparent,
-        transparent 4px,
-        rgba(0, 0, 0, 0.3) 4px,
-        rgba(0, 0, 0, 0.3) 5px);
 }
 
 .fill {
@@ -355,7 +336,6 @@ body {
     box-shadow: 0 0 20px #00ff41;
     width: 0%;
     transition: width 1.5s cubic-bezier(0.25, 0.46, 0.45, 0.94);
-    position: relative;
 }
 
 /* ==============================================
@@ -490,8 +470,8 @@ body {
     bottom: 0;
     left: 0;
     width: 100%;
-    background: rgba(0, 10, 0, 0.9);
-    border-top: 1px solid rgba(0, 255, 65, 0.15);
+    background: rgba(0, 10, 0, 0.95);
+    border-top: 1px solid rgba(0, 255, 65, 0.1);
     padding: 8px 20px;
     display: flex;
     justify-content: space-between;
@@ -528,7 +508,7 @@ footer {
     text-align: center;
     padding: 30px;
     font-size: 0.8rem;
-    color: rgba(0, 255, 65, 0.3);
+    color: rgba(0, 255, 65, 0.25);
     letter-spacing: 2px;
 }
 
@@ -564,7 +544,7 @@ footer {
 <body>
 
 <!-- ==============================================
-     MATRIX BACKGROUND
+     MATRIX BACKGROUND - CLEAN
      ============================================== -->
 <canvas id="matrix"></canvas>
 <div class="overlay"></div>
@@ -761,7 +741,7 @@ footer {
 
 <script>
     // ==============================================
-    // MATRIX RAIN - HACKER WORDS DROPPING
+    // MATRIX RAIN - CLEAN HACKER WORDS
     // ==============================================
     const canvas = document.getElementById('matrix');
     const ctx = canvas.getContext('2d');
@@ -769,7 +749,6 @@ footer {
     canvas.height = window.innerHeight;
     canvas.width = window.innerWidth;
 
-    // 🔥 50+ HACKER WORDS TO DROP
     const hackerWords = [
         'HACK', 'ROOT', 'ACCESS', 'GRANTED', 'DENIED', 'ERROR',
         'SYSTEM', 'NETWORK', 'FIREWALL', 'BYFASS', 'EXPLOIT',
@@ -788,27 +767,25 @@ footer {
     const columns = Math.floor(canvas.width / fontSize);
     const drops = [];
 
-    // BRIGHTER COLORS
-    const colors = ['#00ff41', '#00ff41', '#00ff41', '#33ff66', '#66ff99', '#00ff41', '#55ff88', '#00ff55'];
-
     for (let x = 0; x < columns; x++) {
         drops[x] = {
             y: Math.floor(Math.random() * canvas.height / fontSize),
             speed: 1.0 + Math.random() * 2.5,
             word: hackerWords[Math.floor(Math.random() * hackerWords.length)],
-            charIndex: 0
+            charIndex: 0,
+            brightness: 0.6 + Math.random() * 0.4
         };
     }
 
     function drawMatrix() {
-        ctx.fillStyle = 'rgba(0,0,0,0.05)';
+        ctx.fillStyle = 'rgba(10, 10, 10, 0.05)';
         ctx.fillRect(0, 0, canvas.width, canvas.height);
 
         for (let i = 0; i < drops.length; i++) {
-            const color = colors[Math.floor(Math.random() * colors.length)];
-            ctx.fillStyle = color;
-            ctx.shadowBlur = 12;
-            ctx.shadowColor = '#00ff41';
+            const alpha = 0.5 + Math.random() * 0.5;
+            ctx.fillStyle = `rgba(0, 255, 65, ${alpha})`;
+            ctx.shadowBlur = 8;
+            ctx.shadowColor = `rgba(0, 255, 65, 0.3)`;
             ctx.font = fontSize + 'px monospace';
 
             const word = drops[i].word;
@@ -818,8 +795,8 @@ footer {
             drops[i].y += drops[i].speed;
             drops[i].charIndex++;
 
-            if (drops[i].y * fontSize > canvas.height && Math.random() > 0.95) {
-                drops[i].y = -5;
+            if (drops[i].y * fontSize > canvas.height + 50 && Math.random() > 0.95) {
+                drops[i].y = -10;
                 drops[i].speed = 1.0 + Math.random() * 2.5;
                 drops[i].word = hackerWords[Math.floor(Math.random() * hackerWords.length)];
                 drops[i].charIndex = 0;
@@ -864,7 +841,7 @@ footer {
     updateClock();
 
     // ==============================================
-    // TYPING EFFECT - CHARACTER BY CHARACTER
+    // TYPING EFFECT
     // ==============================================
     const typingText = document.getElementById('typingText');
     const textToType = 'Accessing encrypted profile... Identity Verified ✓';
@@ -884,7 +861,7 @@ footer {
     }
 
     // ==============================================
-    // TERMINAL LOGS - LETTER BY LETTER
+    // TERMINAL LOGS
     // ==============================================
     const terminalLines = [
         { text: 'Initializing System...', type: 'command' },
@@ -949,7 +926,7 @@ footer {
     }
 
     // ==============================================
-    // FILE EXPLORER - LINE BY LINE
+    // FILE EXPLORER
     // ==============================================
     const explorerLines = [
         '📂 C:\\Users\\REVERSE\\',
@@ -1001,7 +978,7 @@ footer {
     }
 
     // ==============================================
-    // SKILL BAR ANIMATION - 0% TO TARGET
+    // SKILL BAR ANIMATION
     // ==============================================
     function animateSkillBars() {
         const fills = document.querySelectorAll('.fill');
@@ -1015,7 +992,7 @@ footer {
     }
 
     // ==============================================
-    // INTERSECTION OBSERVER - TRIGGER ON SCROLL
+    // INTERSECTION OBSERVER
     // ==============================================
     const skillsSection = document.getElementById('skillsSection');
     let skillsAnimated = false;
@@ -1032,7 +1009,7 @@ footer {
     observer.observe(skillsSection);
 
     // ==============================================
-    // START EVERYTHING
+    // START
     // ==============================================
     setTimeout(typeCharacter, 300);
 </script>
