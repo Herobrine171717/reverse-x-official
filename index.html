@@ -77,19 +77,22 @@ margin-top:20px;
 text-shadow:0 0 20px #00ff41;
 }
 
-.typing{
+.typing-container{
 font-size:1.2rem;
 margin-top:10px;
-border-right:2px solid #00ff41;
-white-space:nowrap;
-overflow:hidden;
-width:0;
-animation:typing 4s steps(40,end) forwards;
+min-height:2em;
 }
 
-@keyframes typing{
-to{
-width:100%;
+.typing-text{
+display:inline-block;
+border-right:2px solid #00ff41;
+padding-right:5px;
+animation:blink-cursor 0.8s step-end infinite;
+}
+
+@keyframes blink-cursor{
+50%{
+border-color:transparent;
 }
 }
 
@@ -171,8 +174,25 @@ box-shadow:0 0 25px #00ff41;
 background:#050505;
 padding:20px;
 font-family:monospace;
-line-height:2;
+line-height:2.2;
 border-left:4px solid #00ff41;
+min-height:200px;
+}
+
+.terminal-line{
+opacity:0;
+animation:terminalFade 0.5s forwards;
+}
+
+@keyframes terminalFade{
+from{
+opacity:0;
+transform:translateX(-10px);
+}
+to{
+opacity:1;
+transform:translateX(0);
+}
 }
 
 footer{
@@ -216,8 +236,8 @@ width:160px;
 
 <h1>REVERSE X OFFICIAL</h1>
 
-<div class="typing">
-Accessing encrypted profile... Identity Verified ✓
+<div class="typing-container">
+<span class="typing-text" id="typingText"></span>
 </div>
 
 <div class="btns">
@@ -269,13 +289,13 @@ Accessing encrypted profile... Identity Verified ✓
 <section class="card">
 <h2>TERMINAL LOGS</h2>
 
-<div class="terminal">
-> Initializing System...<br>
-> Checking Security Layer...<br>
-> Access Granted ✓<br>
-> Loading Portfolio...<br>
-> Loading Skills...<br>
-> Connected Successfully ✓<br>
+<div class="terminal" id="terminal">
+<div class="terminal-line">> Initializing System...</div>
+<div class="terminal-line">> Checking Security Layer...</div>
+<div class="terminal-line">> Access Granted ✓</div>
+<div class="terminal-line">> Loading Portfolio...</div>
+<div class="terminal-line">> Loading Skills...</div>
+<div class="terminal-line">> Connected Successfully ✓</div>
 </div>
 </section>
 
@@ -326,6 +346,90 @@ document.addEventListener('mousemove',(e)=>{
 cursor.style.left=e.clientX+'px';
 cursor.style.top=e.clientY+'px';
 });
+
+// ==============================================
+// 🔥 TYPING EFFECT - CHARACTER BY CHARACTER
+// ==============================================
+const typingText = document.getElementById('typingText');
+const textToType = "Accessing encrypted profile... Identity Verified ✓";
+let charIndex = 0;
+let isDeleting = false;
+
+function typeCharacter() {
+if (!isDeleting) {
+typingText.textContent = textToType.substring(0, charIndex + 1);
+charIndex++;
+
+if (charIndex < textToType.length) {
+setTimeout(typeCharacter, 30 + Math.random() * 50);
+} else {
+// Pause before starting terminal
+setTimeout(() => {
+startTerminal();
+}, 500);
+}
+}
+}
+
+// ==============================================
+// 🔥 TERMINAL TYPING EFFECT - LINE BY LINE
+// ==============================================
+const terminalLines = [
+"> Initializing System...",
+"> Checking Security Layer...",
+"> Access Granted ✓",
+"> Loading Portfolio...",
+"> Loading Skills...",
+"> Connected Successfully ✓"
+];
+
+let currentLine = 0;
+let currentCharTerm = 0;
+let isTerminalTyping = false;
+const terminalElement = document.getElementById('terminal');
+
+function typeTerminalCharacter() {
+if (currentLine >= terminalLines.length) return;
+
+const line = terminalLines[currentLine];
+const char = line[currentCharTerm];
+
+if (!isTerminalTyping) {
+isTerminalTyping = true;
+const newLine = document.createElement('div');
+newLine.className = 'terminal-line';
+newLine.textContent = '';
+terminalElement.appendChild(newLine);
+}
+
+const lineElement = terminalElement.lastElementChild;
+
+if (currentCharTerm < line.length) {
+lineElement.textContent += line[currentCharTerm];
+currentCharTerm++;
+setTimeout(typeTerminalCharacter, 15 + Math.random() * 30);
+} else {
+currentCharTerm = 0;
+currentLine++;
+isTerminalTyping = false;
+lineElement.style.borderRight = '2px solid #00ff41';
+setTimeout(() => {
+lineElement.style.borderRight = 'none';
+}, 400);
+setTimeout(typeTerminalCharacter, 250);
+}
+}
+
+function startTerminal() {
+terminalElement.innerHTML = '';
+currentLine = 0;
+currentCharTerm = 0;
+isTerminalTyping = false;
+setTimeout(typeTerminalCharacter, 300);
+}
+
+// Start the typing effect
+setTimeout(typeCharacter, 300);
 </script>
 
 </body>
