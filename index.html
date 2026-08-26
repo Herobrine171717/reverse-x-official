@@ -138,12 +138,15 @@ height:12px;
 background:#111;
 border-radius:50px;
 overflow:hidden;
+position:relative;
 }
 
 .fill{
 height:100%;
 background:#00ff41;
 box-shadow:0 0 15px #00ff41;
+width:0%;
+transition:width 1.5s cubic-bezier(0.25, 0.46, 0.45, 0.94);
 }
 
 .btns{
@@ -197,9 +200,6 @@ transform:translateX(0);
 }
 }
 
-/* ==============================================
-   🔥 FOLDER EXPLORER
-   ============================================== */
 .folder-explorer{
 background:#050505;
 padding:20px;
@@ -321,57 +321,57 @@ width:160px;
 </div>
 </section>
 
-<section class="card">
+<section class="card" id="skillsSection">
 <h2>SKILL MATRIX</h2>
 
 <div class="skill">
 <p>Reverse Engineering</p>
-<div class="bar"><div class="fill" style="width:98%"></div></div>
+<div class="bar"><div class="fill" data-width="98"></div></div>
 </div>
 
 <div class="skill">
 <p>APK Modding</p>
-<div class="bar"><div class="fill" style="width:96%"></div></div>
+<div class="bar"><div class="fill" data-width="96"></div></div>
 </div>
 
 <div class="skill">
 <p>Python & Automation</p>
-<div class="bar"><div class="fill" style="width:95%"></div></div>
+<div class="bar"><div class="fill" data-width="95"></div></div>
 </div>
 
 <div class="skill">
 <p>Telegram Bots</p>
-<div class="bar"><div class="fill" style="width:97%"></div></div>
+<div class="bar"><div class="fill" data-width="97"></div></div>
 </div>
 
 <div class="skill">
 <p>Web Development</p>
-<div class="bar"><div class="fill" style="width:92%"></div></div>
+<div class="bar"><div class="fill" data-width="92"></div></div>
 </div>
 
 <div class="skill">
 <p>Firebase & Cloud</p>
-<div class="bar"><div class="fill" style="width:90%"></div></div>
+<div class="bar"><div class="fill" data-width="90"></div></div>
 </div>
 
 <div class="skill">
 <p>Cyber Security</p>
-<div class="bar"><div class="fill" style="width:93%"></div></div>
+<div class="bar"><div class="fill" data-width="93"></div></div>
 </div>
 
 <div class="skill">
 <p>UI/UX Design</p>
-<div class="bar"><div class="fill" style="width:87%"></div></div>
+<div class="bar"><div class="fill" data-width="87"></div></div>
 </div>
 
 <div class="skill">
 <p>Game Modding</p>
-<div class="bar"><div class="fill" style="width:94%"></div></div>
+<div class="bar"><div class="fill" data-width="94"></div></div>
 </div>
 
 <div class="skill">
 <p>Malware Analysis</p>
-<div class="bar"><div class="fill" style="width:91%"></div></div>
+<div class="bar"><div class="fill" data-width="91"></div></div>
 </div>
 </section>
 
@@ -388,9 +388,6 @@ width:160px;
 </div>
 </section>
 
-<!-- ==============================================
-     🔥 FOLDER EXPLORER SECTION
-     ============================================== -->
 <section class="card">
 <h2>📁 FILE EXPLORER</h2>
 
@@ -601,7 +598,6 @@ setTimeout(typeExplorerLine, 300 + Math.random() * 400);
 }
 
 function startExplorer() {
-// Reset explorer
 const explorerLines = document.querySelectorAll('.explorer-line');
 explorerLines.forEach(el => {
 if (el.id !== 'explorerRoot' && el.id !== 'explorerCursor') {
@@ -613,9 +609,42 @@ explorerIndex = 1;
 setTimeout(typeExplorerLine, 500);
 }
 
-// Start everything
+// ==============================================
+// 🔥 SKILL BAR ANIMATION - 0% TO TARGET
+// ==============================================
+function animateSkillBars() {
+const fills = document.querySelectorAll('.fill');
+fills.forEach((fill, index) => {
+const targetWidth = parseInt(fill.getAttribute('data-width'));
+fill.style.width = '0%';
+setTimeout(() => {
+fill.style.width = targetWidth + '%';
+}, 200 + index * 80);
+});
+}
+
+// ==============================================
+// 🔥 INTERSECTION OBSERVER - TRIGGER ON SCROLL
+// ==============================================
+const skillsSection = document.getElementById('skillsSection');
+let skillsAnimated = false;
+
+const observer = new IntersectionObserver((entries) => {
+entries.forEach(entry => {
+if (entry.isIntersecting && !skillsAnimated) {
+skillsAnimated = true;
+animateSkillBars();
+}
+});
+}, { threshold: 0.3 });
+
+observer.observe(skillsSection);
+
+// ==============================================
+// 🔥 START EVERYTHING
+// ==============================================
 setTimeout(typeCharacter, 300);
 </script>
 
 </body>
-                   </html>
+   </html>
